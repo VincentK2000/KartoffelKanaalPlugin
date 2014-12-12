@@ -16,9 +16,12 @@ import java.util.*;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -532,6 +535,16 @@ public class Main extends JavaPlugin implements Listener {
 			s[1] = 'c';
 			e.setQuitMessage(new String(s));
 		}
+	}
+	
+	@EventHandler
+	public void onEntityChangeBlock(EntityChangeBlockEvent e){
+		if(e.getEntityType() == EntityType.ENDERMAN)e.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onEntityExplode(EntityExplodeEvent e){
+		e.setCancelled(true);
 	}
 	
 }
