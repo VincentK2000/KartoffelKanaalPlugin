@@ -1,8 +1,6 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.command.CommandSender;
 
 import KartoffelKanaalPlugin.plugin.AttribSystem;
@@ -151,17 +149,35 @@ public abstract class PNTech implements IObjectCommandHandable{
 	
 	
 	@Override
-	public final List<String> autoCompleteObjectCommand(String s) throws Exception {
-		ArrayList<String> a = new ArrayList<String>();
-		s = s.toLowerCase();
-		String[] possibilities = this.getTotalTopLevelArgsPossibilities();
-		for(int i = 0; i < possibilities.length; i++){
-			if(possibilities[i] != null && possibilities[i].startsWith(s)){
-				a.add(possibilities[i]);
+	public final ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
+		String label = args[0].toLowerCase();
+		if(args.length == 1){
+			ArrayList<String> a = new ArrayList<String>();
+			String[] possibilities = this.getTotalTopLevelArgsPossibilities();
+			for(int i = 0; i < possibilities.length; i++){
+				if(possibilities[i] != null && possibilities[i].startsWith(label)){
+					a.add(possibilities[i]);
+				}
+			}
+			return a;
+		}else if(args.length >= 2){
+			if(label.equals("visibility")){
+				if(args.length == 2){
+					ArrayList<String> a = new ArrayList<String>();
+					if("visible".startsWith(args[1]))a.add("visible");
+					if("invisible".startsWith(args[1]))a.add("invisible");
+					return a;
+				}
 			}
 		}
-		return a;
-	}	
+		return null;
+	}
+	
+	@Override
+	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception{
+		return new ArrayList<String>(1);
+	}
+	
 	public String getTopLevelPossibilitiesString(){
 		String[] total = this.getTotalTopLevelArgsPossibilities();
 		if(total.length == 0)return "";

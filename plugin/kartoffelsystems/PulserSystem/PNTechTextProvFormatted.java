@@ -3,7 +3,7 @@ package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import org.bukkit.command.CommandSender;
@@ -21,8 +21,8 @@ public abstract class PNTechTextProvFormatted extends PNTechTextProv {
 	}
 
 	@Override
-	public List<String> autoCompleteSubObjectCH(String s) throws Exception {
-		return null;
+	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
+		return super.autoCompleteSubObjectCH(s);
 	}
 
 	@Override

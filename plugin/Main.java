@@ -394,6 +394,71 @@ public class Main extends JavaPlugin implements Listener {
 				if("msg".startsWith(args[0]))a.add("msg");
 				return a;
 			}
+		}else if(label.equals("notifications")){
+			if(args.length == 1){
+				args[0] = args[0].toLowerCase();
+				ArrayList<String> a = new ArrayList<String>(2);
+				if("receive".startsWith(args[0]))a.add("receive");
+				if(sender.isOp()){
+					//System.out.println("[KKP] Tab completing first argument of /notifications-command");
+					IObjectCommandHandable objCH = null;
+					int index = args[0].lastIndexOf((int)'/');
+					if(index == -1)index = 0;
+					//System.out.println("[KKP] Completing part starts at character " + index + " of the string \"" + args[0] + "\"");
+					try{
+						objCH = Pulser.getObjectCommandHandable(Main.pulser, args[0].substring(0, index));
+					}catch(Exception e){
+						//System.out.println("[KKP] Couldn't get ObjectCH on \"" + args[0].substring(0, index) + "\":");
+						//e.printStackTrace();
+					}
+					if(objCH != null){
+						try{
+							List<String> l;
+							if(index < args[0].length() - 1){
+								l = objCH.autoCompleteSubObjectCH(args[0].substring(index + 1));
+							}else{
+								l = objCH.autoCompleteSubObjectCH("");
+							}
+							if(l != null){
+								String prePath = args[0].substring(0, index);
+								for(int i = 0; i < l.size(); i++){
+									if(l.get(i) != null){
+										l.set(i, prePath + '/' + l.get(i));
+									}
+								}
+							}//else{
+							//	System.out.println("[KKP] Returned list was null");
+							//}
+							return l;
+						}catch(Exception e){
+							//System.out.println("[KKP] Couldn't complete ObjectCH:");
+							//e.printStackTrace();
+						}
+					}else{
+						//System.out.println("[KKP] ObjectCH is null");
+					}
+				}
+				return a;
+			}else if(args.length >= 2){
+				args[0] = args[0].toLowerCase();
+				if(args[0].equals("receive")){
+					return new ArrayList<String>(0);
+				}else{
+					if(sender.isOp()){
+						IObjectCommandHandable objCH;
+						try{
+							objCH = Pulser.getObjectCommandHandable(Main.pulser, args[0]);
+						}catch(Exception e){return null;}
+						String[] newArgs = new String[args.length - 1];
+						System.arraycopy(args, 1, newArgs, 0, newArgs.length);
+						try{
+							return objCH.autoCompleteObjectCommand(newArgs);
+						}catch(Exception e){return null;}
+					}
+				}
+			}else if(args.length > 0 && !(args[0].equals("receive") && args.length == 3)){
+				return new ArrayList<String>(0);
+			}
 		}
 		
 		return null;

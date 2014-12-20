@@ -2,7 +2,6 @@ package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -365,27 +364,34 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 	}
 	
 	public static IObjectCommandHandable getObjectCommandHandable(IObjectCommandHandable root, String path) throws Exception {
-		if(path == null)return null;
-		if(path.startsWith("/"))path = path.substring(1);;
+		if(path == null)throw new Exception("Couldn't search for object because the path was null");
+		if(root == null)throw new Exception("Couldn't search for object because the root was null");
+		if(path.startsWith("/"))path = path.substring(1);
 		String[] parts = path.split("/");
+		StringBuilder currentPath = new StringBuilder(path.length());
 		IObjectCommandHandable result = root;
-		for(int i = 0; i < parts.length; i++){
-			if(result == null)return null;
-			result = result.getSubObjectCH(parts[i]);
+		int end = parts.length;
+		if(parts.length > 0 && parts[parts.length - 1].length() == 0)end = parts.length - 1;
+		for(int i = 0; i < end; i++){
+			try{
+				result = result.getSubObjectCH(parts[i]);
+			}catch(Exception e){
+				throw new Exception("Error on finding object \"" + parts[i] + "\" of \"" + currentPath.toString() + "\": " + e.getMessage(), e);
+			}
+			if(result == null){
+				throw new Exception("Couldn't find object \"" + parts[i] + "\" of \"" + currentPath.toString() + "\"");
+			}
+			currentPath.append('/');
+			currentPath.append(parts[i]);
 		}
 		return result;
-	}
-
-	@Override
-	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
-		return false;
 	}
 
 	@Override
 	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
 		path = path.toLowerCase();
 		int pointIndex = path.indexOf((int)'.');
-		if(pointIndex == -1)return null;
+		if(pointIndex == -1)throw new Exception("No domain specified");
 		String domain = path.substring(0, pointIndex);
 		String item = path.substring(pointIndex + 1, path.length());
 		if(domain.equals("notif") || domain.equals("notifications")){
@@ -399,24 +405,28 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 				if(notifIndex < 0 || notifIndex >= this.notifications.length)throw new Exception("Oncorrecte index. De index moet minimum 0 en - in dit geval - maximum " + (this.notifications.length - 1) + " zijn");
 				return this.notifications[notifIndex];
 			}else{
-				throw new Exception("Momenteel kan er enkel een notificatie van de Pulser worden genomen op index");
+				throw new Exception("Momenteel kan er enkel een notificatie van de Pulser worden gezocht op index");
 			}
 		}else{
-			throw new Exception("Bij de Pulser is een geldig object in het domein \"notif\"/\"notifications\"");
+			throw new Exception("Geldige domeinen: \"notif\"/\"notifications\"");
 		}
 	}
 
 	@Override
-	public List<String> autoCompleteSubObjectCH(String s) throws Exception {
-		List<String> a = new ArrayList<String>();
+	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
+		ArrayList<String> a = new ArrayList<String>(1);
 		s = s.toLowerCase();
 		if("notifications.".startsWith(s))a.add("notifications.");
 		return a;
 	}
 
 	@Override
-	public List<String> autoCompleteObjectCommand(String s) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
+		return false;
+	}
+	
+	@Override
+	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
+		return new ArrayList<String>(0);
 	}
 }

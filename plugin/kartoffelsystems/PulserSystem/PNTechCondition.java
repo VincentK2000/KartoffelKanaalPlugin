@@ -1,8 +1,6 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 
 public class PNTechCondition extends PNTech{
@@ -78,8 +76,10 @@ public class PNTechCondition extends PNTech{
 	}
 
 	@Override
-	public List<String> autoCompleteSubObjectCH(String s) throws Exception {
-		ArrayList<String> a = new ArrayList<String>();
+	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
+		ArrayList<String> a = super.autoCompleteSubObjectCH(s);
+		if(a == null)a = new ArrayList<String>(1);
+		
 		s = s.toLowerCase();
 		if("root".startsWith(s))a.add("root");
 		if("base".startsWith(s))a.add("base");

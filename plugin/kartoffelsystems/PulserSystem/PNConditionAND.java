@@ -1,7 +1,6 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.List;
-
+import java.util.ArrayList;
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 import KartoffelKanaalPlugin.plugin.StoreTechnics;
 
@@ -103,8 +102,14 @@ public class PNConditionAND extends PNCondition{
 	}
 
 	@Override
-	public List<String> autoCompleteSubObjectCH(String s) throws Exception {
-		return null;
+	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {		
+		ArrayList<String> a = null;
+		try{
+			a = super.autoCompleteSubObjectCH(s);
+		}catch(Exception e){}
+		if(a == null)a = new ArrayList<String>(1);
+		if("#".startsWith(s))a.add("#");
+		return a;
 	}
 
 	@Override

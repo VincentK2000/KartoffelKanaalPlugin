@@ -1,7 +1,6 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.List;
-
+import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -59,8 +58,8 @@ public class PulserNotifNLOADED extends PulserNotif{
 	}
 
 	@Override
-	public List<String> autoCompleteSubObjectCH(String s) throws Exception {
-		return null;
+	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
+		return new ArrayList<String>(0);
 	}
 
 }

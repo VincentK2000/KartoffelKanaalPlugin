@@ -1,8 +1,6 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -280,7 +278,7 @@ public class PulserNotifStandard extends PulserNotif{
 	}
 	
 	protected void increaseSize(int totalincrease, int userincrease, CommandSender user){
-	
+		
 	}
 	
 	protected void recheckPrimaryTechnics(){
@@ -428,7 +426,7 @@ public class PulserNotifStandard extends PulserNotif{
 			if(args.length == 1){
 				
 			}else{
-				a.sendMessage("§eNotif-deel: §ctechnics <list|");
+				a.sendMessage("§eNotif-deel: §ctechnics <list|add|remove>");
 			}
 		}else {
 			return false;
@@ -667,7 +665,7 @@ public class PulserNotifStandard extends PulserNotif{
 	}
 
 	@Override
-	public List<String> autoCompleteSubObjectCH(String s) throws Exception {
+	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
 		ArrayList<String> a = new ArrayList<String>();
 		s = s.toLowerCase();
 		if("technics.".startsWith(s))a.add("technics.");

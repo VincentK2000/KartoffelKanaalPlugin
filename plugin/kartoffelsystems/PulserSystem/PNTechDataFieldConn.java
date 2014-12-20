@@ -1,7 +1,6 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.List;
-
+import java.util.ArrayList;
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 
 public class PNTechDataFieldConn extends PNTech{
@@ -94,8 +93,8 @@ public class PNTechDataFieldConn extends PNTech{
 	}
 
 	@Override
-	public List<String> autoCompleteSubObjectCH(String s) throws Exception {
-		return null;
+	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
+		return super.autoCompleteSubObjectCH(s);
 	}
 
 	@Override

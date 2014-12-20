@@ -1,7 +1,6 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.command.CommandSender;
@@ -279,8 +278,8 @@ public abstract class PNCondition implements IObjectCommandHandable {
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
 			}
-			a.sendMessage("§etostring() = " + this.toString());
-		}else{		
+			a.sendMessage("§etoString() = " + this.toString());
+		}else{
 			return false;
 		}
 		return true;
@@ -289,17 +288,65 @@ public abstract class PNCondition implements IObjectCommandHandable {
 	
 	
 	@Override
-	public List<String> autoCompleteObjectCommand(String s) throws Exception {
-		ArrayList<String> a = new ArrayList<String>();
-		s = s.toLowerCase();
-		String[] possibilities = this.getTotalTopLevelArgsPossibilities();
-		for(int i = 0; i < possibilities.length; i++){
-			if(possibilities[i] != null && possibilities[i].startsWith(s)){
-				a.add(possibilities[i]);
+	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
+		if(args.length == 0)return null;
+		if(args.length == 1){
+			ArrayList<String> a = new ArrayList<String>();
+			args[0] = args[0].toLowerCase();
+			String[] possibilities = this.getTotalTopLevelArgsPossibilities();
+			for(int i = 0; i < possibilities.length; i++){
+				if(possibilities[i] != null && possibilities[i].startsWith(args[0])){
+					a.add(possibilities[i]);
+				}
+			}
+			return a;
+		}else{
+			String label = args[0].toLowerCase();
+			if(label.equals("visibility")){
+				if(args.length == 2){
+					ArrayList<String> a = new ArrayList<String>(1);
+					args[1] = args[1].toLowerCase();
+					if("visible".startsWith(args[1]))a.add("visible");
+					if("invisible".startsWith(args[1]))a.add("invisible");
+					return a;
+				}
+			}else if(label.equals("value")){
+				args[1] = args[1].toLowerCase();
+				if(args.length == 2){
+					ArrayList<String> a = new ArrayList<String>(1);
+					if("closed".startsWith(args[1]))a.add("closed");
+					if("default".startsWith(args[1]))a.add("default");
+					if("laatste".startsWith(args[1]))a.add("laatste");
+					if("calculate".startsWith(args[1]))a.add("calculate");
+					return a;
+				}else if(args.length == 3){
+					if(args[1].equals("closed")){
+						ArrayList<String> a = new ArrayList<String>(1);
+						args[1] = args[1].toLowerCase();
+						if("closed".startsWith(args[1]))a.add("closed");
+						if("niet-closed".startsWith(args[1]))a.add("niet-closed");
+						if("aan".startsWith(args[1]))a.add("aan");
+						if("uit".startsWith(args[1]))a.add("uit");
+						return a;
+					}else if(args[1].equals("default")){
+						ArrayList<String> a = new ArrayList<String>(1);
+						args[1] = args[1].toLowerCase();
+						if("aan".startsWith(args[1]))a.add("aan");
+						if("uit".startsWith(args[1]))a.add("uit");
+						return a;
+					}
+				}
 			}
 		}
-		return a;
-	}	
+		return null;
+	}
+	
+	@Override
+	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception{
+		return new ArrayList<String>(1);
+	}
+	
+	
 	public String getTopLevelPossibilitiesString(){
 		String[] total = this.getTotalTopLevelArgsPossibilities();
 		if(total.length == 0)return "";

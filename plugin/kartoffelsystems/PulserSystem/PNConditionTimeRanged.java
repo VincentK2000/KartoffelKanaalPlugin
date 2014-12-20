@@ -1,7 +1,7 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.Calendar;
-import java.util.List;
+import java.util.ArrayList;
 
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 
@@ -117,10 +117,10 @@ public class PNConditionTimeRanged extends PNCondition{
 	}
 
 	@Override
-	public List<String> autoCompleteSubObjectCH(String s) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
+		return super.autoCompleteSubObjectCH(s);
 	}
+	
 	@Override
 	public String[] getLocalTopLevelArgsPossibilities() {
 		// TODO Auto-generated method stub

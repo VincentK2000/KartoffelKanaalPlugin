@@ -1,7 +1,6 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import org.bukkit.command.CommandSender;
@@ -313,13 +312,25 @@ public abstract class PulserNotif implements IObjectCommandHandable{
 	}
 	
 	@Override
-	public List<String> autoCompleteObjectCommand(String s){
-		ArrayList<String> a = new ArrayList<String>();
-		s = s.toLowerCase();
-		String[] possibilities = this.getTotalTopLevelArgsPossibilities();
-		for(int i = 0; i < possibilities.length; i++){
-			if(possibilities[i] != null && possibilities[i].startsWith(s)){
-				a.add(possibilities[i]);
+	public ArrayList<String> autoCompleteObjectCommand(String[] args){
+		ArrayList<String> a = new ArrayList<String>(1);
+		if(args.length == 1){
+			String label = args[0].toLowerCase();
+			label = label.toLowerCase();
+			String[] possibilities = this.getTotalTopLevelArgsPossibilities();
+			for(int i = 0; i < possibilities.length; i++){
+				if(possibilities[i] != null && possibilities[i].startsWith(label)){
+					a.add(possibilities[i]);
+				}
+			}
+		}else if(args.length > 1){
+			String label = args[0].toLowerCase();
+			if(label.equals("actief")){
+				if("aan".startsWith(args[1]))a.add(args[1]);
+				if("uit".startsWith(args[1]))a.add(args[1]);
+			}else if(label.equals("read-only")){
+				if("aan".startsWith(args[1]))a.add(args[1]);
+				if("uit".startsWith(args[1]))a.add(args[1]);
 			}
 		}
 		return a;
