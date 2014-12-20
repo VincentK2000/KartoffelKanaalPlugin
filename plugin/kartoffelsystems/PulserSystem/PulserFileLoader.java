@@ -1,5 +1,6 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -27,14 +28,27 @@ public class PulserFileLoader {
 		res.sessionSys.acquireAccess();
 		
 		boolean closed = false;
+		File f = null;
+		try{
+			f = res.getFile();
+		}catch(Exception e){
+			if(this.parent.res != null && this.parent.res.getResource() != null)this.parent.res.getResource().markForBackup();
+			Logger.getLogger("Minecraft").warning("[KKP] Kon PulserFile niet krijgen van de res");
+			res.sessionSys.releaseAccess();
+			return;
+		}
+		if(f == null || !f.exists()){
+			Logger.getLogger("Minecraft").warning("[KKP] De PulserFile lijkt niet te bestaan...");
+			this.parent.notifications = new PulserNotif[]{Pulser.AbonneerNotification, Pulser.DoneerNotification/*, Pulser.TestNotification*/};
+			this.parent.notifyChange();
+			res.sessionSys.releaseAccess();
+			return;
+		}
 		
 		FileInputStream fis;
 		try{
-			fis = new FileInputStream(res.getFile());
+			fis = new FileInputStream(f);
 		}catch(Exception e){
-			if(this.parent.res != null && this.parent.res.getResource() != null)this.parent.res.getResource().markForBackup();
-			this.parent.notifications = new PulserNotif[]{Pulser.AbonneerNotification, Pulser.DoneerNotification, Pulser.TestNotification};
-			this.parent.notifyChange();
 			Logger.getLogger("Minecraft").warning("[KKP] Kon de InputStream naar het PulserFile niet openen in de PulserFileLoader");
 			res.sessionSys.releaseAccess();
 			return;
@@ -69,7 +83,7 @@ public class PulserFileLoader {
 				}
 				if(a > 20000){
 					fis.skip(a);
-					System.out.println("Pulser File: >20000 wordt niet ingeladen");
+					Logger.getLogger("Minecraft").warning("[KKP] Een PulserNotification wordt niet geladen omdat die groter dan >20000 bytes (20KB) is");
 					continue;
 				}
 				byte[] src = new byte[a];
@@ -77,13 +91,9 @@ public class PulserFileLoader {
 				
 				notifs.add(PulserNotif.loadFromBytes(src));
 			}
-			if(notifs.size() == 0){
-				this.parent.notifications = new PulserNotif[]{Pulser.AbonneerNotification, Pulser.DoneerNotification, Pulser.TestNotification};
-			}else{
-				PulserNotif[] abc = new PulserNotif[notifs.size()];
-				notifs.toArray(abc);
-				this.parent.notifications = abc;
-			}
+			PulserNotif[] abc = new PulserNotif[notifs.size()];
+			notifs.toArray(abc);
+			this.parent.notifications = abc;
 		}catch(Exception e){
 			Logger.getLogger("Minecraft").warning("[KKP] Kon het Pulser-bestand niet inladen: " + e);
 		}
@@ -97,7 +107,6 @@ public class PulserFileLoader {
 			}
 		}
 		res.sessionSys.releaseAccess();
-		
 		//System.out.println("Pulser File geladen");
 	}
 }

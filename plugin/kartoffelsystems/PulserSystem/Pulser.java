@@ -34,8 +34,8 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 	public DataFieldShort receiveNotifications;
 	
 	private int _timeout = -1;
-	private long latestChangeTime = 0;
-	protected long latestSaveTime = 1;
+	private long lastChangeTime = 0;
+	protected long lastSaveTime = 1;
 
 	public int getTimeout(){
 		return this._timeout;
@@ -267,9 +267,14 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 	}
 	
 	protected void SaveBlocking(boolean checkChanged){
-		if(checkChanged && !this.isChanged())return;
+		if(checkChanged && !this.isChanged()){
+			Logger.getLogger("Minecraft").info("[KKP] PulserBestand wordt niet bewaard omdat er geen veranderingen waren");
+			return;
+		}
 		if(saver == null)saver = new PulserFileSaver(this);
+		Logger.getLogger("Minecraft").info("[KKP] PulserBestand bewaren...");
 		saver.SaveBlocking();
+		Logger.getLogger("Minecraft").info("[KKP] PulserBestand bewaard");
 	}
 	
 	public void loadNotifications(){
@@ -314,8 +319,8 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 	
 	@Override
 	protected void _enableCore() throws Exception {
+		this.lastSaveTime = System.currentTimeMillis() - 1;
 		this._loadNotifications();
-		this.latestSaveTime = System.currentTimeMillis();
 		try {
 			this.timesTicked = new DataFieldInt(new OverwritingFile(Main.plugin.keypaths[4] + "stats" + File.separatorChar, -1, Main.plugin.keypaths[4] + "stats" + File.separatorChar + "timesTicked.kkp", DataFieldInt.VersionA, DataFieldInt.VersionB), "Het totaal aantal keren dat een persoon getickt door de pulser", 0);
 		} catch (Exception e) {
@@ -335,20 +340,25 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 	protected void _disableCore() throws Exception {
 		try{
 			this.receiveNotifications.SaveBlocking();
-		}catch(Exception e){
+		}catch(Exception ex){
 			Logger.getLogger("Minecraft").warning("[KKP] Kon de DataFieldShort van de receiveNotifications niet bewaren:");
-			e.printStackTrace();
+			ex.printStackTrace();
 		}
 		this.receiveNotifications = null;
 		try{
 			this.timesTicked.SaveBlocking();
-		}catch(Exception e){
+		}catch(Exception ex){
 			Logger.getLogger("Minecraft").warning("[KKP] Kon de DataFieldInt van de timesTicked niet bewaren:");
-			e.printStackTrace();
+			ex.printStackTrace();
 		}
 		this.timesTicked = null;
 		this.stop();
-		this.SaveBlocking(true);
+		try{
+			this.SaveBlocking(true);
+		}catch(Exception ex){
+			Logger.getLogger("Minecraft").warning("[KKP] Kon PulserFile niet bewaren:");
+			ex.printStackTrace();
+		}
 	}
 	
 	protected void repopulateMessageReceivers(){
@@ -356,11 +366,11 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 	}
 	
 	public boolean isChanged(){
-		return this.latestChangeTime > this.latestSaveTime;
+		return this.lastChangeTime >= this.lastSaveTime;
 	}
 	
 	public void notifyChange(){
-		this.latestChangeTime = System.currentTimeMillis();
+		this.lastChangeTime = System.currentTimeMillis();
 	}
 	
 	public static IObjectCommandHandable getObjectCommandHandable(IObjectCommandHandable root, String path) throws Exception {

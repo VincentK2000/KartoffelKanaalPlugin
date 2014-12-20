@@ -41,7 +41,6 @@ public class PulserFileSaver implements Runnable{
 			return;
 		}
 		
-
 		FileOutputStream fos;
 		try{
 			fos = new FileOutputStream(f);
@@ -91,7 +90,7 @@ public class PulserFileSaver implements Runnable{
 			Logger.getLogger("Minecraft").warning("[KKP] Kon een FileOutputStream bij de PulserFileSaver niet sluiten");
 		}
 		
-		if(this.parent.latestSaveTime < time)this.parent.latestSaveTime = time;
+		if(this.parent.lastSaveTime < time)this.parent.lastSaveTime = time;
 		
 		//System.out.println("PulserBestand bewaard");
 	}
