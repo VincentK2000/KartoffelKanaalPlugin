@@ -212,7 +212,9 @@ public class PNTechTextProvFormattedVideo extends PNTechTextProvFormatted{
 
 	@Override
 	protected void onParametersChanged() {
-		
+		try{
+			this.setInvisible(true);
+		}catch(Exception e){}
 	}
 
 	@Override
@@ -249,4 +251,16 @@ public class PNTechTextProvFormattedVideo extends PNTechTextProvFormatted{
 		return true;
 	}
 	
+	public static PNTechTextProvFormattedVideo createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
+		if(params == null)throw new Exception("De parameters zijn null");
+		if(params.length != 1 || !params[0].toLowerCase().equals("ok")){
+			throw new Exception("De Formatted.Video moet achteraf worden setup'ed met het setup-commando op het element en geactiveerd met het activate-commando. Voeg OK toe om door te gaan.");
+		}
+		return new PNTechTextProvFormattedVideo(new String[]{"","","",""}, true, ID, notificationBase);
+	}
+
+	@Override
+	public PNTechTextProvFormattedVideo copyTech(int ID, PulserNotifStandard notificationBase) {
+		return new PNTechTextProvFormattedVideo(this.copyParameters(), true, ID, notificationBase);
+	}
 }

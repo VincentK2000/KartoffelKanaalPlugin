@@ -117,4 +117,21 @@ public class PNTechTextProvRaw extends PNTechTextProv{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public static PNTechTextProvRaw createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
+		StringBuilder sb = new StringBuilder();
+		if(params.length >= 1){
+			for(int i = 0; i < params.length - 1; i++){
+				sb.append(params[i]);
+				sb.append(' ');
+			}
+			sb.append(params[params.length - 1]);
+		}
+		return new PNTechTextProvRaw(sb.toString(), false, ID, notificationBase);
+	}
+	
+	@Override
+	public PNTechTextProvRaw copyTech(int ID, PulserNotifStandard notificationBase) throws Exception{
+		return new PNTechTextProvRaw(new String(this.rawtext), true, ID, notificationBase);
+	}
 }

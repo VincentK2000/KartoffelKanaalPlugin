@@ -1,6 +1,7 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.ArrayList;
+
 import org.bukkit.command.CommandSender;
 
 import KartoffelKanaalPlugin.plugin.AttribSystem;
@@ -88,7 +89,10 @@ public abstract class PNTech implements IObjectCommandHandable{
 		this.checkDenyChanges();
 		this._invisible = newValue;
 		this.notifyChange();
+		if(this.notificationBase != null)this.notificationBase.recheckPrimaryTechnics();
 	}
+	
+	public abstract PNTech copyTech(int ID, PulserNotifStandard notificationBase) throws Exception;
 	
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
@@ -116,7 +120,7 @@ public abstract class PNTech implements IObjectCommandHandable{
 				boolean invisibilityValue;
 				if(args[1].equals("visible") || args[1].equals("on") || args[1].equals("+")){
 					invisibilityValue = false;
-				}else if(args[1].equals("invisibile") || args[1].equals("invis") || args[1].equals("off") || args[1].equals("-")){
+				}else if(args[1].equals("invisible") || args[1].equals("invis") || args[1].equals("off") || args[1].equals("-")){
 					invisibilityValue = true;
 				}else{
 					a.sendMessage("§4Mogelijke nieuwe waarden voor de staat zijn: §2visible, aan, +§f of §4invisible, off, -");
@@ -134,7 +138,7 @@ public abstract class PNTech implements IObjectCommandHandable{
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
 			}
-			a.sendMessage("§eTechType = " + this.getTechType());
+			a.sendMessage("§eTechType = " + this.getTechType() + " (" + PNTech.getTechName(this.getTechType()) + ")");
 		}else if(label.equals("tostring")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
@@ -212,5 +216,52 @@ public abstract class PNTech implements IObjectCommandHandable{
 	}
 	public boolean denyChanges(){
 		return this.notificationBase != null && this.notificationBase.denyChanges();
+	}
+	
+	public String toString(){
+		byte techID = this.getTechType();
+		return this.ID + " - " + PNTech.getTechName(this.getTechType()) + " (" + techID + ")";
+	}
+	
+	public static String getTechName(byte techID){
+		switch(techID){
+			case 1: 
+				return "TextProvider";
+			case 2:
+				return "Condition";
+			case 3:
+				return "DataFieldConn";
+			case 4:
+				return "NotifSize";
+			case 5:
+				return "SpecEditAccess";
+			case 0:
+				return "!!!PNTechNLOADED!!!";
+		}
+		return "Onbekend:" + techID;
+	}
+	
+	public static PNTech createFromParams(String[] params, int ID, PulserNotif notificationBase) throws Exception {
+		if(params == null)throw new Exception("De parameters zijn null");
+		if(params.length == 0){
+			throw new Exception("De eerste creatie parameter moet het PNTech-type zijn. Die kan zijn: \"TextProvider\",\"Condition\",\"DataFieldConn\",\"NotifSize\",\"SpecEditAccess\"");
+		}
+		String[] techSpecificParams = new String[params.length - 1];
+		System.arraycopy(params, 1, techSpecificParams, 0, techSpecificParams.length);
+		
+		String techType = params[0].toLowerCase();
+		if(techType.equals("textprovider") || techType.equals("1")){
+			return PNTechTextProv.createFromParams(techSpecificParams, ID, notificationBase);
+		}else if(techType.equals("condition") || techType.equals("2")){
+			return PNTechCondition.createFromParams(techSpecificParams, ID, notificationBase);
+		}else if(techType.equals("datafieldconn") || techType.equals("3")){
+			return PNTechDataFieldConn.createFromParams(techSpecificParams, ID, notificationBase);
+		}else if(techType.equals("notifsize") || techType.equals("4")){
+			return PNTechNotifSize.createFromParams(techSpecificParams, ID, notificationBase);
+		}else if(techType.equals("speceditaccess") || techType.equals("5")){
+			return PNTechSpecEditAccess.createFromParams(techSpecificParams, ID, notificationBase);
+		}else{
+			throw new Exception("Onbekend PNTech-type");
+		}
 	}
 }

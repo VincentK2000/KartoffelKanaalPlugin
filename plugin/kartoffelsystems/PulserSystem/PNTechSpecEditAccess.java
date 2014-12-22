@@ -141,4 +141,13 @@ public class PNTechSpecEditAccess extends PNTech{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public static PNTechCondition createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
+		throw new Exception("Functie nog niet beschikbaar");
+	}
+	
+	@Override
+	public PNTech copyTech(int ID, PulserNotifStandard notificationBase) throws Exception{
+		throw new Exception("Functie nog niet beschikbaar");
+	}
 }

@@ -1,6 +1,7 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.ArrayList;
+
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 
 public class PNTechDataFieldConn extends PNTech{
@@ -102,5 +103,12 @@ public class PNTechDataFieldConn extends PNTech{
 		return null;
 	}
 
-
+	public static PNTechCondition createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
+		throw new Exception("Functie nog niet beschikbaar");
+	}
+	
+	@Override
+	public PNTech copyTech(int ID, PulserNotifStandard notificationBase) throws Exception{
+		throw new Exception("Functie nog niet beschikbaar");
+	}
 }

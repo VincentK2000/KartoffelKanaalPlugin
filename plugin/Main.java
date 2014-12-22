@@ -400,43 +400,7 @@ public class Main extends JavaPlugin implements Listener {
 				ArrayList<String> a = new ArrayList<String>(2);
 				if("receive".startsWith(args[0]))a.add("receive");
 				if(sender.isOp()){
-					//System.out.println("[KKP] Tab completing first argument of /notifications-command");
-					IObjectCommandHandable objCH = null;
-					int index = args[0].lastIndexOf((int)'/');
-					if(index == -1)index = 0;
-					//System.out.println("[KKP] Completing part starts at character " + index + " of the string \"" + args[0] + "\"");
-					try{
-						objCH = Pulser.getObjectCommandHandable(Main.pulser, args[0].substring(0, index));
-					}catch(Exception e){
-						//System.out.println("[KKP] Couldn't get ObjectCH on \"" + args[0].substring(0, index) + "\":");
-						//e.printStackTrace();
-					}
-					if(objCH != null){
-						try{
-							List<String> l;
-							if(index < args[0].length() - 1){
-								l = objCH.autoCompleteSubObjectCH(args[0].substring(index + 1));
-							}else{
-								l = objCH.autoCompleteSubObjectCH("");
-							}
-							if(l != null){
-								String prePath = args[0].substring(0, index);
-								for(int i = 0; i < l.size(); i++){
-									if(l.get(i) != null){
-										l.set(i, prePath + '/' + l.get(i));
-									}
-								}
-							}//else{
-							//	System.out.println("[KKP] Returned list was null");
-							//}
-							return l;
-						}catch(Exception e){
-							//System.out.println("[KKP] Couldn't complete ObjectCH:");
-							//e.printStackTrace();
-						}
-					}else{
-						//System.out.println("[KKP] ObjectCH is null");
-					}
+					Main.autoCompletePath(args[0], Main.pulser, a);
 				}
 				return a;
 			}else if(args.length >= 2){
@@ -462,6 +426,49 @@ public class Main extends JavaPlugin implements Listener {
 		}
 		
 		return null;
+	}
+	
+	public static ArrayList<String> autoCompletePath(String path, IObjectCommandHandable root, ArrayList<String> l){
+		if(l == null)l = new ArrayList<String>(0);
+		//System.out.println("[KKP] Tab completing first argument of /notifications-command");
+		IObjectCommandHandable objCH = null;
+		int index = path.lastIndexOf((int)'/');
+		if(index == -1)index = 0;
+		//System.out.println("[KKP] Completing part starts at character " + index + " of the string \"" + args[0] + "\"");
+		try{
+			objCH = Pulser.getObjectCommandHandable(Main.pulser, path.substring(0, index));
+		}catch(Exception e){
+			//System.out.println("[KKP] Couldn't get ObjectCH on \"" + args[0].substring(0, index) + "\":");
+			//e.printStackTrace();
+		}
+		if(objCH != null){
+			try{
+				if(path.charAt(index) == '/' && index < path.length() - 1){
+					l = objCH.autoCompleteSubObjectCH(path.substring(index + 1));
+				}else{
+					l = objCH.autoCompleteSubObjectCH("");
+				}
+				if(l != null){
+					String prePath = path.substring(0, index);
+					if(prePath.length() > 0){
+						for(int i = 0; i < l.size(); i++){
+							if(l.get(i) != null){
+								l.set(i, prePath + '/' + l.get(i));
+							}
+						}
+					}
+				}//else{
+				//	System.out.println("[KKP] Returned list was null");
+				//}
+				return l;
+			}catch(Exception e){
+				//System.out.println("[KKP] Couldn't complete ObjectCH:");
+				//e.printStackTrace();
+			}
+		}//else{
+			//System.out.println("[KKP] ObjectCH is null");
+		//}
+		return l;
 	}
 
 	

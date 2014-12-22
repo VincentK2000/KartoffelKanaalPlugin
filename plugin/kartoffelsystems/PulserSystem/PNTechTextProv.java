@@ -67,4 +67,22 @@ public abstract class PNTechTextProv extends PNTech{
 	
 	public abstract boolean crashTestRequired();
 	public abstract void doCrashTest(Player pl) throws Exception;
+	
+	public static PNTechTextProv createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
+		if(params == null)throw new Exception("De parameters zijn null");
+		if(params.length == 0){
+			throw new Exception("De eerste creatie parameter voor de TextProvider moet het PNTechTextProv-type zijn. Die kan zijn: \"Raw\",\"Formatted.Video\"");
+		}
+		String[] textProvSpecificParams = new String[params.length - 1];
+		System.arraycopy(params, 1, textProvSpecificParams, 0, textProvSpecificParams.length);
+		
+		String textProvType = params[0].toLowerCase();
+		if(textProvType.equals("raw") || textProvType.equals("1")){
+			return PNTechTextProvRaw.createFromParams(textProvSpecificParams, ID, notificationBase);
+		}else if(textProvType.equals("formatted.video") || textProvType.equals("2.1")){
+			return PNTechTextProvFormattedVideo.createFromParams(textProvSpecificParams, ID, notificationBase);
+		}else{
+			throw new Exception("Onbekend PNTechTextProv-type");
+		}
+	}
 }

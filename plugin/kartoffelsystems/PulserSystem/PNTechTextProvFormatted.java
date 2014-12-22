@@ -91,7 +91,7 @@ public abstract class PNTechTextProvFormatted extends PNTechTextProv {
 					sb.append(args[args.length - 1]);
 					String v = sb.toString();
 					if(attribSys.hasAttrib("verkleur")){
-						if(this.isSectionSignFormatAccepted(index)){
+						if(isSectionSignFormatAccepted(index)){
 							v = AdvancedChat.verkleurUitgebreid(v);
 							a.sendMessage("§eSectionSign-format is uitgevoerd");
 						}else{
@@ -124,7 +124,6 @@ public abstract class PNTechTextProvFormatted extends PNTechTextProv {
 	
 	public abstract byte getFormattedType();
 	protected abstract byte getCorrectAmountParameters();
-	
 	
 	protected static PNTechTextProvFormatted loadFromBytes(byte[] src){
 		if(src == null || src.length < PNTechTextProvFormatted.generalInfoLength())return null;
@@ -295,4 +294,14 @@ public abstract class PNTechTextProvFormatted extends PNTechTextProv {
 	}
 
 	protected abstract String[] getPossibleKeys();
+	
+	public String[] copyParameters(){
+		if(this.parameters == null)return new String[this.getCorrectAmountParameters()];
+		
+		String[] s = new String[this.parameters.length];
+		for(int i = 0; i < this.parameters.length; i++){
+			if(this.parameters[i] != null)s[i] = new String(this.parameters[i]);
+		}
+		return s;
+	}
 }
