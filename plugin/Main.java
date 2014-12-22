@@ -400,7 +400,7 @@ public class Main extends JavaPlugin implements Listener {
 				ArrayList<String> a = new ArrayList<String>(2);
 				if("receive".startsWith(args[0]))a.add("receive");
 				if(sender.isOp()){
-					Main.autoCompletePath(args[0], Main.pulser, a);
+					a.addAll(Main.autoCompletePath(args[0], Main.pulser));
 				}
 				return a;
 			}else if(args.length >= 2){
@@ -428,8 +428,7 @@ public class Main extends JavaPlugin implements Listener {
 		return null;
 	}
 	
-	public static ArrayList<String> autoCompletePath(String path, IObjectCommandHandable root, ArrayList<String> l){
-		if(l == null)l = new ArrayList<String>(0);
+	public static ArrayList<String> autoCompletePath(String path, IObjectCommandHandable root){
 		//System.out.println("[KKP] Tab completing first argument of /notifications-command");
 		IObjectCommandHandable objCH = null;
 		int index = path.lastIndexOf((int)'/');
@@ -443,11 +442,20 @@ public class Main extends JavaPlugin implements Listener {
 		}
 		if(objCH != null){
 			try{
-				if(path.charAt(index) == '/' && index < path.length() - 1){
-					l = objCH.autoCompleteSubObjectCH(path.substring(index + 1));
+				ArrayList<String> l;
+				String subObject = (index < path.length() && path.charAt(index) == '/')?path.substring(index + 1):path;
+				IObjectCommandHandable target = null;
+				try{
+					target = objCH.getSubObjectCH(subObject);
+				}catch(Exception e){}
+				
+				if(target == null){
+					l = objCH.autoCompleteSubObjectCH(subObject);
 				}else{
-					l = objCH.autoCompleteSubObjectCH("");
+					l = new ArrayList<String>(1);
+					l.add(subObject + '/');
 				}
+				
 				if(l != null){
 					String prePath = path.substring(0, index);
 					if(prePath.length() > 0){
@@ -468,7 +476,7 @@ public class Main extends JavaPlugin implements Listener {
 		}//else{
 			//System.out.println("[KKP] ObjectCH is null");
 		//}
-		return l;
+		return new ArrayList<String>(0);
 	}
 
 	
