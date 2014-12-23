@@ -1,6 +1,7 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.ArrayList;
+
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -10,6 +11,7 @@ import KartoffelKanaalPlugin.plugin.AttribSystem;
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 import KartoffelKanaalPlugin.plugin.Main;
 import KartoffelKanaalPlugin.plugin.StoreTechnics;
+import KartoffelKanaalPlugin.plugin.VirtualSubObject;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 
 public class PulserNotifStandard extends PulserNotif{
@@ -656,7 +658,7 @@ public class PulserNotifStandard extends PulserNotif{
 		String cmdLabel = args[0].toLowerCase();		
 		if(args.length == 1){
 			if("interval".startsWith(cmdLabel))a.add("interval");
-			if("technics".startsWith(cmdLabel))a.add("technics");			
+			if("technics".startsWith(cmdLabel))a.add("technics");	
 		}else if(args.length >= 2){
 			if(cmdLabel.equals("interval")){
 				if(args.length == 2){
@@ -895,32 +897,40 @@ public class PulserNotifStandard extends PulserNotif{
 	}
 
 	@Override
-	public IObjectCommandHandable getSubObjectCH(String path) {
+	public IObjectCommandHandable getSubObjectCH(String path) throws Exception{
 		path = path.toLowerCase();
 		int pointIndex = path.indexOf((int)'.');
-		if(pointIndex == -1)return null;
+		if(pointIndex == -1)pointIndex = path.length();
 		String domain = path.substring(0, pointIndex);
-		String item = path.substring(pointIndex + 1, path.length());
+		boolean itemPresent = pointIndex < path.length() - 1;
+		String item = itemPresent?(path.substring(pointIndex + 1, path.length())):"";
 		if(domain.equals("techs") || domain.equals("technics")){
-			if(item.startsWith("#")){
-				int techIndex;
-				try{
-					techIndex = Integer.parseInt(item.substring(1));
-				}catch(NumberFormatException e){
-					return null;
+			if(!itemPresent){
+				return new VirtualSubObject(this, true, new String[]{"technics"}, "technics.");
+			} else {
+				item = item.toLowerCase();
+				if(item.startsWith("#")){
+					int techIndex;
+					try{
+						techIndex = Integer.parseInt(item.substring(1));
+					}catch(NumberFormatException e){
+						return null;
+					}
+					if(techIndex < 0 || techIndex >= this.technics.length)return null;
+					return this.technics[techIndex];
+				}else if(item.equals("textprov")){
+					return this.textProv;
+				}else if(item.equals("condition")){
+					return this.condition;
+				}else if(item.equals("datafield")){
+					return this.datafield;
+				}else if(item.equals("notifsize")){
+					return this.notifSize;
+				}else if(item.equals("speceditaccess")){
+					return this.specAccess;
+				}else{
+					throw new Exception("Onbekend SubObject van de \"technics\"/\"techs\": \"" + item + "\"");
 				}
-				if(techIndex < 0 || techIndex >= this.technics.length)return null;
-				return this.technics[techIndex];
-			}else if(item.equals("textprov")){
-				return this.textProv;
-			}else if(item.equals("condition")){
-				return this.condition;
-			}else if(item.equals("datafield")){
-				return this.datafield;
-			}else if(item.equals("notifsize")){
-				return this.notifSize;
-			}else if(item.equals("speceditaccess")){
-				return this.specAccess;
 			}
 		}
 		return null;
@@ -930,13 +940,14 @@ public class PulserNotifStandard extends PulserNotif{
 	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
 		ArrayList<String> a = new ArrayList<String>();
 		s = s.toLowerCase();
-		if("technics.".startsWith(s))a.add("technics.");
-		if(s.startsWith("technics.")){
-			if("technics.textProv".startsWith(s))a.add("technics.textProv");
+		if("technics".startsWith(s))a.add("technics");
+		if(s.startsWith("technics")){
+			if("technics.#".startsWith(s))a.add("technics.#");
+			if("technics.textprov".startsWith(s))a.add("technics.textProv");
 			if("technics.condition".startsWith(s))a.add("technics.condition");
 			if("technics.datafield".startsWith(s))a.add("technics.datafield");
 			if("technics.notifSize".startsWith(s))a.add("technics.notifSize");
-			if("technics.specEditAccess".startsWith(s))a.add("technics.specEditAccess");
+			if("technics.speceditaccess".startsWith(s))a.add("technics.specEditAccess");
 		}
 		return a;
 	}

@@ -398,7 +398,9 @@ public class Main extends JavaPlugin implements Listener {
 			if(args.length == 1){
 				args[0] = args[0].toLowerCase();
 				ArrayList<String> a = new ArrayList<String>(2);
-				if("receive".startsWith(args[0]))a.add("receive");
+				if(args.length == 1){
+					if("receive".startsWith(args[0]))a.add("receive");
+				}
 				if(sender.isOp()){
 					a.addAll(Main.autoCompletePath(args[0], Main.pulser));
 				}
@@ -430,6 +432,7 @@ public class Main extends JavaPlugin implements Listener {
 	
 	public static ArrayList<String> autoCompletePath(String path, IObjectCommandHandable root){
 		//System.out.println("[KKP] Tab completing first argument of /notifications-command");
+		
 		IObjectCommandHandable objCH = null;
 		int index = path.lastIndexOf((int)'/');
 		if(index == -1)index = 0;
@@ -449,7 +452,7 @@ public class Main extends JavaPlugin implements Listener {
 					target = objCH.getSubObjectCH(subObject);
 				}catch(Exception e){}
 				
-				if(target == null){
+				if(target == null || subObject.length() == 0 || (target instanceof VirtualSubObject && ((VirtualSubObject) target).isAnalogPreferred())){
 					l = objCH.autoCompleteSubObjectCH(subObject);
 				}else{
 					l = new ArrayList<String>(1);
