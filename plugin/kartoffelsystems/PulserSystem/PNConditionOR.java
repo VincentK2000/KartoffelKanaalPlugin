@@ -2,8 +2,12 @@ package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.ArrayList;
 
+import org.bukkit.command.CommandSender;
+
+import KartoffelKanaalPlugin.plugin.AttribSystem;
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 import KartoffelKanaalPlugin.plugin.StoreTechnics;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 
 public class PNConditionOR extends PNCondition{
 
@@ -87,6 +91,31 @@ public class PNConditionOR extends PNCondition{
 	}
 	
 	@Override
+	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
+		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
+		if(args.length == 0)return false;
+		String commandLabel = args[0].toLowerCase();
+		if(commandLabel.equals("array")){
+			this.arr = ConditionArrayFunctions.handleSubCommand(executor, a, attribSys, args, this, this.arr);
+		}else{
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
+		ArrayList<String> a = super.autoCompleteObjectCommand(args);
+		if(a == null)a = new ArrayList<String>();
+		
+		String commandLabel = args[0].toLowerCase();
+		if(commandLabel.equals("array")){
+			a = ConditionArrayFunctions.autoCompleteSubCommand(args, a);
+		}
+		return a;
+	}
+	
+	@Override
 	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
 		if(path.startsWith("#")){
 			int arrIndex;
@@ -110,5 +139,26 @@ public class PNConditionOR extends PNCondition{
 	public String[] getLocalTopLevelArgsPossibilities() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public PNConditionOR copyCondition(int ID, PNTechCondition root) throws Exception {
+		PNCondition[] children = null;
+		if(this.arr == null){
+			children = new PNCondition[0];
+		}else{
+			children = new PNCondition[this.arr.length];
+			for(int i = 0; i < this.arr.length; i++){
+				if(this.arr[i] != null){
+					children[i] = this.arr[i].copyCondition(601, root);//TODO De Condition-ID moet dynamisch asigned worden
+				}
+			}
+		}
+		return new PNConditionOR(children, this.options, true, ID, root);
+	}
+	
+	public static PNConditionOR createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		if(params.length > 0)throw new Exception("Je kan enkel een lege PNConditionOR aanmaken. Children moeten achteraf toegevoegd worden. Gebruik dus geen parameters voor dit type.");
+		return new PNConditionOR(new PNCondition[0], options, true, ID, root);
 	}
 }

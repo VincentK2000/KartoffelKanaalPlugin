@@ -2,7 +2,11 @@ package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.ArrayList;
 
+import org.bukkit.command.CommandSender;
+
+import KartoffelKanaalPlugin.plugin.AttribSystem;
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 
 public class PNConditionPORT extends PNCondition{
 	protected PNCondition port;
@@ -92,6 +96,21 @@ public class PNConditionPORT extends PNCondition{
 	protected int getEstimatedSize() {
 		return (this.port == null?0:this.port.getEstimatedSize()) + (this.valuator == null?0:this.valuator.getEstimatedSize()) + 8 + PNCondition.generalInfoLength();
 	}
+	
+	@Override
+	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
+		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
+		
+		return false;
+	}
+
+	@Override
+	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
+		ArrayList<String> a = super.autoCompleteObjectCommand(args);
+		if(a == null)a = new ArrayList<String>();
+		
+		return a;
+	}
 
 	@Override
 	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
@@ -110,5 +129,12 @@ public class PNConditionPORT extends PNCondition{
 		return null;
 	}
 	
-
+	@Override
+	public PNConditionPORT copyCondition(int ID, PNTechCondition root) throws Exception {
+		return new PNConditionPORT(this.port.copyCondition(601, root), this.valuator.copyCondition(601, root), this.options, true, ID, root);//TODO Generate subObject ID dynamically
+	}
+	
+	public static PNConditionPORT createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		throw new Exception("Functie nog niet beschikbaar");
+	}
 }

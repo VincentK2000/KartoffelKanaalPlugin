@@ -56,4 +56,13 @@ public class PNConditionNLOADED extends PNCondition{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public PNCondition copyCondition(int ID, PNTechCondition root) throws Exception {
+		throw new Exception("Je kan geen kopie maken van een PNConditionNLOADED");
+	}
+	
+	public static PNCondition createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		throw new Exception("Je kan geen PNConditionNLOADED aanmaken");
+	}
 }

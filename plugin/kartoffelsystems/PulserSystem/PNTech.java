@@ -138,7 +138,7 @@ public abstract class PNTech implements IObjectCommandHandable{
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
 			}
-			a.sendMessage("§eTechType = " + this.getTechType() + " (" + PNTech.getTechName(this.getTechType()) + ")");
+			a.sendMessage("§eTechType = " + this.getTechType() + " (" + this.getTypeName() + ")");
 		}else if(label.equals("tostring")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
@@ -218,12 +218,13 @@ public abstract class PNTech implements IObjectCommandHandable{
 		return this.notificationBase != null && this.notificationBase.denyChanges();
 	}
 	
+	public abstract String getTypeName();
+	
 	public String toString(){
-		byte techID = this.getTechType();
-		return this.ID + " - " + PNTech.getTechName(this.getTechType()) + " (" + techID + ")";
+		return this.ID + " - " + this.getTypeName();
 	}
 	
-	public static String getTechName(byte techID){
+/*	public static String getTechName(byte techID){
 		switch(techID){
 			case 1: 
 				return "TextProvider";
@@ -239,7 +240,7 @@ public abstract class PNTech implements IObjectCommandHandable{
 				return "!!!PNTechNLOADED!!!";
 		}
 		return "Onbekend:" + techID;
-	}
+	}*/
 	
 	public static PNTech createFromParams(String[] params, int ID, PulserNotif notificationBase) throws Exception {
 		if(params == null)throw new Exception("De parameters zijn null");

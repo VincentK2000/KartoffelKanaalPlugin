@@ -3,7 +3,11 @@ package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 import java.util.Calendar;
 import java.util.ArrayList;
 
+import org.bukkit.command.CommandSender;
+
+import KartoffelKanaalPlugin.plugin.AttribSystem;
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 
 public class PNConditionTimeRanged extends PNCondition{
 	//8 byte's: starttime
@@ -109,6 +113,21 @@ public class PNConditionTimeRanged extends PNCondition{
 	protected int getEstimatedSize() {
 		return 16 + PNCondition.generalInfoLength();
 	}
+	
+	@Override
+	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
+		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
+		
+		return false;
+	}
+
+	@Override
+	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
+		ArrayList<String> a = super.autoCompleteObjectCommand(args);
+		if(a == null)a = new ArrayList<String>();
+		
+		return a;
+	}
 
 	@Override
 	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
@@ -126,5 +145,13 @@ public class PNConditionTimeRanged extends PNCondition{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@Override
+	public PNConditionTimeRanged copyCondition(int ID, PNTechCondition root) throws Exception {
+		return new PNConditionTimeRanged(this.starttime, this.endtime, this.options, true, ID, root);
+	}
+	
+	public static PNConditionTimeRanged createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		throw new Exception("Functie nog niet beschikbaar");
+	}
 }

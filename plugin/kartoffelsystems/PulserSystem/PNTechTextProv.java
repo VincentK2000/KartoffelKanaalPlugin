@@ -85,4 +85,9 @@ public abstract class PNTechTextProv extends PNTech{
 			throw new Exception("Onbekend PNTechTextProv-type");
 		}
 	}
+	
+	@Override
+	public String getTypeName(){
+		return "TechTextProvider";
+	}
 }

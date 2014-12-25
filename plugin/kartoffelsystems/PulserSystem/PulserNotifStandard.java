@@ -447,7 +447,7 @@ public class PulserNotifStandard extends PulserNotif{
 						return true;
 					}
 					if(page < 0){
-						a.sendMessage("§4Pagina nummer moet minimum 0 zijn");
+						a.sendMessage("§4Paginanummer moet minimum 0 zijn");
 					}else if(page == 0){
 						a.sendMessage("§e---- Primary Technics ----");
 						boolean found = false;
@@ -487,11 +487,11 @@ public class PulserNotifStandard extends PulserNotif{
 						a.sendMessage("§e---- Technics (pagina " + page + ": §9#" + startIndex + "§e tot §9#" + endIndex + "§e) ----");
 						for(int i = startIndex; i <= endIndex; i++){
 							if(this.technics[i] == null){
-								a.sendMessage("§7#" + i + ": leeg");
+								a.sendMessage("§7[#" + i + "] leeg");
 							}else{
 								boolean isInvisible = this.technics[i].isInvisible();
 								boolean isPrimaryTechnic = false;
-								if(!invisible){
+								if(!isInvisible){
 									PNTech t = this.technics[i];
 									isPrimaryTechnic = (t == this.textProv) || (t == this.condition) || (t == this.datafield) || (t == this.notifSize) || (t == this.specAccess);
 								}
@@ -549,6 +549,7 @@ public class PulserNotifStandard extends PulserNotif{
 									this.notifyChange();
 								}
 							}
+							this.recheckPrimaryTechnics();
 						}else if(modeSelection.equals("copy")){
 							if(args.length != 4){
 								a.sendMessage("§eNotif-deel: §ctechnics add copy <copy van path>");
@@ -609,6 +610,7 @@ public class PulserNotifStandard extends PulserNotif{
 								}
 							}	
 						}
+						this.recheckPrimaryTechnics();
 					}					
 				}else if(subCmdLabel.equals("remove")){
 					this.checkDenyChanges();
@@ -629,6 +631,7 @@ public class PulserNotifStandard extends PulserNotif{
 							this.technics[index] = null;
 							a.sendMessage("§eDe PNTech op index §9#" + index + "§e is nu verwijderd.");
 							this.notifyChange();
+							this.recheckPrimaryTechnics();
 						}else{
 							a.sendMessage("§4Momenteel is enkel removen met indexes beschikbaar.");
 						}
@@ -914,9 +917,9 @@ public class PulserNotifStandard extends PulserNotif{
 					try{
 						techIndex = Integer.parseInt(item.substring(1));
 					}catch(NumberFormatException e){
-						return null;
+						throw new Exception("De # moet gevolgd worden door een correcte indexnummer.");
 					}
-					if(techIndex < 0 || techIndex >= this.technics.length)return null;
+					if(techIndex < 0 || techIndex >= this.technics.length)throw new Exception("Oncorrecte index voor een item in de array: #" + techIndex + ". De index moet minimum 0 en maximum " + (this.technics.length - 1) + " zijn.");
 					return this.technics[techIndex];
 				}else if(item.equals("textprov")){
 					return this.textProv;

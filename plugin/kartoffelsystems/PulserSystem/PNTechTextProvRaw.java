@@ -134,4 +134,9 @@ public class PNTechTextProvRaw extends PNTechTextProv{
 	public PNTechTextProvRaw copyTech(int ID, PulserNotifStandard notificationBase) throws Exception{
 		return new PNTechTextProvRaw(new String(this.rawtext), true, ID, notificationBase);
 	}
+	
+	@Override
+	public String getTypeName(){
+		return super.getTypeName() + "Raw";
+	}
 }

@@ -55,4 +55,9 @@ public class PNTechNLOADED extends PNTech{
 	public PNTech copyTech(int ID, PulserNotifStandard notificationBase) throws Exception{
 		throw new Exception("Je kan geen kopie maken van een PNTechNLOADED");
 	}
+	
+	@Override
+	public String getTypeName(){
+		return "!!!NLOADED!!!";
+	}
 }

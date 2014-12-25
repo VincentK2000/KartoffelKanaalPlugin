@@ -2,7 +2,11 @@ package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.ArrayList;
 
+import org.bukkit.command.CommandSender;
+
+import KartoffelKanaalPlugin.plugin.AttribSystem;
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 
 public class PNConditionDataField extends PNCondition{
 	byte[] data;
@@ -59,6 +63,21 @@ public class PNConditionDataField extends PNCondition{
 	protected int getEstimatedSize() {
 		return data.length + PNCondition.generalInfoLength();
 	}
+	
+	@Override
+	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
+		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
+		
+		return false;
+	}
+
+	@Override
+	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
+		ArrayList<String> a = super.autoCompleteObjectCommand(args);
+		if(a == null)a = new ArrayList<String>();
+		
+		return a;
+	}
 
 	@Override
 	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
@@ -75,6 +94,15 @@ public class PNConditionDataField extends PNCondition{
 	public String[] getLocalTopLevelArgsPossibilities() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public PNCondition copyCondition(int ID, PNTechCondition root) throws Exception {
+		throw new Exception("Functie nog niet beschikbaar");
+	}
+	
+	public static PNConditionDataField createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		throw new Exception("Functie nog niet beschikbaar");
 	}
 
 }

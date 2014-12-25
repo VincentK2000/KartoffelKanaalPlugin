@@ -2,8 +2,12 @@ package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.ArrayList;
 
+import org.bukkit.command.CommandSender;
+
+import KartoffelKanaalPlugin.plugin.AttribSystem;
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 import KartoffelKanaalPlugin.plugin.StoreTechnics;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 
 public class PNConditionNUMB extends PNCondition{
 	protected PNCondition[] arr;
@@ -94,16 +98,96 @@ public class PNConditionNUMB extends PNCondition{
 		}
 		return l;
 	}
+	
+	@Override
+	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
+		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
+		if(args.length == 0)return false;
+		String commandLabel = args[0].toLowerCase();
+		if(commandLabel.equals("array")){
+			this.arr = ConditionArrayFunctions.handleSubCommand(executor, a, attribSys, args, this, this.arr);
+		}else if(commandLabel.equals("bounds")){
+			if(args.length == 1){
+				a.sendMessage("§eEr moeten minimum " + this.min + " en maximum " + this.max + " conditions van de " + (this.arr == null?0:this.arr.length) + " conditions juist zijn om de waarde van deze condition true maken.");
+			}else if(args.length == 2){
+				byte exact;
+				try{
+					exact = Byte.parseByte(args[1]);
+				}catch(NumberFormatException e){
+					a.sendMessage("§4De nieuwe, exacte value moet een getal van 0 tot 127 zijn.");
+					return true;
+				}
+				if(exact < 0)exact = 0;
+				min = exact;
+				max = exact;
+				a.sendMessage("§eHet aantal ware conditions moet nu exact " + exact + " zijn");
+			}else if(args.length == 3){
+				byte bound1;
+				byte bound2;
+				try{
+					bound1 = Byte.parseByte(args[1]);
+					bound2 = Byte.parseByte(args[2]);
+				}catch(NumberFormatException e){
+					a.sendMessage("§4De nieuwe bounds moeten allebei een getal van 0 tot 127 zijn.");
+					return true;
+				}
+				
+				boolean reverse = bound2 < bound1;
+				this.min = (reverse)?bound2:bound1;
+				this.max = (reverse)?bound1:bound2;
+				
+				a.sendMessage("§eEr moeten minimum " + this.min + " en maximum " + this.max + " conditions van de " + (this.arr == null?0:this.arr.length) + " conditions juist zijn om de waarde van deze condition true maken.");
+			}else{
+				a.sendMessage("§eObjectCommand: §cbounds [<<bound 1> <bound 2>>|<nieuwe exacte value>]");
+			}
+		}else{
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
+		ArrayList<String> a = super.autoCompleteObjectCommand(args);
+		if(a == null)a = new ArrayList<String>(1);
+		if(args.length == 0)return a;
+		
+		String commandLabel = args[0].toLowerCase();
+		if(args.length == 1){
+			if("array".startsWith(commandLabel))a.add("array");
+			if("bounds".startsWith(commandLabel))a.add("bounds");
+		}else{
+			if(commandLabel.equals("array")){
+				a = ConditionArrayFunctions.autoCompleteSubCommand(args, a);
+			}
+		}
+		return a;
+	}
 
 	@Override
 	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
-		// TODO Auto-generated method stub
+		if(path.startsWith("#")){
+			int arrIndex;
+			try{
+				arrIndex = Integer.parseInt(path.substring(1));
+			}catch(NumberFormatException e){
+				return null;
+			}
+			if(arrIndex < 0 || arrIndex >= this.arr.length)return null;
+			return this.arr[arrIndex];
+		}
 		return null;
 	}
 
 	@Override
 	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
-		return super.autoCompleteSubObjectCH(s);
+		ArrayList<String> a = null;
+		try{
+			a = super.autoCompleteSubObjectCH(s);
+		}catch(Exception e){}
+		if(a == null)a = new ArrayList<String>(1);
+		if("#".startsWith(s))a.add("#");
+		return a;
 	}
 
 
@@ -111,6 +195,26 @@ public class PNConditionNUMB extends PNCondition{
 	public String[] getLocalTopLevelArgsPossibilities() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public PNConditionNUMB copyCondition(int ID, PNTechCondition root) throws Exception {
+		PNCondition[] children = null;
+		if(this.arr == null){
+			children = new PNCondition[0];
+		}else{
+			children = new PNCondition[this.arr.length];
+			for(int i = 0; i < this.arr.length; i++){
+				if(this.arr[i] != null){
+					children[i] = this.arr[i].copyCondition(601, root);//TODO De Condition-ID moet dynamisch asigned worden
+				}
+			}
+		}
+		return new PNConditionNUMB(children, this.min, this.max, this.options, true, ID, root);
+	}
+	
+	public static PNConditionNUMB createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		throw new Exception("Functie nog niet beschikbaar");
 	}
 
 }

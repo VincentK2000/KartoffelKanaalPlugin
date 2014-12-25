@@ -111,4 +111,9 @@ public class PNTechDataFieldConn extends PNTech{
 	public PNTech copyTech(int ID, PulserNotifStandard notificationBase) throws Exception{
 		throw new Exception("Functie nog niet beschikbaar");
 	}
+	
+	@Override
+	public String getTypeName(){
+		return "TechDataFieldConn";
+	}
 }

@@ -304,4 +304,9 @@ public abstract class PNTechTextProvFormatted extends PNTechTextProv {
 		}
 		return s;
 	}
+	
+	@Override
+	public String getTypeName(){
+		return super.getTypeName() + "Formatted";
+	}
 }

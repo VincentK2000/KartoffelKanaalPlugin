@@ -79,5 +79,13 @@ public class PNConditionNOT extends PNCondition{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@Override
+	public PNConditionNOT copyCondition(int ID, PNTechCondition root) throws Exception {
+		return new PNConditionNOT(this.c.copyCondition(601, root), this.options, true, ID, root);//TODO Generate subCondition dynamically
+	}
+	
+	public static PNConditionNOT createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		throw new Exception("Functie nog niet beschikbaar");
+	}
 }

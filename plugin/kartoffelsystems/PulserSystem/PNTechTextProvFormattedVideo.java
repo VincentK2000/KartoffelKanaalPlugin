@@ -263,4 +263,9 @@ public class PNTechTextProvFormattedVideo extends PNTechTextProvFormatted{
 	public PNTechTextProvFormattedVideo copyTech(int ID, PulserNotifStandard notificationBase) {
 		return new PNTechTextProvFormattedVideo(this.copyParameters(), true, ID, notificationBase);
 	}
+	
+	@Override
+	public String getTypeName(){
+		return super.getTypeName() + "Video";
+	}
 }
