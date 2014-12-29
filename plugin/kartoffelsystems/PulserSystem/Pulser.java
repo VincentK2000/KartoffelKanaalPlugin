@@ -79,19 +79,19 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 					"Name:\\\"Laurens Wolfert\\\"," +
 					"Lore:[" +
 						"\\\"Engelstalige videos\\\"" +
-					"]}}}\"}," +
-							
+					"]}}}\"}," +					
 				"clickEvent:{action:open_url,value:\"https://www.youtube.com/user/wolfert66\"}" +
 			"}" +
 				
+			", " +
+			
 			"{text:Merlijn," +
-			"hoverEvent:{action:show_item,value:\"{id:322,tag:{display:{" +
-				"Name:\\\"The King of Redstone (Merlijn)\\\"," +
-				"Lore:[" +
-					"\\\"Redstone videos\\\"" +
-				"]}}}\"}," +
-						
-			"clickEvent:{action:open_url,value:\"https://www.youtube.com/channel/UCRaVPcUcH0VkWDCnMP0bXSQ\"}" +
+				"hoverEvent:{action:show_item,value:\"{id:322,tag:{display:{" +
+					"Name:\\\"The King of Redstone (Merlijn)\\\"," +
+					"Lore:[" +
+						"\\\"Redstone videos\\\"" +
+					"]}}}\"}," +
+				"clickEvent:{action:open_url,value:\"https://www.youtube.com/channel/UCRaVPcUcH0VkWDCnMP0bXSQ\"}" +
 			"}" +
 		"]}" +
 	"]";
