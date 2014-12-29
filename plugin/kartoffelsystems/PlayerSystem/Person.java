@@ -208,10 +208,17 @@ public class Person implements ISessionSystemListener{
 		if(id.getMostSignificantBits() == 2629709164696322931L && id.getLeastSignificantBits() == -6055477513425670297L)return "[Cheater]";
 		
 		//Ben:
-		if(id.getMostSignificantBits() == -4255981295660744184l && id.getLeastSignificantBits() == -4950278195741411073l)return "[Panda]";
+		if(id.getMostSignificantBits() == -4255981295660744184L && id.getLeastSignificantBits() == -4950278195741411073L)return "[Panda]";
 		
 		//Merlijn:
-		if(id.getMostSignificantBits() == 599675639036594379l && id.getLeastSignificantBits() == -7269402673099981783l)return "[JuniorDev]";
+		if(id.getMostSignificantBits() == 599675639036594379L && id.getLeastSignificantBits() == -7269402673099981783L)return "[JuniorDev]";
+		
+		//ricopaolo:
+		if(id.getMostSignificantBits() == -701441263009968402L && id.getLeastSignificantBits() == -4626076513974838330L)return "[FunnyKing]";
+		
+		//just_nickryan:
+		if(id.getMostSignificantBits() == -9066992836862394032L && id.getLeastSignificantBits() == -5172913128725560681L)return "[FunnyKing]";
+		
 		
 		return "";
 	}
