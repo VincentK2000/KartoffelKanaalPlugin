@@ -153,9 +153,8 @@ public abstract class PNTech implements IObjectCommandHandable{
 	
 	
 	@Override
-	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
+	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception {
 		String label = args[0].toLowerCase();
-		ArrayList<String> a = new ArrayList<String>();
 		if(args.length == 1){
 			if("visibility".startsWith(label))a.add("visibility");
 		}else if(args.length >= 2){
@@ -171,14 +170,14 @@ public abstract class PNTech implements IObjectCommandHandable{
 	}
 	
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception{
-		return new ArrayList<String>(1);
+	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception{
+		return a;
 	}
 	
 	public String getTopLevelPossibilitiesString(){
-		ArrayList<String> al;
+		ArrayList<String> al = new ArrayList<String>(1);
 		try {
-			al = this.autoCompleteObjectCommand(new String[]{""});
+			al = this.autoCompleteObjectCommand(new String[]{""}, al);
 		} catch (Exception e) {
 			return "Fout_bij_zoeken";
 		}

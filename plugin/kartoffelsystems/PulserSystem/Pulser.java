@@ -440,8 +440,7 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
-		ArrayList<String> a = new ArrayList<String>(1);
+	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
 		s = s.toLowerCase();
 		if("notifications.#".startsWith(s))a.add("notifications.#");
 		return a;
@@ -453,8 +452,8 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 	}
 	
 	@Override
-	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
-		return new ArrayList<String>(0);
+	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception {
+		return a;
 	}
 	
 	/*public static <T> T[] operateArrayCommand(Person executor, CommandSender a, String operationName, String[] operationArgs, AttribSystem attribSys, T[] originalArray){

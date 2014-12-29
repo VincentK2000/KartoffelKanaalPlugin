@@ -108,8 +108,8 @@ public class PNTechTextProvRaw extends PNTechTextProv{
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
-		return super.autoCompleteSubObjectCH(s);
+	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
+		return super.autoCompleteSubObjectCH(s, a);
 	}
 	
 	public static PNTechTextProvRaw createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {

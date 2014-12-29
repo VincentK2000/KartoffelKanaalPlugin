@@ -106,9 +106,8 @@ public class PNConditionAND extends PNCondition{
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
-		ArrayList<String> a = super.autoCompleteObjectCommand(args);
-		if(a == null)a = new ArrayList<String>();
+	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception {
+		a = super.autoCompleteObjectCommand(args, a);
 		
 		String commandLabel = args[0].toLowerCase();
 		if(commandLabel.equals("array")){
@@ -135,12 +134,8 @@ public class PNConditionAND extends PNCondition{
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
-		ArrayList<String> a = null;
-		try{
-			a = super.autoCompleteSubObjectCH(s);
-		}catch(Exception e){}
-		if(a == null)a = new ArrayList<String>(1);
+	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
+		a = super.autoCompleteSubObjectCH(s, a);
 		if("#".startsWith(s))a.add("#");
 		return a;
 	}

@@ -418,7 +418,7 @@ public class Main extends JavaPlugin implements Listener {
 						String[] newArgs = new String[args.length - 1];
 						System.arraycopy(args, 1, newArgs, 0, newArgs.length);
 						try{
-							return objCH.autoCompleteObjectCommand(newArgs);
+							return objCH.autoCompleteObjectCommand(newArgs, new ArrayList<String>(1));
 						}catch(Exception e){return null;}
 					}
 				}
@@ -445,7 +445,7 @@ public class Main extends JavaPlugin implements Listener {
 		}
 		if(objCH != null){
 			try{
-				ArrayList<String> l;
+				ArrayList<String> l = new ArrayList<String>(1);
 				String subObject = (index < path.length() && path.charAt(index) == '/')?path.substring(index + 1):path;
 				IObjectCommandHandable target = null;
 				try{
@@ -453,7 +453,7 @@ public class Main extends JavaPlugin implements Listener {
 				}catch(Exception e){}
 				
 				if(target == null || subObject.length() == 0 || (target instanceof VirtualSubObject && ((VirtualSubObject) target).isAnalogPreferred())){
-					l = objCH.autoCompleteSubObjectCH(subObject);
+					l = objCH.autoCompleteSubObjectCH(subObject, l);
 				}else{
 					l = new ArrayList<String>(1);
 					l.add(subObject + '/');

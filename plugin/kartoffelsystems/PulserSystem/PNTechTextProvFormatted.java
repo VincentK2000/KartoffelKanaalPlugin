@@ -21,8 +21,8 @@ public abstract class PNTechTextProvFormatted extends PNTechTextProv {
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
-		return super.autoCompleteSubObjectCH(s);
+	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
+		return super.autoCompleteSubObjectCH(s, a);
 	}
 
 	@Override
@@ -114,9 +114,8 @@ public abstract class PNTechTextProvFormatted extends PNTechTextProv {
 	}
 	
 	@Override
-	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception{
-		ArrayList<String> a = super.autoCompleteObjectCommand(args);
-		if(a == null)a = new ArrayList<String>(1);
+	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception{
+		a = super.autoCompleteObjectCommand(args, a);
 		String label = args[0].toLowerCase();
 		if(args.length == 1){
 			if("parameter".startsWith(label))a.add("parameter");

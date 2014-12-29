@@ -649,16 +649,12 @@ public class PulserNotifStandard extends PulserNotif{
 	}
 	
 	@Override
-	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception{
-		ArrayList<String> a = null;
-		try{
-			a = super.autoCompleteObjectCommand(args);
-		}catch(Exception ex){}
-		if(a == null)a = new ArrayList<String>(1);
+	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception{
+		a = super.autoCompleteObjectCommand(args, a);
 		
 		if(args == null || args.length == 0)return a;
 		
-		String cmdLabel = args[0].toLowerCase();		
+		String cmdLabel = args[0].toLowerCase();	
 		if(args.length == 1){
 			if("interval".startsWith(cmdLabel))a.add("interval");
 			if("technics".startsWith(cmdLabel))a.add("technics");	
@@ -940,8 +936,7 @@ public class PulserNotifStandard extends PulserNotif{
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
-		ArrayList<String> a = new ArrayList<String>();
+	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
 		s = s.toLowerCase();
 		if("technics".startsWith(s))a.add("technics");
 		if(s.startsWith("technics")){

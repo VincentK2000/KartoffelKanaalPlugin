@@ -312,8 +312,7 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 	}
 	
 	@Override
-	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception{
-		ArrayList<String> a = new ArrayList<String>(1);
+	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception{
 		if(args.length == 1){
 			String label = args[0].toLowerCase();
 			label = label.toLowerCase();

@@ -36,7 +36,8 @@ public class VirtualSubObject implements IObjectCommandHandable{
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteObjectCommand(String[] args)throws Exception {
+	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a)throws Exception {
+		a = this.parent.autoCompleteObjectCommand(args, a);
 		if(this.prefixArguments != null && this.prefixArguments.length > 0){
 			if(args == null)args = new String[0];
 			String[] newArgs = new String[args.length + prefixArguments.length];
@@ -44,7 +45,7 @@ public class VirtualSubObject implements IObjectCommandHandable{
 			System.arraycopy(args, 0, newArgs, this.prefixArguments.length, args.length);
 			args = newArgs;
 		}
-		return this.parent.autoCompleteObjectCommand(args);
+		return a;
 	}
 
 	@Override
@@ -53,8 +54,8 @@ public class VirtualSubObject implements IObjectCommandHandable{
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
-		ArrayList<String> response = this.parent.autoCompleteSubObjectCH(this.prefixSubObject + s);
+	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
+		ArrayList<String> response = this.parent.autoCompleteSubObjectCH(this.prefixSubObject + s, a);
 		if(response != null && this.prefixSubObject.length() > 0){
 			for(int i = 0; i < response.size(); i++){
 				String r = response.get(i);

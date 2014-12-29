@@ -70,8 +70,8 @@ public class PNConditionNOT extends PNCondition{
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
-		return super.autoCompleteSubObjectCH(s);
+	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
+		return super.autoCompleteSubObjectCH(s, a);
 	}
 	
 	

@@ -289,10 +289,9 @@ public abstract class PNCondition implements IObjectCommandHandable {
 	
 	
 	@Override
-	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
+	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception {
 		if(args.length == 0)return null;
 		String label = args[0].toLowerCase();
-		ArrayList<String> a = new ArrayList<String>(1);
 		if(args.length == 1){
 			if("visibility".startsWith(label))a.add("visibility");
 			if("value".startsWith(label))a.add("value");
@@ -302,7 +301,6 @@ public abstract class PNCondition implements IObjectCommandHandable {
 					args[1] = args[1].toLowerCase();
 					if("visible".startsWith(args[1]))a.add("visible");
 					if("invisible".startsWith(args[1]))a.add("invisible");
-					return a;
 				}
 			}else if(label.equals("value")){
 				args[1] = args[1].toLowerCase();
@@ -311,7 +309,6 @@ public abstract class PNCondition implements IObjectCommandHandable {
 					if("default".startsWith(args[1]))a.add("default");
 					if("laatste".startsWith(args[1]))a.add("laatste");
 					if("calculate".startsWith(args[1]))a.add("calculate");
-					return a;
 				}else if(args.length == 3){
 					if(args[1].equals("closed")){
 						args[1] = args[1].toLowerCase();
@@ -319,17 +316,15 @@ public abstract class PNCondition implements IObjectCommandHandable {
 						if("niet-closed".startsWith(args[1]))a.add("niet-closed");
 						if("aan".startsWith(args[1]))a.add("aan");
 						if("uit".startsWith(args[1]))a.add("uit");
-						return a;
 					}else if(args[1].equals("default")){
 						args[1] = args[1].toLowerCase();
 						if("aan".startsWith(args[1]))a.add("aan");
 						if("uit".startsWith(args[1]))a.add("uit");
-						return a;
 					}
 				}
 			}
 		}
-		return null;
+		return a;
 	}
 	
 	@Override
@@ -338,14 +333,14 @@ public abstract class PNCondition implements IObjectCommandHandable {
 	}
 	
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception{
-		return new ArrayList<String>(1);
+	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception{
+		return a;
 	}
 	
 	public String getTopLevelPossibilitiesString(){
-		ArrayList<String> al;
+		ArrayList<String> al = new ArrayList<String>(1);
 		try {
-			al = this.autoCompleteObjectCommand(new String[]{""});
+			al = this.autoCompleteObjectCommand(new String[]{""}, al);
 		} catch (Exception e) {
 			return "Fout_bij_zoeken";
 		}
@@ -361,7 +356,7 @@ public abstract class PNCondition implements IObjectCommandHandable {
 		if(last != null){
 			sb.append(last);
 		}
-		return sb.toString();	
+		return sb.toString();
 	}
 	
 	/*public String getTopLevelPossibilitiesString(){

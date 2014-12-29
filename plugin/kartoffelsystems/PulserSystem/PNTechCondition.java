@@ -77,10 +77,8 @@ public class PNTechCondition extends PNTech{
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
-		ArrayList<String> a = super.autoCompleteSubObjectCH(s);
-		if(a == null)a = new ArrayList<String>(1);
-		
+	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
+		a = super.autoCompleteSubObjectCH(s, a);		
 		s = s.toLowerCase();
 		if("root".startsWith(s))a.add("root");
 		if("base".startsWith(s))a.add("base");

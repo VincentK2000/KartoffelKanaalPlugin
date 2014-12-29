@@ -58,8 +58,8 @@ public class PulserNotifNLOADED extends PulserNotif{
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
-		return new ArrayList<String>(0);
+	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
+		return a;
 	}
 
 }

@@ -72,9 +72,8 @@ public class PNConditionConstant extends PNCondition{
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
-		ArrayList<String> a = super.autoCompleteObjectCommand(args);
-		if(a == null)a = new ArrayList<String>();
+	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception {
+		a = super.autoCompleteObjectCommand(args, a);
 		
 		return a;
 	}
@@ -85,8 +84,8 @@ public class PNConditionConstant extends PNCondition{
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
-		return super.autoCompleteSubObjectCH(s);
+	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
+		return super.autoCompleteSubObjectCH(s, a);
 	}
 	
 	@Override
