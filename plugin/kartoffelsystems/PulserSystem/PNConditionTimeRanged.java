@@ -2,11 +2,14 @@ package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.util.Calendar;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.bukkit.command.CommandSender;
 
 import KartoffelKanaalPlugin.plugin.AttribSystem;
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
+import KartoffelKanaalPlugin.plugin.Main;
+import KartoffelKanaalPlugin.plugin.SettingsManager;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 
 public class PNConditionTimeRanged extends PNCondition{
@@ -47,6 +50,22 @@ public class PNConditionTimeRanged extends PNCondition{
 	protected void resetTimeRange(){
 		this.starttime = 0;
 		this.endtime = 9223372036854775807l;
+	}
+	
+	public long getStartTime(boolean serverTime){
+		return (serverTime || Main.sm == null)?this.starttime:Main.sm.convertToClientTime(this.starttime);
+	}
+	
+	public long getEndTime(boolean serverTime){
+		return (serverTime || Main.sm == null)?this.endtime:Main.sm.convertToClientTime(this.endtime);
+	}
+	
+	public void setStartTime(long newTime, boolean isServerTime){
+		this.starttime = (isServerTime || Main.sm == null)?newTime:Main.sm.convertToServerTime(newTime);
+	}
+	
+	public void setEndTime(long newTime, boolean isServerTime){
+		this.endtime = (isServerTime || Main.sm == null)?newTime:Main.sm.convertToServerTime(newTime);		
 	}
 	
 	protected static PNConditionTimeRanged loadFromBytes(byte[] src){
@@ -117,7 +136,86 @@ public class PNConditionTimeRanged extends PNCondition{
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
-		
+		if(args.length == 0)return false;
+		String label = args[0].toLowerCase();
+		if(label.equals("starttijd")){
+			boolean useRawTime = attribSys.hasAttrib("useRawTime");
+			if(args.length == 1){
+				long startTime = this.getStartTime(useRawTime);
+				a.sendMessage("§eDe starttijd is op " + (new Date(startTime)).toString() + " (" + SettingsManager.getTimeRelation(this.starttime) + ").");
+				a.sendMessage("§eVerander het met §cstarttijd <over|absoluut> <...>");
+			}else if(args.length > 1){
+				args[1] = args[1].toLowerCase();
+				if(args[1].equals("over")){
+					if(args.length > 2){
+						if((args.length - 2) % 2 == 1){
+							a.sendMessage("§4Oneven aantal parameters. Er kan dus niet voor alles een type zijn gespecifiëerd");
+							return true;
+						}
+						long newValue = System.currentTimeMillis();
+						for(int i = 2; i < args.length - 1; i+=2){
+							args[i] = args[i].toLowerCase();
+							long multip = SettingsManager.getMillisValue(args[i + 1]);
+							int value;
+							try{
+								value = Integer.parseInt(args[i]);
+							}catch(Exception e){
+								a.sendMessage("§4Oncorrecte waarde voor \"" + args[i + 1] + "\": " + args[i]);
+								return true;
+							}
+							newValue += multip * value;
+						}
+						this.starttime = newValue;
+					}else{
+						a.sendMessage("§cstarttijd over <tijdsaanduidingen ...>§e bv.: §cstarttijd over 3 dagen 9 uren 2 weken 44 minuten");
+						return true;
+					}
+				}else if(args[1].equals("absoluut")){
+					String datumAanduiding;
+					String tijdsAanduiding;
+					
+					
+					
+					
+					
+					long newValue;
+					if(datumAanduiding == null || datumAanduiding.length() == 0){
+						
+					}else{
+						
+					}
+					//DD/MM[/JJJJ] UU:MM[:SS]
+				}
+				long startTime = this.getStartTime(useRawTime);
+				a.sendMessage("§eDe starttijd is nu op " + (new Date(startTime)).toString() + " (" + SettingsManager.getTimeRelation(this.starttime) + ").");
+			}
+			
+		}else if(label.equals("stoptijd")){
+			boolean useRawTime = attribSys.hasAttrib("useRawTime");
+			if(args.length == 1){
+				long endTime = this.getEndTime(useRawTime);
+				a.sendMessage("§eDe stoptijd is op " + (new Date(endTime)).toString() + " (" + SettingsManager.getTimeRelation(this.endtime) + ").");
+			}
+			
+			
+		}else if(label.equals("tijden")){
+			boolean useRawTime = attribSys.hasAttrib("useRawTime");
+			if(args.length == 1){
+				String timeRelation;
+				if(this.starttime < System.currentTimeMillis()){
+					timeRelation = SettingsManager.getTimeRelation(this.starttime);
+				}else if(System.currentTimeMillis() > this.endtime){
+					timeRelation = SettingsManager.getTimeRelation(this.endtime);
+				}else{
+					timeRelation = "nu actief";
+				}
+				long startTime = this.getStartTime(useRawTime);
+				long endTime = this.getEndTime(useRawTime);
+				a.sendMessage("§eDe condition is true vanaf " + (new Date(startTime)).toString() + " tot " + (new Date(endTime)).toString() + " (" + timeRelation + ").");
+			}else{
+				a.sendMessage("§4Verander de tijden met §cstarttijd§4 en §cstoptijd§4.");
+			}
+		}
 		return false;
 	}
 
@@ -152,6 +250,7 @@ public class PNConditionTimeRanged extends PNCondition{
 	}
 	
 	public static PNConditionTimeRanged createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		
 		throw new Exception("Functie nog niet beschikbaar");
 	}
 }

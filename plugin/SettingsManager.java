@@ -746,6 +746,72 @@ public class SettingsManager implements Runnable {
 		
 	}*/
 	
+	public static String getTimeRelation(long l){
+		StringBuilder sb = new StringBuilder();
+		
+		long timeDifference = l - System.currentTimeMillis();
+		boolean isTimePast = timeDifference < 0;
+		if(isTimePast)timeDifference = -timeDifference;
+		long t = timeDifference;
+		
+		if(!isTimePast)sb.append("over ");
+		
+		sb.append(t / 604800000);//1000 * 60 * 60 * 24 * 7
+		sb.append(" weken, ");
+		t %= 604800000;
+		
+		sb.append(t / 86400000 );//1000 * 60 * 60 * 24
+		sb.append(" dagen, ");
+		t %= 86400000;
+		
+		sb.append(t / 3600000  );//1000 * 60 * 60
+		sb.append(" uren, ");
+		t %= 3600000;
+		
+		sb.append(t / 60000    );//1000 * 60
+		sb.append(" minuten en ");
+		t %= 60000;
+		
+		sb.append(t / 1000     );//1000
+		sb.append(" seconden");
+		t %= 1000;
+		
+		if(isTimePast)sb.append(" geleden");
+		
+		return sb.toString();
+	}
+	
+	public static long getMillisValue(String type) throws Exception {
+		type = type.toLowerCase();
+		switch(type){
+			case "week":
+			case "weken":
+			case "weeks":
+				return 604800000;
+			case "dag":
+			case "dagen":
+			case "day":
+			case "days":
+				return 86400000;
+			case "uur":
+			case "uren":
+			case "hour":
+			case "hours":
+				return 3600000;
+			case "minuut":
+			case "minuten":
+			case "minute":
+			case "minutes":
+				return 60000;
+			case "seconde":
+			case "secondes":
+			case "second":
+			case "seconds":
+				return 1000;		
+		}
+		throw new Exception("Onbekende tijdsaanduiding: \"" + type + "\"");
+	}
+	
 	public static void EnableAutoAntilag(){
 		if(Main.aa == null || !Main.aa.isUsable())Main.aa = new AutoAntilag();
 		Main.aa.initialize(Main.sm == null?60000:Main.sm.loadAutoAntilagIntervalFromFile());
