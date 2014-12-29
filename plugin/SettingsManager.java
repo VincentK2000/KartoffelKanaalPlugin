@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.logging.Logger;
 
+import org.bukkit.command.CommandSender;
+
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.AutoAntilag.AutoAntilag;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.PlayerManager;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.Pulser;
@@ -810,6 +812,180 @@ public class SettingsManager implements Runnable {
 				return 1000;		
 		}
 		throw new Exception("Onbekende tijdsaanduiding: \"" + type + "\"");
+	}
+	public static long getTimeFromArgs(String modus, CommandSender a, String[] args, boolean useRawTime, boolean leanToEnd) throws Exception{
+		modus = modus.toLowerCase();
+		if(modus.equals("over")){
+			if(args.length > 2){
+				if((args.length - 2) % 2 == 1){
+					a.sendMessage("§4Oneven aantal parameters. Er kan dus niet voor alles een type zijn gespecifiëerd");
+					return -1L;
+				}
+				long newValue = System.currentTimeMillis();
+				for(int i = 2; i < args.length - 1; i+=2){
+					args[i] = args[i].toLowerCase();
+					long multip = SettingsManager.getMillisValue(args[i + 1]);
+					int value;
+					try{
+						value = Integer.parseInt(args[i]);
+					}catch(Exception e){
+						a.sendMessage("§4Oncorrecte waarde voor \"" + args[i + 1] + "\": " + args[i]);
+						return -1;
+					}
+					newValue += multip * value;
+				}
+				return newValue;
+			}else{
+				a.sendMessage("§cover <tijdsaanduidingen ...>§e bv.: §cover 3 dagen 9 uren 2 weken 44 minuten");
+				return -1L;
+			}
+		}else if(modus.equals("absoluut")){
+			String datumAanduiding = null;
+			String tijdsAanduiding = null;
+			
+			if(args.length == 3){
+				if(args[2].contains("-") || args[2].contains("/")){
+					datumAanduiding = args[2];
+				}else if(args[2].contains(":")){
+					tijdsAanduiding = args[2];							
+				}else{
+					a.sendMessage("§4Oncorrecte datum- of tijdsaanduiding. Gebruik een \"-\" of een \"/\" om duidelijk te maken dat het gaat om een datum en een \":\" voor tijden");
+					return -1L;
+				}
+			}else if(args.length == 4){
+				if(args[2].contains("-") || args[2].contains("/")){
+					datumAanduiding = args[2];
+					tijdsAanduiding = args[3];
+				}else if(args[2].contains(":")){
+					tijdsAanduiding = args[2];
+					datumAanduiding = args[3];
+				}else{
+					a.sendMessage("§4Oncorrecte datum- of tijdsaanduiding. Gebruik een \"-\" of een \"/\" om duidelijk te maken dat het gaat om een datum en een \":\" voor tijden");
+					return -1L;
+				}
+			}else{
+				a.sendMessage("§cabsoluut DD/MM/JJJJ UU:MM:SS§e (een van de 2 kan weggelaten worden en jaar en seconden zijn niet nodig)");
+				return -1L;
+			}
+			
+			long newValue = 0;
+			if(datumAanduiding == null || datumAanduiding.length() == 0){
+				Calendar c = Calendar.getInstance();
+				if(!useRawTime)c.setTimeInMillis(Main.sm.convertToClientTime(System.currentTimeMillis()));
+				c.set(Calendar.MILLISECOND, 0);
+				c.set(Calendar.SECOND, 0);
+				c.set(Calendar.MINUTE, 0);
+				c.set(Calendar.HOUR_OF_DAY, 0);
+				newValue += c.getTimeInMillis();
+			}else{
+				datumAanduiding = datumAanduiding.replace('-', '/');
+				String[] parts = datumAanduiding.split("/");
+				if(parts.length < 2 || parts.length > 3){
+					a.sendMessage("§4De datum moet DD/MM of DD/MM/JJJJ zijn.");
+					return -1L;
+				}
+				int day;
+				try{
+					day = Integer.parseInt(parts[0]);
+				}catch(NumberFormatException e){
+					a.sendMessage("§4De dag moet een nummer zijn. Input = \"" + parts[0] + "\"");
+					return -1L;
+				}
+				
+				int month;
+				try{
+					month = Integer.parseInt(parts[1]);
+				}catch(NumberFormatException e){
+					a.sendMessage("§4De maand moet een nummer zijn. Input = \"" + parts[0] + "\"");
+					return -1L;
+				}
+				
+				int year = Calendar.getInstance().get(Calendar.YEAR);
+				if(parts.length == 3){
+					try{
+						year = Integer.parseInt(parts[2]);
+					}catch(NumberFormatException e){
+						a.sendMessage("§4Het jaar moet een nummer zijn. Input = \"" + parts[0] + "\"");
+						return -1L;
+					}
+				}
+				
+				if(day < 1 || day > 31){
+					a.sendMessage("§4De dag moet minimum 1 en maximum 31 zijn.");
+					return -1L;
+				}
+				if(month < 1 || month > 12){
+					a.sendMessage("§4De maand moet minimum 1 en maximum 12 zijn.");
+					return -1L;
+				}
+				if(year < 2014 || year > 2040){
+					a.sendMessage("§4Het jaar moet minimum 2014 en maximum 2040 zijn.");
+					return -1L;
+				}						
+				Calendar c = Calendar.getInstance();
+				c.setTimeInMillis(0);
+				c.set(year, month - 1/*Maanden lopen van 0 tot 11*/, day);
+				newValue += c.getTimeInMillis();
+			}
+			
+			if(tijdsAanduiding == null || tijdsAanduiding.length() == 0){
+				newValue += leanToEnd?86399999:0;
+			}else{
+				String[] parts = tijdsAanduiding.split(":");
+				if(parts.length < 2 || parts.length > 3){
+					a.sendMessage("§4De datum moet UU/MM of UU/MM/SS zijn.");
+					return -1L;
+				}
+				int hour;
+				try{
+					hour = Integer.parseInt(parts[0]);
+				}catch(NumberFormatException e){
+					a.sendMessage("§4Het uur moet een nummer zijn. Input = \"" + parts[0] + "\"");
+					return -1L;
+				}
+				
+				int minute;
+				try{
+					minute = Integer.parseInt(parts[1]);
+				}catch(NumberFormatException e){
+					a.sendMessage("§4De minuut moet een nummer zijn. Input = \"" + parts[0] + "\"");
+					return -1L;
+				}
+				
+				int second = leanToEnd?59:0;
+				if(parts.length == 3){
+					try{
+						second = Integer.parseInt(parts[2]);
+					}catch(NumberFormatException e){
+						a.sendMessage("§4De seconde moet een nummer zijn. Input = \"" + parts[0] + "\"");
+						return -1L;
+					}
+				}
+				
+				if(hour < 0 || hour > 23){
+					a.sendMessage("§4Het uur moet minimum 0 en maximum 23 zijn.");
+					return -1L;
+				}
+				if(minute < 0 || minute > 59){
+					a.sendMessage("§4De minuut moet minimum 0 en maximum 59 zijn.");
+					return -1L;
+				}
+				if(second < 0 || second > 59){
+					a.sendMessage("§4De seconde moet minimum 0 en maximum 59 zijn.");
+					return -1L;
+				}
+				Calendar c = Calendar.getInstance();
+				c.setTimeInMillis(0);
+				c.set(Calendar.HOUR_OF_DAY, hour);
+				c.set(Calendar.MINUTE, minute);
+				c.set(Calendar.SECOND, second);
+				newValue += c.getTimeInMillis();
+			}
+			return newValue;
+		}else{
+			a.sendMessage("§4Onbekende modus. Mogelijke modussen: \"absoluut\" en \"over\"");
+			return -1L;
+		}
 	}
 	
 	public static void EnableAutoAntilag(){

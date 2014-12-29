@@ -93,6 +93,18 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 					"]}}}\"}," +
 				"clickEvent:{action:open_url,value:\"https://www.youtube.com/channel/UCRaVPcUcH0VkWDCnMP0bXSQ\"}" +
 			"}" +
+				
+			", " + 
+				
+			"{text:Jelle," +
+			"hoverEvent:{action:show_item,value:\"{id:322,tag:{display:{" +
+				"Name:\\\"Jelle van den Aakster\\\"," +
+				"Lore:[" +
+					"\\\"- Skywars\\\"" +
+					"\\\"- Andere Minecraft PvP mini-games\\\"" +
+				"]}}}\"}," +
+			"clickEvent:{action:open_url,value:\"https://www.youtube.com/channel/UCJ2zukd7RcVYfDLzFNiJMnw\"}" +
+			"}" +
 		"]}" +
 	"]";
 		
