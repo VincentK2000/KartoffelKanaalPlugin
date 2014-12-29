@@ -7,7 +7,6 @@ import java.util.Date;
 import org.bukkit.command.CommandSender;
 
 import KartoffelKanaalPlugin.plugin.AttribSystem;
-import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 import KartoffelKanaalPlugin.plugin.Main;
 import KartoffelKanaalPlugin.plugin.SettingsManager;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
@@ -148,7 +147,7 @@ public class PNConditionTimeRanged extends PNCondition{
 				String[] newArgs = new String[args.length - 2];
 				System.arraycopy(args, 2, newArgs, 0, newArgs.length);
 				
-				long newStartTime = SettingsManager.getTimeFromArgs(args[1], a, newArgs, useRawTime, false);
+				long newStartTime = Main.sm.getServerTimeFromArgs(args[1], a, newArgs, useRawTime, false);
 				if(newStartTime < 0)return true;
 				this.setStartTime(newStartTime, useRawTime);
 				
@@ -166,7 +165,7 @@ public class PNConditionTimeRanged extends PNCondition{
 				String[] newArgs = new String[args.length - 2];
 				System.arraycopy(args, 2, newArgs, 0, newArgs.length);
 				
-				long newStopTime = SettingsManager.getTimeFromArgs(args[1], a, newArgs, useRawTime, true);
+				long newStopTime = Main.sm.getServerTimeFromArgs(args[1], a, newArgs, useRawTime, true);
 				if(newStopTime < 0)return true;
 				this.setEndTime(newStopTime, useRawTime);
 				
@@ -198,25 +197,15 @@ public class PNConditionTimeRanged extends PNCondition{
 	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
 		ArrayList<String> a = super.autoCompleteObjectCommand(args);
 		if(a == null)a = new ArrayList<String>();
+		if(args.length == 0)return a;
 		
+		String label = args[0].toLowerCase();
+		if(args.length == 1){
+			if("starttijd".startsWith(label))a.add("starttijd");
+			if("stoptijd".startsWith(label))a.add("stoptijd");
+			if("tijden".startsWith(label))a.add("tijden");
+		}
 		return a;
-	}
-
-	@Override
-	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
-		return super.autoCompleteSubObjectCH(s);
-	}
-	
-	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	@Override

@@ -189,13 +189,6 @@ public class PNConditionNUMB extends PNCondition{
 		if("#".startsWith(s))a.add("#");
 		return a;
 	}
-
-
-	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	public PNConditionNUMB copyCondition(int ID, PNTechCondition root) throws Exception {

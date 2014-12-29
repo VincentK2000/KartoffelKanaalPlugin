@@ -12,7 +12,7 @@ import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 import KartoffelKanaalPlugin.plugin.Main;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 
-public abstract class PulserNotif implements IObjectCommandHandable{
+public abstract class PulserNotif implements IObjectCommandHandable {
 	protected boolean denyChanges;//Dit is voor bv. copy, move, edit,...
 	protected byte options = 0x00;
 	protected boolean invisible = true;

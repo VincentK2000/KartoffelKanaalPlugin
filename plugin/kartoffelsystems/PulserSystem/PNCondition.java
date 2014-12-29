@@ -291,21 +291,14 @@ public abstract class PNCondition implements IObjectCommandHandable {
 	@Override
 	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
 		if(args.length == 0)return null;
+		String label = args[0].toLowerCase();
+		ArrayList<String> a = new ArrayList<String>(1);
 		if(args.length == 1){
-			ArrayList<String> a = new ArrayList<String>();
-			args[0] = args[0].toLowerCase();
-			String[] possibilities = this.getTotalTopLevelArgsPossibilities();
-			for(int i = 0; i < possibilities.length; i++){
-				if(possibilities[i] != null && possibilities[i].startsWith(args[0])){
-					a.add(possibilities[i]);
-				}
-			}
-			return a;
+			if("visibility".startsWith(label))a.add("visibility");
+			if("value".startsWith(label))a.add("value");
 		}else{
-			String label = args[0].toLowerCase();
 			if(label.equals("visibility")){
 				if(args.length == 2){
-					ArrayList<String> a = new ArrayList<String>(1);
 					args[1] = args[1].toLowerCase();
 					if("visible".startsWith(args[1]))a.add("visible");
 					if("invisible".startsWith(args[1]))a.add("invisible");
@@ -314,7 +307,6 @@ public abstract class PNCondition implements IObjectCommandHandable {
 			}else if(label.equals("value")){
 				args[1] = args[1].toLowerCase();
 				if(args.length == 2){
-					ArrayList<String> a = new ArrayList<String>(1);
 					if("closed".startsWith(args[1]))a.add("closed");
 					if("default".startsWith(args[1]))a.add("default");
 					if("laatste".startsWith(args[1]))a.add("laatste");
@@ -322,7 +314,6 @@ public abstract class PNCondition implements IObjectCommandHandable {
 					return a;
 				}else if(args.length == 3){
 					if(args[1].equals("closed")){
-						ArrayList<String> a = new ArrayList<String>(1);
 						args[1] = args[1].toLowerCase();
 						if("closed".startsWith(args[1]))a.add("closed");
 						if("niet-closed".startsWith(args[1]))a.add("niet-closed");
@@ -330,7 +321,6 @@ public abstract class PNCondition implements IObjectCommandHandable {
 						if("uit".startsWith(args[1]))a.add("uit");
 						return a;
 					}else if(args[1].equals("default")){
-						ArrayList<String> a = new ArrayList<String>(1);
 						args[1] = args[1].toLowerCase();
 						if("aan".startsWith(args[1]))a.add("aan");
 						if("uit".startsWith(args[1]))a.add("uit");
@@ -343,12 +333,38 @@ public abstract class PNCondition implements IObjectCommandHandable {
 	}
 	
 	@Override
+	public IObjectCommandHandable getSubObjectCH(String s) throws Exception{
+		return null;
+	}
+	
+	@Override
 	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception{
 		return new ArrayList<String>(1);
 	}
 	
-	
 	public String getTopLevelPossibilitiesString(){
+		ArrayList<String> al;
+		try {
+			al = this.autoCompleteObjectCommand(new String[]{""});
+		} catch (Exception e) {
+			return "Fout_bij_zoeken";
+		}
+		if(al.size() == 0)return "";
+		StringBuilder sb = new StringBuilder(20);
+		for(int i = 0; i < al.size() - 1; i++){
+			String s = al.get(i);
+			if(s == null || s.length() == 0)continue;
+			sb.append(s);
+			sb.append('|');
+		}
+		String last = al.get(al.size() - 1);
+		if(last != null){
+			sb.append(last);
+		}
+		return sb.toString();	
+	}
+	
+	/*public String getTopLevelPossibilitiesString(){
 		String[] total = this.getTotalTopLevelArgsPossibilities();
 		if(total.length == 0)return "";
 		StringBuilder sb = new StringBuilder(20);
@@ -372,7 +388,7 @@ public abstract class PNCondition implements IObjectCommandHandable {
 		System.arraycopy(local, 0, total, general.length, local.length);
 		return total;
 	}
-	public abstract String[] getLocalTopLevelArgsPossibilities();
+	public abstract String[] getLocalTopLevelArgsPossibilities();*/
 	
 	protected void notifyChange(){
 		if(this.root != null)this.root.notifyChange();

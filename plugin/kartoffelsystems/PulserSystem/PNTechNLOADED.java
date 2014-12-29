@@ -40,12 +40,6 @@ public class PNTechNLOADED extends PNTech{
 	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
 		return super.autoCompleteSubObjectCH(s);
 	}
-
-	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public static PNTechCondition createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
 		throw new Exception("Je kan geen PNTechNLOADED aanmaken");

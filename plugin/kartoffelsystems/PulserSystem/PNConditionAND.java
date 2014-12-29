@@ -146,12 +146,6 @@ public class PNConditionAND extends PNCondition{
 	}
 
 	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public PNConditionAND copyCondition(int ID, PNTechCondition root) throws Exception {
 		PNCondition[] children = null;
 		if(this.arr == null){

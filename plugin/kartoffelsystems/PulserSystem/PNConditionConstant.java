@@ -88,12 +88,6 @@ public class PNConditionConstant extends PNCondition{
 	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
 		return super.autoCompleteSubObjectCH(s);
 	}
-
-
-	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		return null;
-	}
 	
 	@Override
 	public PNConditionConstant copyCondition(int ID, PNTechCondition root) throws Exception {

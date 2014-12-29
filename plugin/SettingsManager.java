@@ -813,7 +813,7 @@ public class SettingsManager implements Runnable {
 		}
 		throw new Exception("Onbekende tijdsaanduiding: \"" + type + "\"");
 	}
-	public static long getTimeFromArgs(String modus, CommandSender a, String[] args, boolean useRawTime, boolean leanToEnd) throws Exception{
+	public long getServerTimeFromArgs(String modus, CommandSender a, String[] args, boolean useRawTime, boolean leanToEnd) throws Exception{
 		modus = modus.toLowerCase();
 		if(modus.equals("over")){
 			if(args.length > 2){
@@ -981,7 +981,7 @@ public class SettingsManager implements Runnable {
 				c.set(Calendar.SECOND, second);
 				newValue += c.getTimeInMillis();
 			}
-			return newValue;
+			return useRawTime?newValue:this.convertToServerTime(newValue);
 		}else{
 			a.sendMessage("§4Onbekende modus. Mogelijke modussen: \"absoluut\" en \"over\"");
 			return -1L;

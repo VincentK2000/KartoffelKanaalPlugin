@@ -88,11 +88,6 @@ public class PNTechCondition extends PNTech{
 		return a;
 	}
 	
-	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		return new String[0];
-	}
-	
 	public static PNTechCondition createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
 		throw new Exception("Functie nog niet beschikbaar");
 	}

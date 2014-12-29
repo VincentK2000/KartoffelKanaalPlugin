@@ -147,11 +147,6 @@ public class PNConditionXOR extends PNCondition{
 		return a;
 	}
 
-	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	public PNConditionXOR copyCondition(int ID, PNTechCondition root) throws Exception {

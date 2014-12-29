@@ -200,12 +200,6 @@ public class PNConditionRandom extends PNCondition{
 	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
 		return super.autoCompleteSubObjectCH(s);
 	}
-
-	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	public PNConditionRandom copyCondition(int ID, PNTechCondition root) throws Exception {

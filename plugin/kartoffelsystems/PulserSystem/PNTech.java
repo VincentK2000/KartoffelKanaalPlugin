@@ -153,28 +153,21 @@ public abstract class PNTech implements IObjectCommandHandable{
 	
 	
 	@Override
-	public final ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
+	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception {
 		String label = args[0].toLowerCase();
+		ArrayList<String> a = new ArrayList<String>();
 		if(args.length == 1){
-			ArrayList<String> a = new ArrayList<String>();
-			String[] possibilities = this.getTotalTopLevelArgsPossibilities();
-			for(int i = 0; i < possibilities.length; i++){
-				if(possibilities[i] != null && possibilities[i].startsWith(label)){
-					a.add(possibilities[i]);
-				}
-			}
-			return a;
+			if("visibility".startsWith(label))a.add("visibility");
 		}else if(args.length >= 2){
 			if(label.equals("visibility")){
 				if(args.length == 2){
-					ArrayList<String> a = new ArrayList<String>();
 					if("visible".startsWith(args[1]))a.add("visible");
 					if("invisible".startsWith(args[1]))a.add("invisible");
 					return a;
 				}
 			}
 		}
-		return null;
+		return a;
 	}
 	
 	@Override
@@ -183,6 +176,28 @@ public abstract class PNTech implements IObjectCommandHandable{
 	}
 	
 	public String getTopLevelPossibilitiesString(){
+		ArrayList<String> al;
+		try {
+			al = this.autoCompleteObjectCommand(new String[]{""});
+		} catch (Exception e) {
+			return "Fout_bij_zoeken";
+		}
+		if(al.size() == 0)return "";
+		StringBuilder sb = new StringBuilder(20);
+		for(int i = 0; i < al.size() - 1; i++){
+			String s = al.get(i);
+			if(s == null || s.length() == 0)continue;
+			sb.append(s);
+			sb.append('|');
+		}
+		String last = al.get(al.size() - 1);
+		if(last != null){
+			sb.append(last);
+		}
+		return sb.toString();	
+	}
+	
+	/*public String getTopLevelPossibilitiesString(){
 		String[] total = this.getTotalTopLevelArgsPossibilities();
 		if(total.length == 0)return "";
 		StringBuilder sb = new StringBuilder(20);
@@ -206,7 +221,7 @@ public abstract class PNTech implements IObjectCommandHandable{
 		System.arraycopy(local, 0, total, general.length, local.length);
 		return total;
 	}
-	public abstract String[] getLocalTopLevelArgsPossibilities();
+	public abstract String[] getLocalTopLevelArgsPossibilities();*/
 	
 	protected void notifyChange(){
 		if(this.notificationBase != null)this.notificationBase.changed = true;

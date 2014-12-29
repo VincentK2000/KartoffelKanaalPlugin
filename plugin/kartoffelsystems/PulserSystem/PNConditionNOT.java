@@ -74,11 +74,6 @@ public class PNConditionNOT extends PNCondition{
 		return super.autoCompleteSubObjectCH(s);
 	}
 	
-	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	public PNConditionNOT copyCondition(int ID, PNTechCondition root) throws Exception {

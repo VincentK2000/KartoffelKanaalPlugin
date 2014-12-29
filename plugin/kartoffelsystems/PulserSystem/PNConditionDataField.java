@@ -90,11 +90,6 @@ public class PNConditionDataField extends PNCondition{
 		return super.autoCompleteSubObjectCH(s);
 	}
 
-	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	public PNCondition copyCondition(int ID, PNTechCondition root) throws Exception {

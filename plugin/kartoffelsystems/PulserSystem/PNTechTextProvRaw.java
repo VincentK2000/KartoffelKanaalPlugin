@@ -111,12 +111,6 @@ public class PNTechTextProvRaw extends PNTechTextProv{
 	public ArrayList<String> autoCompleteSubObjectCH(String s) throws Exception {
 		return super.autoCompleteSubObjectCH(s);
 	}
-
-	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public static PNTechTextProvRaw createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
 		StringBuilder sb = new StringBuilder();

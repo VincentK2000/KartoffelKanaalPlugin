@@ -98,10 +98,6 @@ public class PNTechDataFieldConn extends PNTech{
 		return super.autoCompleteSubObjectCH(s);
 	}
 
-	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		return null;
-	}
 
 	public static PNTechCondition createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
 		throw new Exception("Functie nog niet beschikbaar");

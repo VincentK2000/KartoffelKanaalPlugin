@@ -112,10 +112,16 @@ public abstract class PNTechTextProvFormatted extends PNTechTextProv {
 		}
 		return true;
 	}
-
+	
 	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		return new String[]{"parameter"};
+	public ArrayList<String> autoCompleteObjectCommand(String[] args) throws Exception{
+		ArrayList<String> a = super.autoCompleteObjectCommand(args);
+		if(a == null)a = new ArrayList<String>(1);
+		String label = args[0].toLowerCase();
+		if(args.length == 1){
+			if("parameter".startsWith(label))a.add("parameter");
+		}
+		return a;
 	}
 
 	protected String[] parameters;
