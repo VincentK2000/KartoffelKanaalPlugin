@@ -74,18 +74,25 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 			
 		"{text:\" | Anderen: \",color:gray,extra:[" +
 			
-			"{text:Laurens," +
+			"{text:ELGamer," +
 				"hoverEvent:{action:show_item,value:\"{id:322,tag:{display:{" +
 					"Name:\\\"Laurens Wolfert\\\"," +
 					"Lore:[" +
-						"\\\"-Engelstalige video's\\\"," +
-						"\\\"-Nederlandstalige video's op\\\"," +
-						"\\\"de KartoffelKanaalServer\\\"" +
+						"\\\"Engelstalige videos\\\"" +
 					"]}}}\"}," +
 							
 				"clickEvent:{action:open_url,value:\"https://www.youtube.com/user/wolfert66\"}" +
 			"}" +
-					
+				
+			"{text:Merlijn," +
+			"hoverEvent:{action:show_item,value:\"{id:322,tag:{display:{" +
+				"Name:\\\"The King of Redstone (Merlijn)\\\"," +
+				"Lore:[" +
+					"\\\"Redstone videos\\\"" +
+				"]}}}\"}," +
+						
+			"clickEvent:{action:open_url,value:\"https://www.youtube.com/channel/UCRaVPcUcH0VkWDCnMP0bXSQ\"}" +
+			"}" +
 		"]}" +
 	"]";
 		
@@ -99,7 +106,7 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 	
 	public static final PulserNotif AbonneerNotification = new PulserNotifStandard(new PNTech[]{new PNTechTextProvRaw(abonneermessage, false, 100, null)}, false, (byte)0x30, (byte)0, 1, 0);
 	public static final PulserNotif DoneerNotification = new PulserNotifStandard(new PNTech[]{new PNTechTextProvRaw(doneermessage, false, 101, null)}, false, (byte)0x30, (byte)1, 3, 0);
-	public static final PulserNotif TestNotification = new PulserNotifStandard(new PNTech[]{
+	/*public static final PulserNotif TestNotification = new PulserNotifStandard(new PNTech[]{
 				new PNTechTextProvFormattedVideo(
 					new String[]{
 						"Nieuwe Spawn! Server Tour #5",
@@ -130,7 +137,7 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 					false, 303, null
 				)
 			}, false, (byte)0x00, (byte) 100, 0, 0);
-	
+	*/
 	public PulserNotif[] notifications = new PulserNotif[16]/*{Pulser.AbonneerNotification, Pulser.DoneerNotification}*/;
 	private ReentrantLock NotificationLock = new ReentrantLock();
 

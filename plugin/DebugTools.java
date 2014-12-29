@@ -276,7 +276,7 @@ public class DebugTools implements Listener {
 			Main.pulser.loadNotifications();
 			p.sendMessage("Notifications loaded");
 		}else if(input[1].equals("resetNotifications")){
-			Main.pulser.notifications = new PulserNotif[]{Pulser.AbonneerNotification, Pulser.DoneerNotification, Pulser.TestNotification};
+			Main.pulser.notifications = new PulserNotif[]{Pulser.AbonneerNotification, Pulser.DoneerNotification/*, Pulser.TestNotification*/};
 			p.sendMessage("Notifications reset");
 		}else if(input[1].equals("timesticked")){
 			if(Main.pulser == null || Main.pulser.timesTicked == null){

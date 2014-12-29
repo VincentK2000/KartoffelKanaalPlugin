@@ -139,9 +139,7 @@ public class PNTechTextProvFormattedVideo extends PNTechTextProvFormatted{
 		}else if(channelurl.equals("wolfert66")){//Laurens Wolfert
 			return new String[]{
 					"Laurens maakt:",
-					"-Engelstalige video's",
-					"-Nederlandstalige video's",
-					"op de KartoffelKanaalServer"
+					"Engelstalige video's"
 			};
 		}else if(channelurl.equals("/UCJ2zukd7RcVYfDLzFNiJMnw")){//Jelle Van Den Aakster
 			return new String[]{
@@ -149,6 +147,11 @@ public class PNTechTextProvFormattedVideo extends PNTechTextProvFormatted{
 					"-Overwegend video's van mini-games",
 					"-Een SurvivalSerie op de KartoffelKanaalServer",
 					"-Andere videos"
+			};
+		}else if(channelurl.equals("/UCRaVPcUcH0VkWDCnMP0bXSQ")){//Merlijn
+			return new String[]{
+					"Merlijn maakt:",
+					"Interessante Redstone videos"
 			};
 		}
 		return new String[0];

@@ -39,7 +39,7 @@ public class PulserFileLoader {
 		}
 		if(f == null || !f.exists()){
 			Logger.getLogger("Minecraft").warning("[KKP] De PulserFile lijkt niet te bestaan...");
-			this.parent.notifications = new PulserNotif[]{Pulser.AbonneerNotification, Pulser.DoneerNotification, Pulser.TestNotification};
+			this.parent.notifications = new PulserNotif[]{Pulser.AbonneerNotification, Pulser.DoneerNotification/*, Pulser.TestNotification*/};
 			this.parent.notifyChange();
 			res.sessionSys.releaseAccess();
 			return;
