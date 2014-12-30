@@ -168,7 +168,7 @@ public abstract class PNTech implements IObjectCommandHandable{
 		return null;
 	}
 	
-	public String getTopLevelPossibilitiesString(){
+	/*public String getTopLevelPossibilitiesString(){
 		ArrayList<String> al = new ArrayList<String>(1);
 		try {
 			al = this.autoCompleteObjectCommand(new String[]{""}, al);
@@ -188,7 +188,7 @@ public abstract class PNTech implements IObjectCommandHandable{
 			sb.append(last);
 		}
 		return sb.toString();	
-	}
+	}*/
 	
 	/*public String getTopLevelPossibilitiesString(){
 		String[] total = this.getTotalTopLevelArgsPossibilities();
