@@ -172,6 +172,112 @@ public class PulserNotifStandard extends PulserNotif{
 		return true;
 	}
 	
+	protected void increaseSize(int totalincrease, int userincrease, CommandSender user){
+		
+	}
+
+	protected void recheckPrimaryTechnics(){
+		//System.out.println("recheckingPrimaryTechnics");
+		this.textProv = null;
+		this.condition = null;
+		this.datafield = null;
+		this.notifSize = null;
+		this.specAccess = null;
+		if(this.technics == null)return;
+		//System.out.println("technics.length = " + this.technics.length);
+		for(int i = 0; i < this.technics.length; i++){
+			if(this.technics[i] == null || this.technics[i].isInvisible()){
+				//System.out.println("Skipping technic " + i + ":");
+				//if(this.technics[i] == null){
+				//	System.out.println("Technic " + i + " is null");
+				//}else if(this.technics[i].isInvisible()){
+				//	System.out.println("Technic " + i + " is invisible");
+				//}else{
+				//	System.out.println("???");
+				//}
+				continue;
+			}
+			//System.out.println("Processing technic " + i + "...");
+			
+			if(this.technics[i] instanceof PNTechTextProv){
+				//System.out.println("Technic " + i + " is PNTechTextProv");
+				if(this.textProv == null)this.textProv = (PNTechTextProv) this.technics[i];
+				
+			}else if(this.technics[i] instanceof PNTechCondition){
+				//System.out.println("Technic " + i + " is PNTechCondition");
+				if(this.condition == null)this.condition = (PNTechCondition) this.technics[i];
+				
+			}else if(this.technics[i] instanceof PNTechDataFieldConn){
+				//System.out.println("Technic " + i + " is PNTechDataFieldConn");
+				if(this.datafield == null)this.datafield = (PNTechDataFieldConn) this.technics[i];
+				
+			}else if(this.technics[i] instanceof PNTechNotifSize){
+				//System.out.println("Technic " + i + " is PNTechNotifSize");
+				if(this.notifSize == null)this.notifSize = (PNTechNotifSize) this.technics[i];
+				
+			}else if(this.technics[i] instanceof PNTechSpecEditAccess){
+				//System.out.println("Technic " + i + " is PNTechSpecEditAccess");
+				if(this.specAccess == null)this.specAccess = (PNTechSpecEditAccess) this.technics[i];
+			}else{
+				//System.out.println("Technic " + i + " is van een onbekend type");
+			}
+		}
+	}
+
+	@Override
+	public boolean activationRequiresCrashTest(){
+		return (this.textProv == null)?false:this.textProv.crashTestRequired();
+	}
+
+	@Override
+	public void doCrashTest(Player pl) throws Exception{
+		if(this.textProv == null){
+			pl.sendMessage("§4ERROR: De textProvider is null");
+		}else{
+			this.textProv.doCrashTest(pl);
+		}
+	}
+
+	public static PulserNotifStandard loadFromBytes(byte[] src) {
+		//System.out.println("    PulserNotifStandard.loadFromBytes: Standaard Notification laden...");
+		if(src == null || src.length < PulserNotif.generalInfoLength() + 13)return null;
+		//System.out.println("    PulserNotifStandard.loadFromBytes: Voldoende informatie om mee te beginnen");
+		
+		int pos = PulserNotif.generalInfoLength();
+		
+		byte category = src[pos++];
+		int interval = ((int)src[pos++] & 0xFF) << 24 | ((int)src[pos++] & 0xFF) << 16 | ((int)src[pos++] & 0xFF) << 8 | ((int)src[pos++] & 0xFF);
+		int offset = ((int)src[pos++] & 0xFF) << 24 | ((int)src[pos++] & 0xFF) << 16 | ((int)src[pos++] & 0xFF) << 8 | ((int)src[pos++] & 0xFF);
+		
+		int techLength = ((int)src[pos++] & 0xFF) << 24 | ((int)src[pos++] & 0xFF) << 16 | ((int)src[pos++] & 0xFF) << 8 | ((int)src[pos++] & 0xFF);
+		
+		if((pos + techLength) != src.length){
+			//System.out.println("    PulserNotifStandard.loadFromBytes: ERR Onjuiste lengte");
+			return null;
+		}
+		
+		//System.out.println("    PulserNotifStandard.loadFromBytes: Loading techs...");
+		PNTech[] techs;
+		{
+			byte[][] a = StoreTechnics.loadArray(src, 1000, 20000, pos);
+			techs = new PNTech[a.length];
+			
+			for(int i = 0; i < a.length; i++){
+				techs[i] = PNTech.loadFromBytes(a[i]);
+			}
+			
+		}
+		//System.out.println("    PulserNotifStandard.loadFromBytes: Loaded techs");
+		
+		//System.out.println("    PulserNotifStandard.loadFromBytes: Constructing PulserNotifStandard...");
+		PulserNotifStandard b = new PulserNotifStandard(src, techs, category, interval, offset);
+		for(int i = 0; i < techs.length; i++){
+			techs[i].notificationBase = b;
+		}
+		//System.out.println("    PulserNotifStandard.loadFromBytes: Standaard Notification geladen");
+		return b;
+	}
+
 	protected byte[] getSaveArrayExtraData(){
 		return new byte[0];
 	}
@@ -279,98 +385,6 @@ public class PulserNotifStandard extends PulserNotif{
 		return ans;
 	}
 	
-	protected void increaseSize(int totalincrease, int userincrease, CommandSender user){
-		
-	}
-	
-	protected void recheckPrimaryTechnics(){
-		//System.out.println("recheckingPrimaryTechnics");
-		this.textProv = null;
-		this.condition = null;
-		this.datafield = null;
-		this.notifSize = null;
-		this.specAccess = null;
-		if(this.technics == null)return;
-		//System.out.println("technics.length = " + this.technics.length);
-		for(int i = 0; i < this.technics.length; i++){
-			if(this.technics[i] == null || this.technics[i].isInvisible()){
-				//System.out.println("Skipping technic " + i + ":");
-				//if(this.technics[i] == null){
-				//	System.out.println("Technic " + i + " is null");
-				//}else if(this.technics[i].isInvisible()){
-				//	System.out.println("Technic " + i + " is invisible");
-				//}else{
-				//	System.out.println("???");
-				//}
-				continue;
-			}
-			//System.out.println("Processing technic " + i + "...");
-			
-			if(this.technics[i] instanceof PNTechTextProv){
-				//System.out.println("Technic " + i + " is PNTechTextProv");
-				if(this.textProv == null)this.textProv = (PNTechTextProv) this.technics[i];
-				
-			}else if(this.technics[i] instanceof PNTechCondition){
-				//System.out.println("Technic " + i + " is PNTechCondition");
-				if(this.condition == null)this.condition = (PNTechCondition) this.technics[i];
-				
-			}else if(this.technics[i] instanceof PNTechDataFieldConn){
-				//System.out.println("Technic " + i + " is PNTechDataFieldConn");
-				if(this.datafield == null)this.datafield = (PNTechDataFieldConn) this.technics[i];
-				
-			}else if(this.technics[i] instanceof PNTechNotifSize){
-				//System.out.println("Technic " + i + " is PNTechNotifSize");
-				if(this.notifSize == null)this.notifSize = (PNTechNotifSize) this.technics[i];
-				
-			}else if(this.technics[i] instanceof PNTechSpecEditAccess){
-				//System.out.println("Technic " + i + " is PNTechSpecEditAccess");
-				if(this.specAccess == null)this.specAccess = (PNTechSpecEditAccess) this.technics[i];
-			}else{
-				//System.out.println("Technic " + i + " is van een onbekend type");
-			}
-		}
-	}
-	
-	public static PulserNotifStandard loadFromBytes(byte[] src) {
-		//System.out.println("    PulserNotifStandard.loadFromBytes: Standaard Notification laden...");
-		if(src == null || src.length < PulserNotif.generalInfoLength() + 13)return null;
-		//System.out.println("    PulserNotifStandard.loadFromBytes: Voldoende informatie om mee te beginnen");
-		
-		int pos = PulserNotif.generalInfoLength();
-		
-		byte category = src[pos++];
-		int interval = ((int)src[pos++] & 0xFF) << 24 | ((int)src[pos++] & 0xFF) << 16 | ((int)src[pos++] & 0xFF) << 8 | ((int)src[pos++] & 0xFF);
-		int offset = ((int)src[pos++] & 0xFF) << 24 | ((int)src[pos++] & 0xFF) << 16 | ((int)src[pos++] & 0xFF) << 8 | ((int)src[pos++] & 0xFF);
-		
-		int techLength = ((int)src[pos++] & 0xFF) << 24 | ((int)src[pos++] & 0xFF) << 16 | ((int)src[pos++] & 0xFF) << 8 | ((int)src[pos++] & 0xFF);
-		
-		if((pos + techLength) != src.length){
-			//System.out.println("    PulserNotifStandard.loadFromBytes: ERR Onjuiste lengte");
-			return null;
-		}
-		
-		//System.out.println("    PulserNotifStandard.loadFromBytes: Loading techs...");
-		PNTech[] techs;
-		{
-			byte[][] a = StoreTechnics.loadArray(src, 1000, 20000, pos);
-			techs = new PNTech[a.length];
-			
-			for(int i = 0; i < a.length; i++){
-				techs[i] = PNTech.loadFromBytes(a[i]);
-			}
-			
-		}
-		//System.out.println("    PulserNotifStandard.loadFromBytes: Loaded techs");
-		
-		//System.out.println("    PulserNotifStandard.loadFromBytes: Constructing PulserNotifStandard...");
-		PulserNotifStandard b = new PulserNotifStandard(src, techs, category, interval, offset);
-		for(int i = 0; i < techs.length; i++){
-			techs[i].notificationBase = b;
-		}
-		//System.out.println("    PulserNotifStandard.loadFromBytes: Standaard Notification geladen");
-		return b;
-	}
-
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception{
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
@@ -572,7 +586,7 @@ public class PulserNotifStandard extends PulserNotif{
 								}
 								PNTech newObject;
 								try{
-									newObject = ((PNTech)objCH).copyTech(600, this);
+									newObject = ((PNTech)objCH).createCopy(600, this);
 								}catch(Exception e){
 									a.sendMessage("§4Kon geen kopie maken van het object: " + e);
 									return true;
@@ -697,20 +711,6 @@ public class PulserNotifStandard extends PulserNotif{
 		return a;
 	}
 
-	@Override
-	public boolean activationRequiresCrashTest(){
-		return (this.textProv == null)?false:this.textProv.crashTestRequired();
-	}
-
-	@Override
-	public void doCrashTest(Player pl) throws Exception{
-		if(this.textProv == null){
-			pl.sendMessage("§4ERROR: De textProvider is null");
-		}else{
-			this.textProv.doCrashTest(pl);
-		}
-	}
-	
 	public final void checkPermission(IObjectCommandHandable sender, CommandSender a, Person p, byte accessLevel) throws Exception{
 		//AccessLevel   127 = Geen toegang
 		//AccessLevel   126 = Dev only
@@ -886,11 +886,6 @@ public class PulserNotifStandard extends PulserNotif{
 	}*/
 
 	@Override
-	public String toString(){
-		return "PulserNotifStandard[super=\"" + super.toString() + "\",interval=" + this.interval + ",offset=" + this.offset + "]";
-	}
-
-	@Override
 	public IObjectCommandHandable getSubObjectCH(String path) throws Exception{
 		path = path.toLowerCase();
 		int pointIndex = path.indexOf((int)'.');
@@ -943,6 +938,150 @@ public class PulserNotifStandard extends PulserNotif{
 			if("technics.speceditaccess".startsWith(s))a.add("technics.specEditAccess");
 		}
 		return a;
+	}
+
+	/*public void executeGetCommand(CommandSender a, String[] args){
+		if(args.length != 2){
+			a.sendMessage("§c/pulser notification get <notification> <property>");
+		}
+		String s = this.getProperty(args[1]);
+		if(s == null){
+			a.sendMessage("Notification \"" + args[0] + "\" has no property \"" + args[1] + "\"");
+		}else{
+			a.sendMessage("Notification Property \"" + args[1] + "\" of \"" + args[0] + "\" is \"" + s + "\"");
+		}
+	}
+	
+	public void executeSetCommand(CommandSender a, String[] args){
+		if(args.length != 2){
+			a.sendMessage("§c/pulser notification set <notification> <property> <value>");
+		}
+		boolean b;
+		try {
+			b = this.setProperty(args[1], args[2]);
+		} catch (Exception e) {
+			a.sendMessage("§4Error by changing the property \"" + args[1] + "\" of \"" + args[0] + "\" to " + " \"" + args[2] + "\": " + e.getMessage());
+			return;
+		}
+		if(b){
+			a.sendMessage("Operation Executed");
+		}else{
+			a.sendMessage("§4Unknown Property");
+		}
+		String s = this.getProperty(args[1]);
+		if(s == null){
+			a.sendMessage("");
+		}
+		a.sendMessage("Notification Property \"" + args[1] + "\" of \"" + args[0] + "\" is now \"" + s + "\"");
+	}
+	
+	protected String getProperty(String key){
+		key = key.toLowerCase();
+		if(key.equals("category")){
+			String categoryname = "???";
+			if(this.category == 0){
+				categoryname = "Advertisement";
+			}else if(this.category == 1){
+				categoryname = "News";
+			}
+			return categoryname + " (" + this.category + ')';
+		}else if(key.equals("executes")){
+			return this.executes?"Executes":"Doesn't Execute";
+		}else if(key.equals("frequency")){
+			return this.interval + " with an offset of " + this.offset;
+		}else if(key.equals("interval")){
+			return Integer.toString(this.interval);
+		}else if(key.equals("offset")){
+			return Integer.toString(this.offset);
+		}
+		return null;
+	}
+	
+	protected boolean setProperty(String key, String value) throws Exception {
+		key = key.toLowerCase();
+		value = value.toLowerCase();
+		if(key.equals("category")){
+			value = value.toLowerCase();
+			if(value.equals("adv") || value.equals("advert") || value.equals("advertisement") || value.equals("0")){
+				this.category = 0;
+			}else if(value.equals("news") || value.equals("1")){
+				this.category = 1;
+			}else{
+				throw new Exception("Mogelijke waarden kunnen zijn: adv|advert|advertisement|0 of news|1");
+			}
+			return true;
+		}else if(key.equals("executes")){
+			if(value.equals("true") || value.equals("ja") || value.equals("1")){
+				this.executes = true;
+			}else if(value.equals("false") || value.equals("uit") || value.equals("0")){
+				this.executes = false;
+			}else{
+				throw new Exception("Mogelijke waarden kunnen zijn: true|ja|1 of false|uit|0");
+			}
+			return true;
+		}else if(key.equals("frequency")){
+			throw new Exception("Gebruik interval en offset om dit te veranderen");
+		}else if(key.equals("interval")){
+			int v;
+			try{
+				v = Integer.parseInt(value);
+			}catch(NumberFormatException e){
+				throw new Exception("De ingegeven nieuwe waarde is geen nummer");
+			}
+			if(v < 0){
+				throw new Exception("De ingegeven nieuwe waarde moet groter of gelijk zijn aan 0");
+			}
+			this.interval = v;
+			return true;
+		}else if(key.equals("offset")){
+			int v;
+			try{
+				v = Integer.parseInt(value);
+			}catch(NumberFormatException e){
+				throw new Exception("De ingegeven nieuwe waarde is geen nummer");
+			}
+			if(v < 0){
+				throw new Exception("De ingegeven nieuwe waarde moet groter of gelijk zijn aan 0");
+			}
+			if(v >= interval){
+				throw new Exception("De offset moet kleiner zijn dan de interval");
+			}
+			this.offset = v;
+			return true;
+		}
+		return false;
+	}
+	
+	protected final String[] getPossibleProperties(){
+		String[] extra = this.getExtraPossibleProperties();
+		//String[] message = this.nm.getPossibleProperties();
+		
+		String[] list = new String[5 + extra.length /*+ message.length*//*];
+		list[0] = "category";
+		list[1] = "active";
+		list[2] = "frequency";
+		list[3] = "interval";
+		list[4] = "offset";
+		System.arraycopy(extra, 0, list, 5, extra.length);
+		//System.arraycopy(message, 0, list, 5 + extra.length, message.length);
+		return list;
+	}
+	
+	protected String[] getExtraPossibleProperties(){
+		return new String[0];
+	}
+	
+	public void executeInfoCommand(CommandSender a, String[] args){
+		
+	}
+	
+	public void executeActivationCommand(CommandSender a, String[] args){
+		
+	}*/
+	
+	@Override
+	public String toString(){
+		return "PulserNotifStandard[super=\"" + super.toString() + "\",interval=" + this.interval + ",offset=" + this.offset + "]";
 	}
 	
 }

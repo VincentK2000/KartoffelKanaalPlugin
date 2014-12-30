@@ -1,9 +1,5 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.ArrayList;
-
-import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
-
 
 public class PNConditionNLOADED extends PNCondition{
 	//NLOADED = NOT LOADED
@@ -23,8 +19,6 @@ public class PNConditionNLOADED extends PNCondition{
 	@Override
 	protected byte getConditionType() {return 0;}
 
-	protected byte[] saveCondition(){return data;}
-
 	@Override
 	protected boolean calculateValue() {
 		return (options & 0x20) == 0x20;
@@ -35,23 +29,14 @@ public class PNConditionNLOADED extends PNCondition{
 		return (data == null)?0:data.length;
 	}
 
-	@Override
-	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	protected byte[] saveCondition(){return data;}
+
+	public static PNCondition createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		throw new Exception("Je kan geen PNConditionNLOADED aanmaken");
 	}
 
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
-		return super.autoCompleteSubObjectCH(s, a);
-	}
-	
-	@Override
 	public PNCondition createCopy(int ID, PNTechCondition root) throws Exception {
 		throw new Exception("Je kan geen kopie maken van een PNConditionNLOADED");
-	}
-	
-	public static PNCondition createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
-		throw new Exception("Je kan geen PNConditionNLOADED aanmaken");
 	}
 }

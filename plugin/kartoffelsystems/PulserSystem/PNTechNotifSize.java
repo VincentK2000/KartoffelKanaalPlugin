@@ -1,9 +1,6 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 public class PNTechNotifSize extends PNTech{
-	@Override
-	public byte getTechType() {return 4;}
-	
 	byte limitOptions;
 	//1 bit: Don't limite Operators
     //1 bit: Expand when Operators expand
@@ -31,6 +28,53 @@ public class PNTechNotifSize extends PNTech{
 		this.conditionsMaxSize = conditionsMaxSize;
 	}
 	
+	@Override
+	public byte getTechType() {return 4;}
+
+	@Override
+	public String getTypeName(){
+		return "TechNotifSize";
+	}
+
+	//SizeOrigin:
+	//0: Generic
+	//1: TechTextProv
+	//2: TechCondition
+	protected boolean allowNewSize(byte sizeOrigin, int oldSize, int newSize, boolean operator){
+		if(operator){
+			if((this.limitOptions & 0x40) == 0x40){
+				int expantion = newSize - oldSize;
+				
+				this.totalMaxSize += expantion;
+				
+				if(sizeOrigin == 1){
+					this.textProvMaxSize += expantion;
+				}else if(sizeOrigin == 2){
+					this.conditionsMaxSize += expantion;
+				}
+				
+				return true;
+			}else if((this.limitOptions & 0x80) == 0x80){
+				return true;
+			}
+		}
+		
+		if((this.totalMaxSize & 0x80000000) == 0){
+			if(newSize > this.totalMaxSize)return false;
+		}
+		if(sizeOrigin == 1){
+			return ((this.textProvMaxSize & 0x80000000) == 0)?newSize <= this.textProvMaxSize:true;
+		}else if(sizeOrigin == 2){
+			return ((this.conditionsMaxSize & 0x80000000) == 0)?newSize <= this.conditionsMaxSize:true;
+		}
+		return true;
+	}
+
+	@Override
+	public int getEstimatedSize() {
+		return PNTech.generalInfoLength() + 13;
+	}
+
 	protected static PNTechNotifSize loadFromBytes(byte[] src){
 		if(src == null || src.length != PNTech.generalInfoLength() + 13)return null;
 		
@@ -71,56 +115,12 @@ public class PNTechNotifSize extends PNTech{
 		return ans;
 	}
 	
-	//SizeOrigin:
-	//0: Generic
-	//1: TechTextProv
-	//2: TechCondition
-	protected boolean allowNewSize(byte sizeOrigin, int oldSize, int newSize, boolean operator){
-		if(operator){
-			if((this.limitOptions & 0x40) == 0x40){
-				int expantion = newSize - oldSize;
-				
-				this.totalMaxSize += expantion;
-				
-				if(sizeOrigin == 1){
-					this.textProvMaxSize += expantion;
-				}else if(sizeOrigin == 2){
-					this.conditionsMaxSize += expantion;
-				}
-				
-				return true;
-			}else if((this.limitOptions & 0x80) == 0x80){
-				return true;
-			}
-		}
-		
-		if((this.totalMaxSize & 0x80000000) == 0){
-			if(newSize > this.totalMaxSize)return false;
-		}
-		if(sizeOrigin == 1){
-			return ((this.textProvMaxSize & 0x80000000) == 0)?newSize <= this.textProvMaxSize:true;
-		}else if(sizeOrigin == 2){
-			return ((this.conditionsMaxSize & 0x80000000) == 0)?newSize <= this.conditionsMaxSize:true;
-		}
-		return true;
-	}
-
-	@Override
-	public int getEstimatedSize() {
-		return PNTech.generalInfoLength() + 13;
-	}
-	
 	public static PNTechCondition createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
 		throw new Exception("Functie nog niet beschikbaar");
 	}
 	
 	@Override
-	public PNTech copyTech(int ID, PulserNotifStandard notificationBase) throws Exception{
+	public PNTech createCopy(int ID, PulserNotifStandard notificationBase) throws Exception{
 		throw new Exception("Functie nog niet beschikbaar");
-	}
-	
-	@Override
-	public String getTypeName(){
-		return "TechNotifSize";
 	}
 }

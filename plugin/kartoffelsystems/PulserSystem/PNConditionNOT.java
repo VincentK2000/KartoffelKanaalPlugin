@@ -1,9 +1,5 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.ArrayList;
-
-import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
-
 public class PNConditionNOT extends PNCondition{
 	PNCondition c;
 	
@@ -29,6 +25,21 @@ public class PNConditionNOT extends PNCondition{
 	}
 
 	@Override
+	protected int getEstimatedSize() {
+		return ((this.c == null)?0:this.c.getEstimatedSize()) + PNCondition.generalInfoLength();
+	}
+
+	public static PNConditionNOT loadFromBytes(byte[] src) {
+		if(src == null || src.length < PNCondition.generalInfoLength() || src.length > 500000)return null;
+		
+		byte[] conditiondata = new byte[src.length - PNCondition.generalInfoLength()];
+		System.arraycopy(src, PNCondition.generalInfoLength(), conditiondata, 0, conditiondata.length);
+		PNCondition c = PNCondition.loadFromBytes(conditiondata);
+		
+		return new PNConditionNOT(c, src);
+	}
+
+	@Override
 	protected byte[] saveCondition() {
 		if(c == null)return new byte[0];
 		byte[] condition = c.saveCondition();
@@ -43,39 +54,12 @@ public class PNConditionNOT extends PNCondition{
 		return ans;
 	}
 	
-	public static PNConditionNOT loadFromBytes(byte[] src) {
-		if(src == null || src.length < PNCondition.generalInfoLength() || src.length > 500000)return null;
-		
-		byte[] conditiondata = new byte[src.length - PNCondition.generalInfoLength()];
-		System.arraycopy(src, PNCondition.generalInfoLength(), conditiondata, 0, conditiondata.length);
-		PNCondition c = PNCondition.loadFromBytes(conditiondata);
-		
-		return new PNConditionNOT(c, src);
+	public static PNConditionNOT createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		throw new Exception("Functie nog niet beschikbaar");
 	}
 
-	@Override
-	protected int getEstimatedSize() {
-		return ((this.c == null)?0:this.c.getEstimatedSize()) + PNCondition.generalInfoLength();
-	}
-
-	@Override
-	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
-		return super.autoCompleteSubObjectCH(s, a);
-	}
-	
-	
 	@Override
 	public PNConditionNOT createCopy(int ID, PNTechCondition root) throws Exception {
 		return new PNConditionNOT(this.c.createCopy(601, root), this.options, true, ID, root);//TODO Generate subCondition dynamically
-	}
-	
-	public static PNConditionNOT createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
-		throw new Exception("Functie nog niet beschikbaar");
 	}
 }

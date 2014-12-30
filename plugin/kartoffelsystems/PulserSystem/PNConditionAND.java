@@ -29,6 +29,16 @@ public class PNConditionAND extends PNCondition{
 	}
 	
 	
+	@Override
+	protected int getEstimatedSize() {
+		if(arr == null)return PNCondition.generalInfoLength();
+		int l = PNCondition.generalInfoLength() + arr.length * 4;
+		for(int i = 0; i < arr.length; i++){
+			if(arr[i] != null)l += arr[i].getEstimatedSize();
+		}
+		return l;
+	}
+
 	protected boolean calculateValue(){
 		if(arr == null)return ((this.options & 0x20) == 0x20);
 		boolean atLeastOne = false;
@@ -42,6 +52,16 @@ public class PNConditionAND extends PNCondition{
 		}else{
 			return ((this.options & 0x20) == 0x20);
 		}
+	}
+
+	public static PNConditionAND loadFromBytes(byte[] src) {
+		if(src == null || src.length < PNCondition.generalInfoLength() || src.length > 500000)return null;
+		byte[][] c = StoreTechnics.loadArray(src, 100, 100000, PNCondition.generalInfoLength());
+		PNCondition[] conditions = new PNCondition[c.length];
+		for(int i = 0; i < c.length; i++){
+			conditions[i] = PNCondition.loadFromBytes(src);
+		}
+		return new PNConditionAND(conditions, src);
 	}
 
 	@Override
@@ -67,26 +87,27 @@ public class PNConditionAND extends PNCondition{
 		return ans;
 	}
 
-	public static PNConditionAND loadFromBytes(byte[] src) {
-		if(src == null || src.length < PNCondition.generalInfoLength() || src.length > 500000)return null;
-		byte[][] c = StoreTechnics.loadArray(src, 100, 100000, PNCondition.generalInfoLength());
-		PNCondition[] conditions = new PNCondition[c.length];
-		for(int i = 0; i < c.length; i++){
-			conditions[i] = PNCondition.loadFromBytes(src);
-		}
-		return new PNConditionAND(conditions, src);
+	public static PNConditionAND createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		if(params.length > 0)throw new Exception("Je kan enkel een lege PNConditionAND aanmaken. Children moeten achteraf toegevoegd worden. Gebruik dus geen parameters voor dit type.");
+		return new PNConditionAND(new PNCondition[0], options, true, ID, root);
 	}
 
 	@Override
-	protected int getEstimatedSize() {
-		if(arr == null)return PNCondition.generalInfoLength();
-		int l = PNCondition.generalInfoLength() + arr.length * 4;
-		for(int i = 0; i < arr.length; i++){
-			if(arr[i] != null)l += arr[i].getEstimatedSize();
+	public PNConditionAND createCopy(int ID, PNTechCondition root) throws Exception {
+		PNCondition[] children = null;
+		if(this.arr == null){
+			children = new PNCondition[0];
+		}else{
+			children = new PNCondition[this.arr.length];
+			for(int i = 0; i < this.arr.length; i++){
+				if(this.arr[i] != null){
+					children[i] = this.arr[i].createCopy(601, root);//TODO De Condition-ID moet dynamisch asigned worden
+				}
+			}
 		}
-		return l;
+		return new PNConditionAND(children, this.options, true, ID, root);
 	}
-	
+
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
@@ -138,27 +159,6 @@ public class PNConditionAND extends PNCondition{
 		a = super.autoCompleteSubObjectCH(s, a);
 		if("#".startsWith(s))a.add("#");
 		return a;
-	}
-
-	@Override
-	public PNConditionAND createCopy(int ID, PNTechCondition root) throws Exception {
-		PNCondition[] children = null;
-		if(this.arr == null){
-			children = new PNCondition[0];
-		}else{
-			children = new PNCondition[this.arr.length];
-			for(int i = 0; i < this.arr.length; i++){
-				if(this.arr[i] != null){
-					children[i] = this.arr[i].createCopy(601, root);//TODO De Condition-ID moet dynamisch asigned worden
-				}
-			}
-		}
-		return new PNConditionAND(children, this.options, true, ID, root);
-	}
-	
-	public static PNConditionAND createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
-		if(params.length > 0)throw new Exception("Je kan enkel een lege PNConditionAND aanmaken. Children moeten achteraf toegevoegd worden. Gebruik dus geen parameters voor dit type.");
-		return new PNConditionAND(new PNCondition[0], options, true, ID, root);
 	}
 
 }

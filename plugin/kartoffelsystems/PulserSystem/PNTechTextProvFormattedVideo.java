@@ -13,9 +13,6 @@ public class PNTechTextProvFormattedVideo extends PNTechTextProvFormatted{
 	//https://www.youtube.com/watch?v=
 	//htpps://www.youtube.com/channel/
 	
-	@Override
-	public byte getFormattedType(){return 1;}
-
 	public static final int correctAmountParameters = 4;
 	
 	protected String[] possibilities = new String[]{"video.titel","video.URL","kanaal.titel","kanaal.URL"};
@@ -27,6 +24,25 @@ public class PNTechTextProvFormattedVideo extends PNTechTextProvFormatted{
 	protected PNTechTextProvFormattedVideo(byte[] src){
 		super(src);
 	}
+
+	//0: Video titel
+	//1: Video URL suffix
+	//2: Youtube-kanaal weergavenaam
+	//3: Youtube-kanaal URL suffix
+	
+	//https://www.youtube.com/watch?v=
+	//htpps://www.youtube.com/channel/
+	
+	@Override
+	public String getTypeName(){
+		return super.getTypeName() + "Video";
+	}
+
+	@Override
+	public byte getFormattedType(){return 1;}
+
+	@Override
+	protected byte getCorrectAmountParameters(){return 4;}
 
 	protected int getNamedParameterIndex(String key) {
 		key = key.toLowerCase();
@@ -58,6 +74,36 @@ public class PNTechTextProvFormattedVideo extends PNTechTextProvFormatted{
 				return 3;
 		}
 		return -1;
+	}
+	
+	@Override
+	protected void onParametersChanged() {
+		try{
+			this.setInvisible(true);
+		}catch(Exception e){}
+	}
+
+	@Override
+	protected byte getParameterViewAccessLevel() {
+		return 20;
+	}
+
+	@Override
+	protected byte getParameterChangeAccessLevel(int paramID) {
+		if(paramID == 0 || paramID == 1){
+			return 21;
+		}else if(paramID == 2){
+			return 22;
+		}else if(paramID == 3){
+			return 23;
+		}else{
+			return 127;
+		}
+	}
+
+	@Override
+	protected String[] getPossibleKeys() {
+		return this.possibilities;
 	}
 	
 	@Override
@@ -117,15 +163,7 @@ public class PNTechTextProvFormattedVideo extends PNTechTextProvFormatted{
 		
 		return s.toString();
 	}
-	
-	@Override
-	protected byte getCorrectAmountParameters(){return 4;}
 
-	@Override
-	protected String[] getPossibleKeys() {
-		return this.possibilities;
-	}
-	
 	protected static String[] getChannelDescription(String channelurl){
 		if(channelurl.equals("KartoffelKanaal")){//KartoffelKanaal
 			return new String[]{
@@ -214,13 +252,6 @@ public class PNTechTextProvFormattedVideo extends PNTechTextProvFormatted{
 	}
 
 	@Override
-	protected void onParametersChanged() {
-		try{
-			this.setInvisible(true);
-		}catch(Exception e){}
-	}
-
-	@Override
 	public boolean crashTestRequired() {
 		return true;
 	}
@@ -229,24 +260,6 @@ public class PNTechTextProvFormattedVideo extends PNTechTextProvFormatted{
 	public void doCrashTest(Player pl) throws Exception {
 		if(pl == null)throw new Exception("Player is null!");
 		Main.plugin.getServer().dispatchCommand(Main.plugin.getServer().getConsoleSender(), "tellraw " + pl.getName() + ' ' + this.getMessage());
-	}
-
-	@Override
-	protected byte getParameterViewAccessLevel() {
-		return 20;
-	}
-
-	@Override
-	protected byte getParameterChangeAccessLevel(int paramID) {
-		if(paramID == 0 || paramID == 1){
-			return 21;
-		}else if(paramID == 2){
-			return 22;
-		}else if(paramID == 3){
-			return 23;
-		}else{
-			return 127;
-		}
 	}
 
 	@Override
@@ -263,12 +276,7 @@ public class PNTechTextProvFormattedVideo extends PNTechTextProvFormatted{
 	}
 
 	@Override
-	public PNTechTextProvFormattedVideo copyTech(int ID, PulserNotifStandard notificationBase) {
+	public PNTechTextProvFormattedVideo createCopy(int ID, PulserNotifStandard notificationBase) {
 		return new PNTechTextProvFormattedVideo(this.copyParameters(), true, ID, notificationBase);
-	}
-	
-	@Override
-	public String getTypeName(){
-		return super.getTypeName() + "Video";
 	}
 }

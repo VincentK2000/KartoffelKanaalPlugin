@@ -3,13 +3,6 @@ package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 import org.bukkit.entity.Player;
 
 public abstract class PNTechTextProv extends PNTech{
-	protected abstract String getMessage();
-	
-	@Override
-	public byte getTechType(){return 1;}
-	
-	public abstract byte getTextProvType();
-
 	protected PNTechTextProv(boolean invisible, int ID, PulserNotifStandard notificationBase){
 		super(invisible, ID, notificationBase);
 	}
@@ -18,23 +11,22 @@ public abstract class PNTechTextProv extends PNTech{
 		super(src);
 	}
 	
-	protected static PNTechTextProv loadFromBytes(byte[] src){
-		//System.out.println("            PNTechTextProv.loadFromBytes: PNTechTextProv laden...");
-		if(src == null || src.length < PNTech.generalInfoLength() + 1)return null;
-		//System.out.println("            PNTechTextProv.loadFromBytes: Voldoende informatie om mee te beginnen");
-		PNTechTextProv a = null;
-		byte t = (byte) (src[PNTech.generalInfoLength()] & 0x7F);
-		//System.out.println("            PNTechTextProv.loadFromBytes: src.length = " + src.length);
-		//System.out.println("            PNTechTextProv.loadFromBytes: TextProvType is " + t);
-		if(t == 1){
-			a = PNTechTextProvRaw.loadFromBytes(src);
-		}else if(t == 2){
-			a = PNTechTextProvFormatted.loadFromBytes(src);
-		}
-		//System.out.println("            PNTechTextProv.loadFromBytes: PNTechTextProv geladen, a = " + (a==null?"null":a));
-		return a;
+	@Override
+	public byte getTechType(){return 1;}
+
+	@Override
+	public String getTypeName(){
+		return "TechTextProvider";
 	}
-	
+
+	public abstract byte getTextProvType();
+
+	protected abstract String getMessage();
+
+	public abstract boolean crashTestRequired();
+
+	public abstract void doCrashTest(Player pl) throws Exception;
+
 	public static String createJSONSafeString(String src){
 		if(src == null || src.length() == 0)return "";
 		StringBuilder s = new StringBuilder(src.length());
@@ -56,6 +48,23 @@ public abstract class PNTechTextProv extends PNTech{
 		return s.toString();
 	}
 
+	protected static PNTechTextProv loadFromBytes(byte[] src){
+		//System.out.println("            PNTechTextProv.loadFromBytes: PNTechTextProv laden...");
+		if(src == null || src.length < PNTech.generalInfoLength() + 1)return null;
+		//System.out.println("            PNTechTextProv.loadFromBytes: Voldoende informatie om mee te beginnen");
+		PNTechTextProv a = null;
+		byte t = (byte) (src[PNTech.generalInfoLength()] & 0x7F);
+		//System.out.println("            PNTechTextProv.loadFromBytes: src.length = " + src.length);
+		//System.out.println("            PNTechTextProv.loadFromBytes: TextProvType is " + t);
+		if(t == 1){
+			a = PNTechTextProvRaw.loadFromBytes(src);
+		}else if(t == 2){
+			a = PNTechTextProvFormatted.loadFromBytes(src);
+		}
+		//System.out.println("            PNTechTextProv.loadFromBytes: PNTechTextProv geladen, a = " + (a==null?"null":a));
+		return a;
+	}
+	
 	protected static int generalInfoLength(){return PNTech.generalInfoLength() + 1;}
 	
 	protected boolean saveGeneralInfo(byte[] ans){
@@ -64,9 +73,6 @@ public abstract class PNTechTextProv extends PNTech{
 		ans[PNTech.generalInfoLength()] = this.getTextProvType();
 		return true;
 	}
-	
-	public abstract boolean crashTestRequired();
-	public abstract void doCrashTest(Player pl) throws Exception;
 	
 	public static PNTechTextProv createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
 		if(params == null)throw new Exception("De parameters zijn null");
@@ -84,10 +90,5 @@ public abstract class PNTechTextProv extends PNTech{
 		}else{
 			throw new Exception("Onbekend PNTechTextProv-type");
 		}
-	}
-	
-	@Override
-	public String getTypeName(){
-		return "TechTextProvider";
 	}
 }

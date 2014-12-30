@@ -24,23 +24,15 @@ public class PNConditionDataField extends PNCondition{
 	@Override
 	protected byte getConditionType() {return 6;}
 	
+	@Override
+	protected int getEstimatedSize() {
+		return data.length + PNCondition.generalInfoLength();
+	}
+
 	protected boolean calculateValue(){
 		return true;
 	}
 
-	@Override
-	protected byte[] saveCondition() {
-		if(data.length > 5000)return new byte[0];
-		
-		byte[] ans = new byte[data.length + PNCondition.generalInfoLength()];
-		
-		this.saveGeneralInfo(ans);
-		
-		System.arraycopy(data, 0, ans, PNCondition.generalInfoLength(), data.length);
-		
-		return ans;
-	}
-	
 	public static PNConditionDataField loadFromBytes(byte[] src) {
 		if(src == null || src.length < PNCondition.generalInfoLength() || src.length > 500000)return null;
 		
@@ -55,10 +47,27 @@ public class PNConditionDataField extends PNCondition{
 	}
 
 	@Override
-	protected int getEstimatedSize() {
-		return data.length + PNCondition.generalInfoLength();
+	protected byte[] saveCondition() {
+		if(data.length > 5000)return new byte[0];
+		
+		byte[] ans = new byte[data.length + PNCondition.generalInfoLength()];
+		
+		this.saveGeneralInfo(ans);
+		
+		System.arraycopy(data, 0, ans, PNCondition.generalInfoLength(), data.length);
+		
+		return ans;
 	}
-	
+
+	public static PNConditionDataField createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		throw new Exception("Functie nog niet beschikbaar");
+	}
+
+	@Override
+	public PNCondition createCopy(int ID, PNTechCondition root) throws Exception {
+		throw new Exception("Functie nog niet beschikbaar");
+	}
+
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
@@ -82,16 +91,6 @@ public class PNConditionDataField extends PNCondition{
 	@Override
 	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
 		return super.autoCompleteSubObjectCH(s, a);
-	}
-
-	
-	@Override
-	public PNCondition createCopy(int ID, PNTechCondition root) throws Exception {
-		throw new Exception("Functie nog niet beschikbaar");
-	}
-	
-	public static PNConditionDataField createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
-		throw new Exception("Functie nog niet beschikbaar");
 	}
 
 }

@@ -14,26 +14,31 @@ public abstract class PNTech implements IObjectCommandHandable{
 	private boolean _invisible = true;
 	protected int ID = -1;
 	
-	public abstract byte getTechType();
-	protected abstract byte[] saveTech();
-	public abstract int getEstimatedSize();
-	
 	protected PNTech(boolean invisible, int ID, PulserNotifStandard notificationBase){
 		this.notificationBase = notificationBase;
 		this._invisible = invisible;
 		this.ID = ID;
 	}
-	
 	protected PNTech(byte[] src){
 		if(src == null || src.length < 5)return;
 		this._invisible = (src[0] & 0x80) == 0x80;
 		this.ID = src[1] << 24 | src[2] << 16 | src[3] << 8 | src[4];
 	}
-	
 	public int getID(){
 		return this.ID;
 	}
-	
+	public boolean isInvisible(){
+		return this._invisible;
+	}
+	protected void setInvisible(boolean newValue) throws Exception{
+		this.checkDenyChanges();
+		this._invisible = newValue;
+		this.notifyChange();
+		if(this.notificationBase != null)this.notificationBase.recheckPrimaryTechnics();
+	}
+	public abstract String getTypeName();
+	public abstract byte getTechType();
+	public abstract int getEstimatedSize();
 	protected static PNTech loadFromBytes(byte[] src){
 		//System.out.println("        PNTech.loadFromBytes: PNTech laden...");
 		if(src == null || src.length < PNTech.generalInfoLength()){
@@ -61,7 +66,7 @@ public abstract class PNTech implements IObjectCommandHandable{
 		//System.out.println("        PNTech.loadFromBytes: PNTech geladen...");
 		return a;
 	}
-	
+	protected abstract byte[] saveTech();
 	protected static int generalInfoLength(){return 5;}
 	
 	protected boolean saveGeneralInfo(byte[] ans){
@@ -81,18 +86,48 @@ public abstract class PNTech implements IObjectCommandHandable{
 		return true;
 	}
 
-	public boolean isInvisible(){
-		return this._invisible;
-	}
+	/*	public static String getTechName(byte techID){
+		switch(techID){
+			case 1: 
+				return "TextProvider";
+			case 2:
+				return "Condition";
+			case 3:
+				return "DataFieldConn";
+			case 4:
+				return "NotifSize";
+			case 5:
+				return "SpecEditAccess";
+			case 0:
+				return "!!!PNTechNLOADED!!!";
+		}
+		return "Onbekend:" + techID;
+	}*/
 	
-	protected void setInvisible(boolean newValue) throws Exception{
-		this.checkDenyChanges();
-		this._invisible = newValue;
-		this.notifyChange();
-		if(this.notificationBase != null)this.notificationBase.recheckPrimaryTechnics();
+	public static PNTech createFromParams(String[] params, int ID, PulserNotif notificationBase) throws Exception {
+		if(params == null)throw new Exception("De parameters zijn null");
+		if(params.length == 0){
+			throw new Exception("De eerste creatie parameter moet het PNTech-type zijn. Die kan zijn: \"TextProvider\",\"Condition\",\"DataFieldConn\",\"NotifSize\",\"SpecEditAccess\"");
+		}
+		String[] techSpecificParams = new String[params.length - 1];
+		System.arraycopy(params, 1, techSpecificParams, 0, techSpecificParams.length);
+		
+		String techType = params[0].toLowerCase();
+		if(techType.equals("textprovider") || techType.equals("1")){
+			return PNTechTextProv.createFromParams(techSpecificParams, ID, notificationBase);
+		}else if(techType.equals("condition") || techType.equals("2")){
+			return PNTechCondition.createFromParams(techSpecificParams, ID, notificationBase);
+		}else if(techType.equals("datafieldconn") || techType.equals("3")){
+			return PNTechDataFieldConn.createFromParams(techSpecificParams, ID, notificationBase);
+		}else if(techType.equals("notifsize") || techType.equals("4")){
+			return PNTechNotifSize.createFromParams(techSpecificParams, ID, notificationBase);
+		}else if(techType.equals("speceditaccess") || techType.equals("5")){
+			return PNTechSpecEditAccess.createFromParams(techSpecificParams, ID, notificationBase);
+		}else{
+			throw new Exception("Onbekend PNTech-type");
+		}
 	}
-	
-	public abstract PNTech copyTech(int ID, PulserNotifStandard notificationBase) throws Exception;
+	public abstract PNTech createCopy(int ID, PulserNotifStandard notificationBase) throws Exception;
 	
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
@@ -159,14 +194,15 @@ public abstract class PNTech implements IObjectCommandHandable{
 	}
 	
 	@Override
+	public IObjectCommandHandable getSubObjectCH(String s) throws Exception {
+		return null;
+	}
+	@Override
 	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
 		return a;
 	}
 	
-	@Override
-	public IObjectCommandHandable getSubObjectCH(String s) throws Exception {
-		return null;
-	}
+	
 	
 	/*public String getTopLevelPossibilitiesString(){
 		ArrayList<String> al = new ArrayList<String>(1);
@@ -216,18 +252,15 @@ public abstract class PNTech implements IObjectCommandHandable{
 	}
 	public abstract String[] getLocalTopLevelArgsPossibilities();*/
 	
-	protected void notifyChange(){
-		if(this.notificationBase != null)this.notificationBase.changed = true;
+	public boolean denyChanges(){
+		return this.notificationBase != null && this.notificationBase.denyChanges();
 	}
 	public void checkDenyChanges() throws Exception{
 		if(this.denyChanges())throw new Exception("Veranderingen zijn niet toegestaan voor de PulserNotif. Controleer read-only");
 	}
-	public boolean denyChanges(){
-		return this.notificationBase != null && this.notificationBase.denyChanges();
+	protected void notifyChange(){
+		if(this.notificationBase != null)this.notificationBase.changed = true;
 	}
-	
-	public abstract String getTypeName();
-	
 	public String toString(){
 		return this.ID + " - " + this.getTypeName();
 	}
@@ -249,28 +282,4 @@ public abstract class PNTech implements IObjectCommandHandable{
 		}
 		return "Onbekend:" + techID;
 	}*/
-	
-	public static PNTech createFromParams(String[] params, int ID, PulserNotif notificationBase) throws Exception {
-		if(params == null)throw new Exception("De parameters zijn null");
-		if(params.length == 0){
-			throw new Exception("De eerste creatie parameter moet het PNTech-type zijn. Die kan zijn: \"TextProvider\",\"Condition\",\"DataFieldConn\",\"NotifSize\",\"SpecEditAccess\"");
-		}
-		String[] techSpecificParams = new String[params.length - 1];
-		System.arraycopy(params, 1, techSpecificParams, 0, techSpecificParams.length);
-		
-		String techType = params[0].toLowerCase();
-		if(techType.equals("textprovider") || techType.equals("1")){
-			return PNTechTextProv.createFromParams(techSpecificParams, ID, notificationBase);
-		}else if(techType.equals("condition") || techType.equals("2")){
-			return PNTechCondition.createFromParams(techSpecificParams, ID, notificationBase);
-		}else if(techType.equals("datafieldconn") || techType.equals("3")){
-			return PNTechDataFieldConn.createFromParams(techSpecificParams, ID, notificationBase);
-		}else if(techType.equals("notifsize") || techType.equals("4")){
-			return PNTechNotifSize.createFromParams(techSpecificParams, ID, notificationBase);
-		}else if(techType.equals("speceditaccess") || techType.equals("5")){
-			return PNTechSpecEditAccess.createFromParams(techSpecificParams, ID, notificationBase);
-		}else{
-			throw new Exception("Onbekend PNTech-type");
-		}
-	}
 }

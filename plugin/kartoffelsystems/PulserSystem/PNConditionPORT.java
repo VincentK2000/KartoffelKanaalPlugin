@@ -29,6 +29,31 @@ public class PNConditionPORT extends PNCondition{
 	}
 
 	@Override
+	protected int getEstimatedSize() {
+		return (this.port == null?0:this.port.getEstimatedSize()) + (this.valuator == null?0:this.valuator.getEstimatedSize()) + 8 + PNCondition.generalInfoLength();
+	}
+
+	public static PNConditionPORT loadFromBytes(byte[] src) {
+		if(src == null || src.length < PNCondition.generalInfoLength() + 8 || src.length > 500000)return null;
+		int plength = src[ 6] << 24 | src[7] << 16 | src[8] << 8 | src[9];
+		if(src.length < PNCondition.generalInfoLength() + 8 + plength)return null;
+		
+		int vlength = src[10 + plength] << 24 | src[11 + plength] << 16 | src[12 + plength] << 8 | src[13 + plength];
+		if(src.length != PNCondition.generalInfoLength() + 8 + plength + vlength)return null;
+		
+		byte[] p = new byte[plength];
+		byte[] v = new byte[vlength];
+		
+		System.arraycopy(src, PNCondition.generalInfoLength() + 4, p, 0, plength);
+		System.arraycopy(src, PNCondition.generalInfoLength() + 8 + plength, 0, 0, vlength);
+		
+		PNCondition port = PNCondition.loadFromBytes(p);
+		PNCondition value = PNCondition.loadFromBytes(v);
+		
+		return new PNConditionPORT(port, value, src);
+	}
+
+	@Override
 	protected byte[] saveCondition(){
 		byte[] p = null;
 		byte[] v = null;
@@ -59,38 +84,12 @@ public class PNConditionPORT extends PNCondition{
 		return ans;
 	}
 
-	public static PNConditionPORT loadFromBytes(byte[] src) {
-		if(src == null || src.length < PNCondition.generalInfoLength() + 8 || src.length > 500000)return null;
-		int plength = src[ 6] << 24 | src[7] << 16 | src[8] << 8 | src[9];
-		if(src.length < PNCondition.generalInfoLength() + 8 + plength)return null;
-		
-		int vlength = src[10 + plength] << 24 | src[11 + plength] << 16 | src[12 + plength] << 8 | src[13 + plength];
-		if(src.length != PNCondition.generalInfoLength() + 8 + plength + vlength)return null;
-		
-		byte[] p = new byte[plength];
-		byte[] v = new byte[vlength];
-		
-		System.arraycopy(src, PNCondition.generalInfoLength() + 4, p, 0, plength);
-		System.arraycopy(src, PNCondition.generalInfoLength() + 8 + plength, 0, 0, vlength);
-		
-		PNCondition port = PNCondition.loadFromBytes(p);
-		PNCondition value = PNCondition.loadFromBytes(v);
-		
-		return new PNConditionPORT(port, value, src);
+	public static PNConditionPORT createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		throw new Exception("Functie nog niet beschikbaar");
 	}
 
-
-	@Override
-	protected int getEstimatedSize() {
-		return (this.port == null?0:this.port.getEstimatedSize()) + (this.valuator == null?0:this.valuator.getEstimatedSize()) + 8 + PNCondition.generalInfoLength();
-	}
-	
 	@Override
 	public PNConditionPORT createCopy(int ID, PNTechCondition root) throws Exception {
 		return new PNConditionPORT(this.port.createCopy(601, root), this.valuator.createCopy(601, root), this.options, true, ID, root);//TODO Generate subObject ID dynamically
-	}
-	
-	public static PNConditionPORT createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
-		throw new Exception("Functie nog niet beschikbaar");
 	}
 }

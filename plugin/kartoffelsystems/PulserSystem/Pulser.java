@@ -167,19 +167,6 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 		
 	}
 	
-	public void start(){
-		if(this.preventAction())return;
-		if(t != null && t.isAlive())return;
-		t = new Thread(this);
-		t.start();
-	}
-		
-	public void stop(){
-		if(t != null && t.isAlive()){
-			t.interrupt();
-		}
-	}
-		
 	public void run(){
 		if(this.preventAction()){
 			Logger.getLogger("Minecraft").warning("[KKP] Pulser.ticker kan niet runnen omdat preventAction aan is");
@@ -208,6 +195,20 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 		}
 		Logger.getLogger("Minecraft").info("[KKP] Pulser.ticker is gestopt");
 	}
+
+	public void start(){
+		if(this.preventAction())return;
+		if(t != null && t.isAlive())return;
+		t = new Thread(this);
+		t.start();
+	}
+		
+	public void stop(){
+		if(t != null && t.isAlive()){
+			t.interrupt();
+		}
+	}
+		
 	//public static int numberOfAvailablePlayers(Player without){
 	//	return (without == null)?vulnerableVoorPulser.size():vulnerableVoorPulser.size() - 1;
 	//	/*int aantalSpelers = Main.plugin.getServer().getOnlinePlayers().length;
@@ -277,12 +278,25 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 		this.stop();
 	}
 	
+	protected void repopulateMessageReceivers(){
+		
+	}
+
+	private void _loadNotifications(){
+		if(loader == null)loader = new PulserFileLoader(this);
+		loader.loadFile();
+	}
+
+	public void loadNotifications(){
+		if(this.preventAction())return;
+		this._loadNotifications();
+	}
 	protected void Save(boolean checkChanged){
 		if(checkChanged && !this.isChanged())return;
 		if(saver == null)saver = new PulserFileSaver(this);
 		saver.Save();
 	}
-	
+
 	protected void SaveBlocking(boolean checkChanged){
 		if(checkChanged && !this.isChanged()){
 			Logger.getLogger("Minecraft").info("[KKP] PulserBestand wordt niet bewaard omdat er geen veranderingen waren");
@@ -293,16 +307,7 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 		saver.SaveBlocking();
 		Logger.getLogger("Minecraft").info("[KKP] PulserBestand bewaard");
 	}
-	
-	public void loadNotifications(){
-		if(this.preventAction())return;
-		this._loadNotifications();
-	}
-	private void _loadNotifications(){
-		if(loader == null)loader = new PulserFileLoader(this);
-		loader.loadFile();
-	}
-	
+
 	public void onPlayerLogin(Person p){
 		if(this.preventAction() || p == null)return;
 		//if(p.getSpelerOptions().getSwitch((byte) 0x50, false))Pulser.vulnerableVoorPulser.add(p);
@@ -378,10 +383,6 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 		}
 	}
 	
-	protected void repopulateMessageReceivers(){
-		
-	}
-	
 	public boolean isChanged(){
 		return this.lastChangeTime >= this.lastSaveTime;
 	}
@@ -413,19 +414,15 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 		}
 		return result;
 	}
-	public static String formatListToString(ArrayList<String> list, String separator){
-		if(list == null || list.size() == 0 || separator == null)return "";
-		StringBuilder sb = new StringBuilder(20);
-		for(int i = 0; i < list.size() - 1; i++){
-			String s = list.get(i);
-			if(s == null || s.length() == 0)continue;
-			sb.append(separator);
-		}
-		String last = list.get(list.size() - 1);
-		if(last != null){
-			sb.append(last);
-		}
-		return sb.toString();
+
+	@Override
+	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
+		return false;
+	}
+
+	@Override
+	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception {
+		return a;
 	}
 
 	@Override
@@ -460,14 +457,19 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 		return a;
 	}
 
-	@Override
-	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
-		return false;
-	}
-	
-	@Override
-	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception {
-		return a;
+	public static String formatListToString(ArrayList<String> list, String separator){
+		if(list == null || list.size() == 0 || separator == null)return "";
+		StringBuilder sb = new StringBuilder(20);
+		for(int i = 0; i < list.size() - 1; i++){
+			String s = list.get(i);
+			if(s == null || s.length() == 0)continue;
+			sb.append(separator);
+		}
+		String last = list.get(list.size() - 1);
+		if(last != null){
+			sb.append(last);
+		}
+		return sb.toString();
 	}
 	
 	/*public static <T> T[] operateArrayCommand(Person executor, CommandSender a, String operationName, String[] operationArgs, AttribSystem attribSys, T[] originalArray){

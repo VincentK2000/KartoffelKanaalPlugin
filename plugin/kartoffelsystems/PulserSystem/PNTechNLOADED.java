@@ -14,8 +14,11 @@ public class PNTechNLOADED extends PNTech{
 	@Override
 	public byte getTechType() {return 0;}
 
-	protected byte[] saveTech(){return data;}
-	
+	@Override
+	public String getTypeName(){
+		return "!!!NLOADED!!!";
+	}
+
 	@Override
 	public boolean isInvisible(){
 		return true;
@@ -26,17 +29,14 @@ public class PNTechNLOADED extends PNTech{
 		return data.length;
 	}
 	
+	protected byte[] saveTech(){return data;}
+
 	public static PNTechCondition createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
 		throw new Exception("Je kan geen PNTechNLOADED aanmaken");
 	}
 	
 	@Override
-	public PNTech copyTech(int ID, PulserNotifStandard notificationBase) throws Exception{
+	public PNTech createCopy(int ID, PulserNotifStandard notificationBase) throws Exception{
 		throw new Exception("Je kan geen kopie maken van een PNTechNLOADED");
-	}
-	
-	@Override
-	public String getTypeName(){
-		return "!!!NLOADED!!!";
 	}
 }

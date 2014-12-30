@@ -28,12 +28,6 @@ public class PNConditionRandom extends PNCondition{
 		this.validateRandomizers();
 	}
 	
-	public void validateRandomizers(){
-		if(positiveAmount < 0)positiveAmount = 0;
-		if(total <= positiveAmount)total = positiveAmount;
-		if(total == 0)total = 1;
-	}
-	
 	@Override
 	protected byte getConditionType() {return 10;}
 
@@ -42,6 +36,17 @@ public class PNConditionRandom extends PNCondition{
 		if(r == null)r = new Random();
 		int a = r.nextInt(total);
 		return a < this.positiveAmount;
+	}
+
+	public void validateRandomizers(){
+		if(positiveAmount < 0)positiveAmount = 0;
+		if(total <= positiveAmount)total = positiveAmount;
+		if(total == 0)total = 1;
+	}
+
+	@Override
+	protected int getEstimatedSize() {
+		return 8 + PNCondition.generalInfoLength();
 	}
 
 	protected static PNConditionRandom loadFromBytes(byte[] src){
@@ -75,11 +80,15 @@ public class PNConditionRandom extends PNCondition{
 		return ans;
 	}
 
-	@Override
-	protected int getEstimatedSize() {
-		return 8 + PNCondition.generalInfoLength();
+	public static PNConditionRandom createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		throw new Exception("Functie nog niet beschikbaar");
 	}
-	
+
+	@Override
+	public PNConditionRandom createCopy(int ID, PNTechCondition root) throws Exception {
+		return new PNConditionRandom(this.total, this.positiveAmount, this.options, true, ID, root);
+	}
+
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
@@ -183,14 +192,5 @@ public class PNConditionRandom extends PNCondition{
 			if("change".startsWith(args[0]))a.add("change");
 		}
 		return a;
-	}
-	
-	@Override
-	public PNConditionRandom createCopy(int ID, PNTechCondition root) throws Exception {
-		return new PNConditionRandom(this.total, this.positiveAmount, this.options, true, ID, root);
-	}
-	
-	public static PNConditionRandom createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
-		throw new Exception("Functie nog niet beschikbaar");
 	}
 }

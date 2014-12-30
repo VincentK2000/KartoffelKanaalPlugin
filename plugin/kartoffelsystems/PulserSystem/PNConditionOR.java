@@ -42,6 +42,27 @@ public class PNConditionOR extends PNCondition{
 	}
 	
 	@Override
+	protected int getEstimatedSize() {
+		if(arr == null)return PNCondition.generalInfoLength();
+		int l = PNCondition.generalInfoLength() + arr.length * 4;
+		for(int i = 0; i < arr.length; i++){
+			if(arr[i] != null)l += arr[i].getEstimatedSize();
+		}
+		return l;
+	}
+
+	public static PNConditionOR loadFromBytes(byte[] src) {
+		if(src == null || src.length < PNCondition.generalInfoLength() || src.length > 500000)return null;
+		byte[][] c = StoreTechnics.loadArray(src, 100, 100000, PNCondition.generalInfoLength());
+		PNCondition[] conditions = new PNCondition[c.length];
+		for(int i = 0; i < c.length; i++){
+			conditions[i] = PNCondition.loadFromBytes(src);
+		}
+		
+		return new PNConditionOR(conditions, src);
+	}
+
+	@Override
 	protected byte[] saveCondition(){
 		byte[][] a = new byte[this.arr.length][];
 		for(int i = 0; i < arr.length; i++){
@@ -64,27 +85,27 @@ public class PNConditionOR extends PNCondition{
 		return ans;
 	}
 
-	public static PNConditionOR loadFromBytes(byte[] src) {
-		if(src == null || src.length < PNCondition.generalInfoLength() || src.length > 500000)return null;
-		byte[][] c = StoreTechnics.loadArray(src, 100, 100000, PNCondition.generalInfoLength());
-		PNCondition[] conditions = new PNCondition[c.length];
-		for(int i = 0; i < c.length; i++){
-			conditions[i] = PNCondition.loadFromBytes(src);
-		}
-		
-		return new PNConditionOR(conditions, src);
+	public static PNConditionOR createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		if(params.length > 0)throw new Exception("Je kan enkel een lege PNConditionOR aanmaken. Children moeten achteraf toegevoegd worden. Gebruik dus geen parameters voor dit type.");
+		return new PNConditionOR(new PNCondition[0], options, true, ID, root);
 	}
 
 	@Override
-	protected int getEstimatedSize() {
-		if(arr == null)return PNCondition.generalInfoLength();
-		int l = PNCondition.generalInfoLength() + arr.length * 4;
-		for(int i = 0; i < arr.length; i++){
-			if(arr[i] != null)l += arr[i].getEstimatedSize();
+	public PNConditionOR createCopy(int ID, PNTechCondition root) throws Exception {
+		PNCondition[] children = null;
+		if(this.arr == null){
+			children = new PNCondition[0];
+		}else{
+			children = new PNCondition[this.arr.length];
+			for(int i = 0; i < this.arr.length; i++){
+				if(this.arr[i] != null){
+					children[i] = this.arr[i].createCopy(601, root);//TODO De Condition-ID moet dynamisch asigned worden
+				}
+			}
 		}
-		return l;
+		return new PNConditionOR(children, this.options, true, ID, root);
 	}
-	
+
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
@@ -126,26 +147,5 @@ public class PNConditionOR extends PNCondition{
 	@Override
 	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
 		return super.autoCompleteSubObjectCH(s, a);
-	}
-
-	@Override
-	public PNConditionOR createCopy(int ID, PNTechCondition root) throws Exception {
-		PNCondition[] children = null;
-		if(this.arr == null){
-			children = new PNCondition[0];
-		}else{
-			children = new PNCondition[this.arr.length];
-			for(int i = 0; i < this.arr.length; i++){
-				if(this.arr[i] != null){
-					children[i] = this.arr[i].createCopy(601, root);//TODO De Condition-ID moet dynamisch asigned worden
-				}
-			}
-		}
-		return new PNConditionOR(children, this.options, true, ID, root);
-	}
-	
-	public static PNConditionOR createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
-		if(params.length > 0)throw new Exception("Je kan enkel een lege PNConditionOR aanmaken. Children moeten achteraf toegevoegd worden. Gebruik dus geen parameters voor dit type.");
-		return new PNConditionOR(new PNCondition[0], options, true, ID, root);
 	}
 }

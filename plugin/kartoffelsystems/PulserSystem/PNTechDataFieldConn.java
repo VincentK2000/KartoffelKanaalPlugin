@@ -16,31 +16,10 @@ public class PNTechDataFieldConn extends PNTech{
 	public byte getTechType() {return 3;}
 
 	@Override
-	protected byte[] saveTech() {
-		if(toIncrease == null){
-			toIncrease = new byte[0];
-		}
-		byte l;
-		
-		if(toIncrease.length > 127){
-			l = 127;
-		}else{
-			l = (byte) toIncrease.length;
-		}
-		
-		byte[] ans = new byte[PNTech.generalInfoLength() + 1 + l];
-		
-		ans[PNTech.generalInfoLength()] = l;
-		System.arraycopy(toIncrease, 0, ans, PNTech.generalInfoLength() + 1, l);
-		
-		return ans;
+	public String getTypeName(){
+		return "TechDataFieldConn";
 	}
 
-	@Override
-	public int getEstimatedSize() {
-		return PNTech.generalInfoLength() + 1 + toIncrease.length;
-	}
-	
 	protected void increaseValue(short... playerID){
 		
 	}
@@ -70,6 +49,11 @@ public class PNTechDataFieldConn extends PNTech{
 		}
 	}
 	
+	@Override
+	public int getEstimatedSize() {
+		return PNTech.generalInfoLength() + 1 + toIncrease.length;
+	}
+
 	protected static PNTechDataFieldConn loadFromBytes(byte[] src){
 		if(src == null || src.length < PNTech.generalInfoLength() || src[PNTech.generalInfoLength()] < 0 || src.length != (PNTech.generalInfoLength() + src[PNTech.generalInfoLength()]))return null;
 		
@@ -85,17 +69,33 @@ public class PNTechDataFieldConn extends PNTech{
 	}
 
 
+	@Override
+	protected byte[] saveTech() {
+		if(toIncrease == null){
+			toIncrease = new byte[0];
+		}
+		byte l;
+		
+		if(toIncrease.length > 127){
+			l = 127;
+		}else{
+			l = (byte) toIncrease.length;
+		}
+		
+		byte[] ans = new byte[PNTech.generalInfoLength() + 1 + l];
+		
+		ans[PNTech.generalInfoLength()] = l;
+		System.arraycopy(toIncrease, 0, ans, PNTech.generalInfoLength() + 1, l);
+		
+		return ans;
+	}
+
 	public static PNTechCondition createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
 		throw new Exception("Functie nog niet beschikbaar");
 	}
 	
 	@Override
-	public PNTech copyTech(int ID, PulserNotifStandard notificationBase) throws Exception{
+	public PNTech createCopy(int ID, PulserNotifStandard notificationBase) throws Exception{
 		throw new Exception("Functie nog niet beschikbaar");
-	}
-	
-	@Override
-	public String getTypeName(){
-		return "TechDataFieldConn";
 	}
 }

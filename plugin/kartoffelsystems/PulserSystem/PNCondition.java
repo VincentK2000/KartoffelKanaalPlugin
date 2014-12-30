@@ -45,7 +45,38 @@ public abstract class PNCondition implements IObjectCommandHandable {
 		}
 	}
 	
+	public boolean isInvisible(){
+		return this.invisible;
+	}
+	public void setInvisible(boolean newValue) throws Exception{
+		this.checkDenyChanges();
+		this.invisible = newValue;
+		this.notifyChange();
+	}
 	protected abstract byte getConditionType();
+	//return new PNCondition(this.source);
+	//}
+	
+	protected abstract int getEstimatedSize();
+	protected abstract boolean calculateValue();
+	//return new PNCondition(this.source);
+	//}
+	
+	protected final boolean getConditionValue(){
+		boolean value = true;
+		if((options & 0x40) == 0x40){
+			value = ((options & 0x20) == 0x20);
+		}else{
+			value = this.calculateValue();
+		}
+		
+		if(value){
+			options |= 0x10;
+		}else{
+			options &= 0xEF;
+		}
+		return value;
+	}
 	protected static PNCondition loadFromBytes(byte[] src){
 		if(src == null || src.length < PNCondition.generalInfoLength())return new PNConditionNLOADED(src);
 		
@@ -116,34 +147,40 @@ public abstract class PNCondition implements IObjectCommandHandable {
 	//return new PNCondition(this.source);
 	//}
 	
-	protected abstract int getEstimatedSize();
-	protected final boolean getConditionValue(){
-		boolean value = true;
-		if((options & 0x40) == 0x40){
-			value = ((options & 0x20) == 0x20);
-		}else{
-			value = this.calculateValue();
+	public static PNCondition createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		if(params == null)throw new Exception("De parameters zijn null");
+		if(params.length == 0){
+			throw new Exception("De eerste creatie parameter moet het PNTech-type zijn. Die kan zijn: \"TextProvider\",\"Condition\",\"DataFieldConn\",\"NotifSize\",\"SpecEditAccess\"");
 		}
+		String[] conditionSpecificParams = new String[params.length - 1];
+		System.arraycopy(params, 1, conditionSpecificParams, 0, conditionSpecificParams.length);
 		
-		if(value){
-			options |= 0x10;
+		String conditionType = params[0].toLowerCase();
+		if(conditionType.equals("and") || conditionType.equals("0")){
+			return PNConditionAND.createFromParams(conditionSpecificParams, options, ID, root);
+		}else if(conditionType.equals("or") || conditionType.equals("1")){
+			return PNConditionOR.createFromParams(conditionSpecificParams, options, ID, root);
+		}else if(conditionType.equals("xor") || conditionType.equals("2")){
+			return PNConditionXOR.createFromParams(conditionSpecificParams, options, ID, root);
+		}else if(conditionType.equals("not") || conditionType.equals("3")){
+			return PNConditionNOT.createFromParams(conditionSpecificParams, options, ID, root);
+		}else if(conditionType.equals("numb") || conditionType.equals("4")){
+			return PNConditionNUMB.createFromParams(conditionSpecificParams, options, ID, root);
+		}else if(conditionType.equals("port") || conditionType.equals("5")){
+			return PNConditionPORT.createFromParams(conditionSpecificParams, options, ID, root);
+		}else if(conditionType.equals("datafield") || conditionType.equals("6")){
+			return PNConditionDataField.createFromParams(conditionSpecificParams, options, ID, root);
+		}else if(conditionType.equals("timeranged") || conditionType.equals("7")){
+			return PNConditionTimeRanged.createFromParams(conditionSpecificParams, options, ID, root);
+		}else if(conditionType.equals("constant") || conditionType.equals("8")){
+			return PNConditionConstant.createFromParams(conditionSpecificParams, options, ID, root);
+		}else if(conditionType.equals("random") || conditionType.equals("10")){
+			return PNConditionRandom.createFromParams(conditionSpecificParams, options, ID, root);
 		}else{
-			options &= 0xEF;
+			throw new Exception("Onbekend PNCondition-type");
 		}
-		return value;
 	}
-	protected abstract boolean calculateValue();
 	protected abstract PNCondition createCopy(int conditionID, PNTechCondition base) throws Exception;
-	
-	public boolean isInvisible(){
-		return this.invisible;
-	}
-	
-	public void setInvisible(boolean newValue) throws Exception{
-		this.checkDenyChanges();
-		this.invisible = newValue;
-		this.notifyChange();
-	}
 	
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {		
@@ -366,53 +403,66 @@ public abstract class PNCondition implements IObjectCommandHandable {
 	}
 	public abstract String[] getLocalTopLevelArgsPossibilities();*/
 	
-	protected void notifyChange(){
-		if(this.root != null)this.root.notifyChange();
+	public boolean denyChanges(){
+		return this.root != null && this.root.notificationBase != null && this.root.notificationBase.denyChanges();
 	}
 	public void checkDenyChanges() throws Exception{
 		if(this.denyChanges())throw new Exception("Veranderingen zijn niet toegestaan voor de PulserNotif. Controleer read-only");
 	}
-	public boolean denyChanges(){
-		return this.root != null && this.root.notificationBase != null && this.root.notificationBase.denyChanges();
-	}
+	/*public String getTopLevelPossibilitiesString(){
+		ArrayList<String> al = new ArrayList<String>(1);
+		try {
+			al = this.autoCompleteObjectCommand(new String[]{""}, al);
+		} catch (Exception e) {
+			return "Fout_bij_zoeken";
+		}
+		if(al.size() == 0)return "";
+		StringBuilder sb = new StringBuilder(20);
+		for(int i = 0; i < al.size() - 1; i++){
+			String s = al.get(i);
+			if(s == null || s.length() == 0)continue;
+			sb.append(s);
+			sb.append('|');
+		}
+		String last = al.get(al.size() - 1);
+		if(last != null){
+			sb.append(last);
+		}
+		return sb.toString();
+	}*/
 	
+	/*public String getTopLevelPossibilitiesString(){
+		String[] total = this.getTotalTopLevelArgsPossibilities();
+		if(total.length == 0)return "";
+		StringBuilder sb = new StringBuilder(20);
+		for(int i = 0; i < total.length - 1; i++){
+			if(total[i] == null || total[i].length() == 0)continue;
+			sb.append(total[i]);
+			sb.append('|');
+		}
+		if(total[total.length - 1] != null){
+			sb.append(total[total.length - 1]);
+		}
+		return sb.toString();
+	}
+	public final String[] getTotalTopLevelArgsPossibilities(){
+		String[] general = new String[]{"visibility","value"};
+		String[] local = this.getLocalTopLevelArgsPossibilities();
+		if(local == null)local = new String[0];
+		
+		String[] total = new String[general.length + local.length];
+		System.arraycopy(general, 0, total, 0, general.length);
+		System.arraycopy(local, 0, total, general.length, local.length);
+		return total;
+	}
+	public abstract String[] getLocalTopLevelArgsPossibilities();*/
+	
+	protected void notifyChange(){
+		if(this.root != null)this.root.notifyChange();
+	}
 	@Override
 	public String toString(){
 		return "PNCondition[conditionID=" + this.conditionID + ",invisible=" + this.invisible + ",valueClosed=" + ((this.options & 0x40) == 0x40) + ",valueDefault=" + ((this.options & 0x20) == 0x20) + ",valueLast=" + ((this.options & 0x10) == 0x10) + "]";
-	}
-	
-	public static PNCondition createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
-		if(params == null)throw new Exception("De parameters zijn null");
-		if(params.length == 0){
-			throw new Exception("De eerste creatie parameter moet het PNTech-type zijn. Die kan zijn: \"TextProvider\",\"Condition\",\"DataFieldConn\",\"NotifSize\",\"SpecEditAccess\"");
-		}
-		String[] conditionSpecificParams = new String[params.length - 1];
-		System.arraycopy(params, 1, conditionSpecificParams, 0, conditionSpecificParams.length);
-		
-		String conditionType = params[0].toLowerCase();
-		if(conditionType.equals("and") || conditionType.equals("0")){
-			return PNConditionAND.createFromParams(conditionSpecificParams, options, ID, root);
-		}else if(conditionType.equals("or") || conditionType.equals("1")){
-			return PNConditionOR.createFromParams(conditionSpecificParams, options, ID, root);
-		}else if(conditionType.equals("xor") || conditionType.equals("2")){
-			return PNConditionXOR.createFromParams(conditionSpecificParams, options, ID, root);
-		}else if(conditionType.equals("not") || conditionType.equals("3")){
-			return PNConditionNOT.createFromParams(conditionSpecificParams, options, ID, root);
-		}else if(conditionType.equals("numb") || conditionType.equals("4")){
-			return PNConditionNUMB.createFromParams(conditionSpecificParams, options, ID, root);
-		}else if(conditionType.equals("port") || conditionType.equals("5")){
-			return PNConditionPORT.createFromParams(conditionSpecificParams, options, ID, root);
-		}else if(conditionType.equals("datafield") || conditionType.equals("6")){
-			return PNConditionDataField.createFromParams(conditionSpecificParams, options, ID, root);
-		}else if(conditionType.equals("timeranged") || conditionType.equals("7")){
-			return PNConditionTimeRanged.createFromParams(conditionSpecificParams, options, ID, root);
-		}else if(conditionType.equals("constant") || conditionType.equals("8")){
-			return PNConditionConstant.createFromParams(conditionSpecificParams, options, ID, root);
-		}else if(conditionType.equals("random") || conditionType.equals("10")){
-			return PNConditionRandom.createFromParams(conditionSpecificParams, options, ID, root);
-		}else{
-			throw new Exception("Onbekend PNCondition-type");
-		}
 	}
 	
 }

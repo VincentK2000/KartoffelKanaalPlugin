@@ -19,6 +19,14 @@ public class PNTechCondition extends PNTech{
 		if(this.root != null)this.root.root = this;
 	}
 	
+	@Override
+	public byte getTechType() {return 2;}
+
+	@Override
+	public String getTypeName(){
+		return "TechCondition";
+	}
+
 	protected boolean preventMessage(){
 		if(this.root == null)return false;
 		//System.out.println("De value berekenen van de rootcondition...");
@@ -27,9 +35,22 @@ public class PNTechCondition extends PNTech{
 		return !b;
 	}
 	
+	protected PNCondition getBaseCondition(){
+		return this.root;
+	}
+
+	protected void setBaseCondition(PNCondition c){
+		this.root = c;
+		if(this.root != null){
+			this.root.root = this;
+		}
+	}
+
 	@Override
-	public byte getTechType() {return 2;}
-	
+	public int getEstimatedSize() {
+		return PNTech.generalInfoLength() + root.getEstimatedSize();
+	}
+
 	protected static PNTechCondition loadFromBytes(byte[] src){
 		if(src == null || src.length < PNTech.generalInfoLength())return null;
 		
@@ -54,20 +75,13 @@ public class PNTechCondition extends PNTech{
 		return ans;
 	}
 	
+	public static PNTechCondition createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
+		throw new Exception("Functie nog niet beschikbaar");
+	}
+
 	@Override
-	public int getEstimatedSize() {
-		return PNTech.generalInfoLength() + root.getEstimatedSize();
-	}
-	
-	protected PNCondition getBaseCondition(){
-		return this.root;
-	}
-	
-	protected void setBaseCondition(PNCondition c){
-		this.root = c;
-		if(this.root != null){
-			this.root.root = this;
-		}
+	public PNTech createCopy(int ID, PulserNotifStandard notificationBase) throws Exception{
+		throw new Exception("Functie nog niet beschikbaar");
 	}
 
 	@Override
@@ -89,19 +103,5 @@ public class PNTechCondition extends PNTech{
 		if("base".startsWith(s))a.add("base");
 		if("condition".startsWith(s))a.add("condition");
 		return a;
-	}
-	
-	public static PNTechCondition createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
-		throw new Exception("Functie nog niet beschikbaar");
-	}
-
-	@Override
-	public PNTech copyTech(int ID, PulserNotifStandard notificationBase) throws Exception{
-		throw new Exception("Functie nog niet beschikbaar");
-	}
-	
-	@Override
-	public String getTypeName(){
-		return "TechCondition";
 	}
 }

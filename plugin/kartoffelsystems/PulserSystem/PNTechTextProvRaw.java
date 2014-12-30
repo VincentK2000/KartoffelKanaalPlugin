@@ -22,42 +22,33 @@ public class PNTechTextProvRaw extends PNTechTextProv{
 		this.rawtext = rawtext;
 	}
 	
+	@Override
+	public String getTypeName(){
+		return super.getTypeName() + "Raw";
+	}
+
 	public byte getTechType(){return 1;}
 	public byte getTextProvType(){return 1;}
-	
-	public int getEstimatedSize(){
-		return PNTech.generalInfoLength() + rawtext.length();
-	}
 	
 	protected String getMessage(){
 		return this.rawtext;
 	}
 	
-	protected byte[] saveTech(){
-		byte[] text;
-		if(this.rawtext == null){
-			text = new byte[0];
-		}else{
-			try {
-				text = this.rawtext.getBytes("UTF8");
-			} catch (UnsupportedEncodingException e) {
-				Logger.getLogger("Minecraft").warning("[KKP] De Encoding \"UTF8\" wordt niet herkent bij een PNTechTextProvRaw");
-				byte[] ans = new byte[PNTech.generalInfoLength() + 1];
-				this.saveGeneralInfo(ans);
-				ans[PNTech.generalInfoLength()] = this.getTextProvType();
-				return ans;
-			}
-		}
-		
-		byte[] ans = new byte[text.length + PNTech.generalInfoLength() + 1];
-		
-		this.saveGeneralInfo(ans);
-		
-		ans[PNTech.generalInfoLength()] = 1; //TextProvType
-		
-		System.arraycopy(text, 0, ans, PNTech.generalInfoLength() + 1, text.length);
-		return ans;
+	public int getEstimatedSize(){
+		return PNTech.generalInfoLength() + rawtext.length();
 	}
+
+	@Override
+	public boolean crashTestRequired() {
+		return this.requiresCrashTest;
+	}
+
+	@Override
+	public void doCrashTest(Player pl) throws Exception {
+		if(pl == null)throw new Exception("Player is null!");
+		Main.plugin.getServer().dispatchCommand(Main.plugin.getServer().getConsoleSender(), "tellraw " + pl.getName() + ' ' + this.getMessage());
+	}
+
 	protected static PNTechTextProvRaw loadFromBytes(byte[] src){
 		//System.out.println("                PNTechTextProvRaw.loadFromBytes: PNTechTextProvRaw laden...");
 		if(src == null || src.length < generalInfoLength())return null;
@@ -84,17 +75,32 @@ public class PNTechTextProvRaw extends PNTechTextProv{
 		return new PNTechTextProvRaw(rawtext, src);
 	}
 
-	@Override
-	public boolean crashTestRequired() {
-		return this.requiresCrashTest;
+	protected byte[] saveTech(){
+		byte[] text;
+		if(this.rawtext == null){
+			text = new byte[0];
+		}else{
+			try {
+				text = this.rawtext.getBytes("UTF8");
+			} catch (UnsupportedEncodingException e) {
+				Logger.getLogger("Minecraft").warning("[KKP] De Encoding \"UTF8\" wordt niet herkent bij een PNTechTextProvRaw");
+				byte[] ans = new byte[PNTech.generalInfoLength() + 1];
+				this.saveGeneralInfo(ans);
+				ans[PNTech.generalInfoLength()] = this.getTextProvType();
+				return ans;
+			}
+		}
+		
+		byte[] ans = new byte[text.length + PNTech.generalInfoLength() + 1];
+		
+		this.saveGeneralInfo(ans);
+		
+		ans[PNTech.generalInfoLength()] = 1; //TextProvType
+		
+		System.arraycopy(text, 0, ans, PNTech.generalInfoLength() + 1, text.length);
+		return ans;
 	}
 
-	@Override
-	public void doCrashTest(Player pl) throws Exception {
-		if(pl == null)throw new Exception("Player is null!");
-		Main.plugin.getServer().dispatchCommand(Main.plugin.getServer().getConsoleSender(), "tellraw " + pl.getName() + ' ' + this.getMessage());
-	}
-	
 	public static PNTechTextProvRaw createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		if(params.length >= 1){
@@ -108,12 +114,7 @@ public class PNTechTextProvRaw extends PNTechTextProv{
 	}
 	
 	@Override
-	public PNTechTextProvRaw copyTech(int ID, PulserNotifStandard notificationBase) throws Exception{
+	public PNTechTextProvRaw createCopy(int ID, PulserNotifStandard notificationBase) throws Exception{
 		return new PNTechTextProvRaw(new String(this.rawtext), true, ID, notificationBase);
-	}
-	
-	@Override
-	public String getTypeName(){
-		return super.getTypeName() + "Raw";
 	}
 }

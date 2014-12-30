@@ -48,6 +48,27 @@ public class PNConditionNUMB extends PNCondition{
 	}
 
 	@Override
+	protected int getEstimatedSize() {
+		if(arr == null)return PNCondition.generalInfoLength();
+		int l = PNCondition.generalInfoLength() + arr.length * 4;
+		for(int i = 0; i < arr.length; i++){
+			if(arr[i] != null)l += arr[i].getEstimatedSize();
+		}
+		return l;
+	}
+
+	public static PNConditionNUMB loadFromBytes(byte[] src) {
+		if(src == null || src.length < PNCondition.generalInfoLength() || src.length > 500000)return null;
+		byte[][] c = StoreTechnics.loadArray(src, 100, 100000, PNCondition.generalInfoLength() + 2);
+		PNCondition[] conditions = new PNCondition[c.length];
+		for(int i = 0; i < c.length; i++){
+			conditions[i] = PNCondition.loadFromBytes(src);
+		}
+		
+		return new PNConditionNUMB(conditions, src[6], src[7], src);
+	}
+
+	@Override
 	protected byte[] saveCondition(){
 		byte[][] a = new byte[this.arr.length][];
 		for(int i = 0; i < arr.length; i++){
@@ -73,27 +94,26 @@ public class PNConditionNUMB extends PNCondition{
 		return ans;
 	}
 
-	public static PNConditionNUMB loadFromBytes(byte[] src) {
-		if(src == null || src.length < PNCondition.generalInfoLength() || src.length > 500000)return null;
-		byte[][] c = StoreTechnics.loadArray(src, 100, 100000, PNCondition.generalInfoLength() + 2);
-		PNCondition[] conditions = new PNCondition[c.length];
-		for(int i = 0; i < c.length; i++){
-			conditions[i] = PNCondition.loadFromBytes(src);
-		}
-		
-		return new PNConditionNUMB(conditions, src[6], src[7], src);
+	public static PNConditionNUMB createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		throw new Exception("Functie nog niet beschikbaar");
 	}
 
 	@Override
-	protected int getEstimatedSize() {
-		if(arr == null)return PNCondition.generalInfoLength();
-		int l = PNCondition.generalInfoLength() + arr.length * 4;
-		for(int i = 0; i < arr.length; i++){
-			if(arr[i] != null)l += arr[i].getEstimatedSize();
+	public PNConditionNUMB createCopy(int ID, PNTechCondition root) throws Exception {
+		PNCondition[] children = null;
+		if(this.arr == null){
+			children = new PNCondition[0];
+		}else{
+			children = new PNCondition[this.arr.length];
+			for(int i = 0; i < this.arr.length; i++){
+				if(this.arr[i] != null){
+					children[i] = this.arr[i].createCopy(601, root);//TODO De Condition-ID moet dynamisch asigned worden
+				}
+			}
 		}
-		return l;
+		return new PNConditionNUMB(children, this.min, this.max, this.options, true, ID, root);
 	}
-	
+
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
@@ -177,26 +197,6 @@ public class PNConditionNUMB extends PNCondition{
 		a = super.autoCompleteSubObjectCH(s, a);
 		if("#".startsWith(s))a.add("#");
 		return a;
-	}
-	
-	@Override
-	public PNConditionNUMB createCopy(int ID, PNTechCondition root) throws Exception {
-		PNCondition[] children = null;
-		if(this.arr == null){
-			children = new PNCondition[0];
-		}else{
-			children = new PNCondition[this.arr.length];
-			for(int i = 0; i < this.arr.length; i++){
-				if(this.arr[i] != null){
-					children[i] = this.arr[i].createCopy(601, root);//TODO De Condition-ID moet dynamisch asigned worden
-				}
-			}
-		}
-		return new PNConditionNUMB(children, this.min, this.max, this.options, true, ID, root);
-	}
-	
-	public static PNConditionNUMB createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
-		throw new Exception("Functie nog niet beschikbaar");
 	}
 
 }

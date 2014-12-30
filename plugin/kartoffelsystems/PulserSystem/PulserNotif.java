@@ -41,8 +41,6 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 	
 	protected abstract void sendMessage(Person[] p, boolean[] receivers);
 	
-	protected abstract byte[] saveNotif();
-	
 	protected boolean isEditMode(){
 		return denyChanges;
 	}
@@ -58,58 +56,16 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 		this.denyChanges = false;
 	}
 	
-	protected void notifyChange(){
-		this.changed = true;
-		if(Main.pulser != null)Main.pulser.notifyChange();
-	}
-	
-	public boolean isChanged(){
-		return changed;
-	}
-	
-	public static PulserNotif loadFromBytes(byte[] src){
-		//System.out.println("PulserNotif.loadFromBytes: Notification laden...");
-		if(src == null || src.length < generalInfoLength())return null;
-		//System.out.println("PulserNotif.loadFromBytes: Voldoende informatie om mee te starten");
-		PulserNotif a = null;
-		byte t = (byte) (src[0] & 0x7F);
-		if(t == 1){
-			a = PulserNotifStandard.loadFromBytes(src);
-		}
-		if(a == null){
-			a = new PulserNotifNLOADED(src);
-		}
-		//System.out.println("PulserNotif.loadFromBytes: Notification geladen, a = " + (a == null?"null":a));
-		return a;
-	}
-
-	protected static int generalInfoLength(){return 2;}
-	
-	protected void saveGeneralInfo(byte[] ans){
-		if(ans == null || ans.length < 2)return;
-		ans[0] = this.getNotifType();
-		if(this.invisible)ans[0] |= 0x80;
-		ans[1] = this.options;
-	}
-	
-	public void checkDenyChanges() throws Exception{
-		if(this.denyChanges())throw new Exception("Veranderingen zijn niet toegestaan voor de PulserNotif. Controleer read-only");
-	}
-	
-	public boolean denyChanges(){
-		return this.denyChanges || (this.options & 0x20) != 0x00;
-	}
-	
 	public boolean isActive(){
 		return !this.invisible;
 	}
-	
+
 	public void deactivate() throws Exception{
 		this.checkDenyChanges();
 		this.invisible = true;
 		this.notifyChange();
 	}
-	
+
 	public void activate(CommandSender a, AttribSystem attribSys) throws Exception{
 		if(a == null || attribSys == null)throw new NullPointerException("CommandSender of AttribSystem is null");
 		if(!a.isOp()){
@@ -163,7 +119,7 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 			a.sendMessage("§4ERROR: Onbekende activationStage!");
 		}
 	}
-	
+
 	/*public void setActive(boolean status) throws Exception{Bij de activatie zou er mogelijk een crashTest moeten plaatsvinden...
 		if(this.denyChanges())throw new Exception("De PulserNotif accepteert geen veranderingen. Controleer of read-only aan staat.");
 		this.invisible = !status;
@@ -171,7 +127,68 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 	}*/
 	
 	public abstract boolean activationRequiresCrashTest();
+
+	/*public void setActive(boolean status) throws Exception{Bij de activatie zou er mogelijk een crashTest moeten plaatsvinden...
+		if(this.denyChanges())throw new Exception("De PulserNotif accepteert geen veranderingen. Controleer of read-only aan staat.");
+		this.invisible = !status;
+		this.notifyChange();
+	}*/
+	
 	public abstract void doCrashTest(Player pl) throws Exception;
+
+	public void checkDenyChanges() throws Exception{
+		if(this.denyChanges())throw new Exception("Veranderingen zijn niet toegestaan voor de PulserNotif. Controleer read-only");
+	}
+
+	public boolean denyChanges(){
+		return this.denyChanges || (this.options & 0x20) != 0x00;
+	}
+
+	public boolean isChanged(){
+		return changed;
+	}
+	
+	protected void notifyChange(){
+		this.changed = true;
+		if(Main.pulser != null)Main.pulser.notifyChange();
+	}
+
+	public static PulserNotif loadFromBytes(byte[] src){
+		//System.out.println("PulserNotif.loadFromBytes: Notification laden...");
+		if(src == null || src.length < generalInfoLength())return null;
+		//System.out.println("PulserNotif.loadFromBytes: Voldoende informatie om mee te starten");
+		PulserNotif a = null;
+		byte t = (byte) (src[0] & 0x7F);
+		if(t == 1){
+			a = PulserNotifStandard.loadFromBytes(src);
+		}
+		if(a == null){
+			a = new PulserNotifNLOADED(src);
+		}
+		//System.out.println("PulserNotif.loadFromBytes: Notification geladen, a = " + (a == null?"null":a));
+		return a;
+	}
+
+	protected abstract byte[] saveNotif();
+
+	protected static int generalInfoLength(){return 2;}
+
+	protected void saveGeneralInfo(byte[] ans){
+		if(ans == null || ans.length < 2)return;
+		ans[0] = this.getNotifType();
+		if(this.invisible)ans[0] |= 0x80;
+		ans[1] = this.options;
+	}
+	
+	
+	
+	/*public void setActive(boolean status) throws Exception{Bij de activatie zou er mogelijk een crashTest moeten plaatsvinden...
+		if(this.denyChanges())throw new Exception("De PulserNotif accepteert geen veranderingen. Controleer of read-only aan staat.");
+		this.invisible = !status;
+		this.notifyChange();
+	}*/
+	
+	
 	
 	//public abstract void handleLocalCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception;
 	/*

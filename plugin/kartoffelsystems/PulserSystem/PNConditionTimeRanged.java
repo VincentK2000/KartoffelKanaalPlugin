@@ -41,6 +41,11 @@ public class PNConditionTimeRanged extends PNCondition{
 		return a >= starttime && a <= endtime;
 	}
 
+	@Override
+	protected int getEstimatedSize() {
+		return 16 + PNCondition.generalInfoLength();
+	}
+
 	protected void setTimeRange(long start, long stop){
 		this.starttime = start;
 		this.endtime = stop;
@@ -122,11 +127,16 @@ public class PNConditionTimeRanged extends PNCondition{
 		return ans;
 	}
 
-	@Override
-	protected int getEstimatedSize() {
-		return 16 + PNCondition.generalInfoLength();
+	public static PNConditionTimeRanged createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		
+		throw new Exception("Functie nog niet beschikbaar");
 	}
-	
+
+	@Override
+	public PNConditionTimeRanged createCopy(int ID, PNTechCondition root) throws Exception {
+		return new PNConditionTimeRanged(this.starttime, this.endtime, this.options, true, ID, root);
+	}
+
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
@@ -197,15 +207,5 @@ public class PNConditionTimeRanged extends PNCondition{
 			if("tijden".startsWith(label))a.add("tijden");
 		}
 		return a;
-	}
-	
-	@Override
-	public PNConditionTimeRanged createCopy(int ID, PNTechCondition root) throws Exception {
-		return new PNConditionTimeRanged(this.starttime, this.endtime, this.options, true, ID, root);
-	}
-	
-	public static PNConditionTimeRanged createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
-		
-		throw new Exception("Functie nog niet beschikbaar");
 	}
 }

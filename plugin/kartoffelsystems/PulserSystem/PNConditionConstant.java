@@ -26,6 +26,11 @@ public class PNConditionConstant extends PNCondition{
 	protected byte getConditionType() {return 8;}
 
 	@Override
+	protected int getEstimatedSize() {
+		return PNCondition.generalInfoLength();
+	}
+
+	@Override
 	protected boolean calculateValue() {
 		options |= 0x40;
 		return (options & 0x20) == 0x20;
@@ -45,11 +50,34 @@ public class PNConditionConstant extends PNCondition{
 		return ans;
 	}
 
-	@Override
-	protected int getEstimatedSize() {
-		return PNCondition.generalInfoLength();
+	public static PNConditionConstant createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
+		if(params.length == 1){
+			params[0] = params[0].toLowerCase();
+			boolean value;
+			if(params[0].equals("aan") || params[0].equals("on") || params[0].equals("true") || params[0].equals("+")){
+				value = true;
+			}else if(params[0].equals("uit") || params[0].equals("off") || params[0].equals("false") || params[0].equals("-")){
+				value = false;
+			}else{
+				throw new Exception("De beginstaat kan zijn: aan/on/true/+ of uit/off/false/-");
+			}
+			options |= 0x40;
+			if(value){
+				options |= 0x20;
+			}else{
+				options &= 0xDF;
+			}
+			return new PNConditionConstant(options, true, ID, root);
+		}else{
+			throw new Exception("Om een ConditionConstant te maken, moet je de beginstaat specifiëren (aan/uit)");
+		}
 	}
-	
+
+	@Override
+	public PNConditionConstant createCopy(int ID, PNTechCondition root) throws Exception {
+		return new PNConditionConstant(this.options, true, ID, root);
+	}
+
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
@@ -81,33 +109,5 @@ public class PNConditionConstant extends PNCondition{
 	@Override
 	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
 		return super.autoCompleteSubObjectCH(s, a);
-	}
-	
-	@Override
-	public PNConditionConstant createCopy(int ID, PNTechCondition root) throws Exception {
-		return new PNConditionConstant(this.options, true, ID, root);
-	}
-	
-	public static PNConditionConstant createFromParams(String[] params, byte options, int ID, PNTechCondition root) throws Exception{
-		if(params.length == 1){
-			params[0] = params[0].toLowerCase();
-			boolean value;
-			if(params[0].equals("aan") || params[0].equals("on") || params[0].equals("true") || params[0].equals("+")){
-				value = true;
-			}else if(params[0].equals("uit") || params[0].equals("off") || params[0].equals("false") || params[0].equals("-")){
-				value = false;
-			}else{
-				throw new Exception("De beginstaat kan zijn: aan/on/true/+ of uit/off/false/-");
-			}
-			options |= 0x40;
-			if(value){
-				options |= 0x20;
-			}else{
-				options &= 0xDF;
-			}
-			return new PNConditionConstant(options, true, ID, root);
-		}else{
-			throw new Exception("Om een ConditionConstant te maken, moet je de beginstaat specifiëren (aan/uit)");
-		}
 	}
 }
