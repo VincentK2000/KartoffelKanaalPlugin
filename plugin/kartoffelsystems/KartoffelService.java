@@ -311,23 +311,9 @@ public abstract class KartoffelService{
 		Logger.getLogger("Minecraft").info("[KKP] Disabled " + this.serviceName);
 	}*/
 	
-	protected abstract void _enableCore() throws Exception;
-	protected abstract void _disableCore() throws Exception;
-	
-	@Override
-	public String toString(){
-		if(this.running){
-			return "De service " + this.serviceName + " is actief.";
-		}else{
-			Date a = new Date(this.stopTime);
-			return "De service " + this.serviceName + " is gestopt. Reden = \"" + (this.stopException == null?"Normaal gestopt, waarschijnlijk door een gebruiker":this.stopException) + "\", Tijd van het uitschakelen (of crash als beschikbaar): " + a.toString() + " (" + this.stopTime + ")"; 
-		}
-	}
-
 	protected Exception getLastStopException(){
 		return this.stopException;
 	}
-
 
 	protected void printStopCrash(){
 		if(this.stopException == null){
@@ -337,7 +323,7 @@ public abstract class KartoffelService{
 			this.stopException.printStackTrace();
 		}
 	}
-	
+
 	protected void printStopCrash(CommandSender a, int elementsAmount, boolean latestLast){
 		if(this.stopException == null){
 			a.sendMessage("De laatste keer dat de service " + this.serviceName + " stopte, was dat niet vanwege een fout.");
@@ -357,10 +343,23 @@ public abstract class KartoffelService{
 			}
 		}
 	}
-	
+
 	public boolean isUsable(){
 		if(this._cleanState)return true;
 		this.running = false;
 		return false;
+	}
+
+	protected abstract void _enableCore() throws Exception;
+	protected abstract void _disableCore() throws Exception;
+	
+	@Override
+	public String toString(){
+		if(this.running){
+			return "De service " + this.serviceName + " is actief.";
+		}else{
+			Date a = new Date(this.stopTime);
+			return "De service " + this.serviceName + " is gestopt. Reden = \"" + (this.stopException == null?"Normaal gestopt, waarschijnlijk door een gebruiker":this.stopException) + "\", Tijd van het uitschakelen (of crash als beschikbaar): " + a.toString() + " (" + this.stopTime + ")"; 
+		}
 	}
 }

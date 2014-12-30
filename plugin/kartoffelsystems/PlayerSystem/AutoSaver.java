@@ -12,18 +12,6 @@ public class AutoSaver implements Runnable{
 	}
 	
 	
-	public void start(){
-		if(this.t != null && this.t.isAlive())return;
-		this.t = new Thread(this);
-		this.t.start();
-	}
-	
-	public void stop(){
-		if(this.t != null && this.t.isAlive()){
-			this.t.interrupt();
-		}
-	}
-	
 	@Override
 	public void run(){
 		if(this.t != Thread.currentThread())return;
@@ -53,6 +41,19 @@ public class AutoSaver implements Runnable{
 			}
 		}catch(Exception e){}
 		
+	}
+
+
+	public void start(){
+		if(this.t != null && this.t.isAlive())return;
+		this.t = new Thread(this);
+		this.t.start();
+	}
+	
+	public void stop(){
+		if(this.t != null && this.t.isAlive()){
+			this.t.interrupt();
+		}
 	}
 	
 	public void checkConditions(){

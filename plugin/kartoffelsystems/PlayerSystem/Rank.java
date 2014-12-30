@@ -11,18 +11,18 @@ import KartoffelKanaalPlugin.plugin.Main;
 public class Rank {
 	public static final byte[] ladder = new byte[]{-127, 0, 1, 5, 10, 20, 25, 30, 35, 70, 100};
 	
-	public static String getRankPrefix(byte r){
-		if(r >= 100)return "§b[Owner]";
-		if(r >=  70)return "§4[Admin]";
+	public static byte getRank(String rankname){
+		rankname = rankname.toLowerCase();
+		for(int i = 0; i < ladder.length; i++){
+			if(getRankName(ladder[i]).toLowerCase().equals(rankname)){
+				return ladder[i];
+			}
+		}
 		
-		if(r >=  35)return "§9[God]";
-		if(r >=  30)return "§6[Lord]";
-		if(r >=  25)return "§2[VIP]";
-		if(r >=  20)return "§d[Kartoffel]";
-		
-		if(r >=  10)return "§e[Veteran]";
-		if(r >=   5)return "§7[Builder]";
-		return "";
+		try{
+			return Byte.parseByte(rankname);
+		}catch(Exception ex){}
+		return -128;
 	}
 	public static String getRankName(byte r){
 		if(r >= 100)return "Owner";
@@ -38,8 +38,22 @@ public class Rank {
 		
 		if(r >=   1)return "Player";
 		if(r ==   0)return "Unset";
-		if(r == -127)return "Geen";		if(r == -128)return "Internal:Unknown";
+		if(r == -127)return "Geen";
+		if(r == -128)return "Internal:Unknown";
 		return "Onbekend:" + r;
+	}
+	public static String getRankPrefix(byte r){
+		if(r >= 100)return "§b[Owner]";
+		if(r >=  70)return "§4[Admin]";
+		
+		if(r >=  35)return "§9[God]";
+		if(r >=  30)return "§6[Lord]";
+		if(r >=  25)return "§2[VIP]";
+		if(r >=  20)return "§d[Kartoffel]";
+		
+		if(r >=  10)return "§e[Veteran]";
+		if(r >=   5)return "§7[Builder]";
+		return "";
 	}
 	public static char getRankColor(byte r){
 		if(r >= 100)return 'b';
@@ -130,18 +144,5 @@ public class Rank {
 			a.setPermission("bukkit.command.time.set", true);
 			a.setPermission("essentials.enderchest", true);
 			a.setPermission("essentials.sethome.multiple.tenhomes", true);
-	}	
-	public static byte getRank(String rankname){
-		rankname = rankname.toLowerCase();
-		for(int i = 0; i < ladder.length; i++){
-			if(getRankName(ladder[i]).toLowerCase().equals(rankname)){
-				return ladder[i];
-			}
-		}
-		
-		try{
-			return Byte.parseByte(rankname);
-		}catch(Exception ex){}
-		return -128;
 	}
 }

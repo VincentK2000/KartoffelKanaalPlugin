@@ -37,26 +37,15 @@ public class AutoAntilag extends KartoffelService implements Runnable{
 		this.initialized = true;
 	}
 	
-	protected void _enableCore(){
-		if(this.t == null || !this.t.isAlive()){
-			this.t = new Thread(this);
-			this.t.start();
-		}
-	}
-	
 	public int getTimeout(){
 		return this.timeout;
 	}
-	
+
 	public void setTimeout(int newTimeout){
 		this.timeout = (newTimeout < 30000)?30000:newTimeout;
 		if(Main.sm != null)Main.sm.notifyChange();
 	}
-	
-	public long getEndtime(){
-		return this.endtime;
-	}
-	
+
 	public void setTimeout(int minutesTimeout, CommandSender cs){
 		if(minutesTimeout < 1){
 			SettingsManager.DisableAutoAntilag();
@@ -77,11 +66,15 @@ public class AutoAntilag extends KartoffelService implements Runnable{
 			cs.sendMessage("§4NOTE: AutoAntilag staat niet aan!");
 		}
 	}
-	
+
+	public long getEndtime(){
+		return this.endtime;
+	}
+
 	public boolean isRunning(){
 		return this.running;
 	}
-	
+
 	public void run(){
 		if(this.timeout < 30000)return;
 		int failure = 0;
@@ -109,6 +102,13 @@ public class AutoAntilag extends KartoffelService implements Runnable{
 		}
 	}
 
+	protected void _enableCore(){
+		if(this.t == null || !this.t.isAlive()){
+			this.t = new Thread(this);
+			this.t.start();
+		}
+	}
+	
 	@Override
 	protected void _disableCore() throws Exception {		
 		if(this.t == null || !this.t.isAlive())return;

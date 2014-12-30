@@ -51,6 +51,782 @@ public class PlayerManager extends KartoffelService implements Listener{
 	
 	protected DataFieldShort dailyDiaDays;
 	
+	/*public PlayerManager(InputStream is) throws Exception{
+		byte[] data = new byte[is.available()];
+		try {
+			is.read(data);
+		} catch (IOException e) {
+			System.out.println("Kan playerbestand niet laden: " + e.getMessage());
+		}
+		byte aantal = (byte) (data.length / 48);
+		p = new Person[aantal];
+		for(byte i = 0; i < aantal; i++){
+			p[i] = Person.LoadFrom(data, i * 48);
+		}
+		is.close();
+		loaded = true;
+	}*/
+	
+	/*public void checkFileExists(File f) throws Exception{
+		if(f == null)return;
+		f.createNewFile();
+		f.mkdirs();
+		
+		if(!f.exists()){
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aanmaken...");
+			InputStream is = me.vincentk.kartoffelkanaalplugin.Main.class.getResourceAsStream("playerdata.bin");
+			f.createNewFile();
+			FileOutputStream fos = new FileOutputStream(f);
+			{
+				byte[] a = new byte[16];
+				is.read(a);
+				fos.write(a);
+			}
+			
+			byte[] buffer = new byte[64];
+			
+			while(is.available() > 63){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			buffer = new byte[16];
+			while(is.available() > 15){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			while(is.available() > 0){
+				fos.write(is.read());
+			}
+			System.out.println("Data gekopieerd");
+			fos.close();
+			is.close();
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aangemaakt");
+		}
+	}*/
+	
+	public PlayerManager(){
+		super("PlayerManager");
+	}
+	/*public PlayerManager(InputStream is) throws Exception{
+		byte[] data = new byte[is.available()];
+		try {
+			is.read(data);
+		} catch (IOException e) {
+			System.out.println("Kan playerbestand niet laden: " + e.getMessage());
+		}
+		byte aantal = (byte) (data.length / 48);
+		p = new Person[aantal];
+		for(byte i = 0; i < aantal; i++){
+			p[i] = Person.LoadFrom(data, i * 48);
+		}
+		is.close();
+		loaded = true;
+	}*/
+	
+	/*public void checkFileExists(File f) throws Exception{
+		if(f == null)return;
+		f.createNewFile();
+		f.mkdirs();
+		
+		if(!f.exists()){
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aanmaken...");
+			InputStream is = me.vincentk.kartoffelkanaalplugin.Main.class.getResourceAsStream("playerdata.bin");
+			f.createNewFile();
+			FileOutputStream fos = new FileOutputStream(f);
+			{
+				byte[] a = new byte[16];
+				is.read(a);
+				fos.write(a);
+			}
+			
+			byte[] buffer = new byte[64];
+			
+			while(is.available() > 63){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			buffer = new byte[16];
+			while(is.available() > 15){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			while(is.available() > 0){
+				fos.write(is.read());
+			}
+			System.out.println("Data gekopieerd");
+			fos.close();
+			is.close();
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aangemaakt");
+		}
+	}*/
+	
+	public void initialize(String folderpath, String filepath){
+		if(this.initialized)return;
+		
+		if(this.running){
+			Logger.getLogger("Minecraft").info("[KKP] Kan de PlayerManager niet initializen als die aan staat");
+		}
+		this.folderpath = folderpath;
+		if(folderpath == null || filepath == null){
+			this.DisableCrash(new NullPointerException("De folder- en/of filepath voor het initializen van de PlayerManager is null"));
+			return;
+		}
+		//FileInputStream d = new FileInputStream();
+		if(!folderpath.endsWith(File.separator))folderpath += File.separatorChar;
+		this.folderpath = folderpath;
+		if(this.res == null)
+			try {
+				this.res = new RenewableFile(Main.plugin.keypaths[0], 1, "spelersbestand", "DefaultSpelersBestandBody.bin", VersionA, VersionB);
+			} catch (Exception e) {
+				return;
+			}
+		this.res.setResourceFile((filepath == null?null:(new SecureBestand(new File(Main.plugin.getDataFolderPath() + filepath), false))),true);
+		
+		this.initialized = true;
+	}
+	/*public PlayerManager(InputStream is) throws Exception{
+		byte[] data = new byte[is.available()];
+		try {
+			is.read(data);
+		} catch (IOException e) {
+			System.out.println("Kan playerbestand niet laden: " + e.getMessage());
+		}
+		byte aantal = (byte) (data.length / 48);
+		p = new Person[aantal];
+		for(byte i = 0; i < aantal; i++){
+			p[i] = Person.LoadFrom(data, i * 48);
+		}
+		is.close();
+		loaded = true;
+	}*/
+	
+	/*public void checkFileExists(File f) throws Exception{
+		if(f == null)return;
+		f.createNewFile();
+		f.mkdirs();
+		
+		if(!f.exists()){
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aanmaken...");
+			InputStream is = me.vincentk.kartoffelkanaalplugin.Main.class.getResourceAsStream("playerdata.bin");
+			f.createNewFile();
+			FileOutputStream fos = new FileOutputStream(f);
+			{
+				byte[] a = new byte[16];
+				is.read(a);
+				fos.write(a);
+			}
+			
+			byte[] buffer = new byte[64];
+			
+			while(is.available() > 63){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			buffer = new byte[16];
+			while(is.available() > 15){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			while(is.available() > 0){
+				fos.write(is.read());
+			}
+			System.out.println("Data gekopieerd");
+			fos.close();
+			is.close();
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aangemaakt");
+		}
+	}*/
+	
+	protected void _enableCore() throws Exception{
+		if(!this.initialized)throw new Exception("PlayerManager is niet initialized");
+		if(this.as == null)this.as = new AutoSaver(this);
+		this.as.checkConditions();
+		Main.plugin.getServer().getPluginManager().registerEvents(Main.pm, Main.plugin);
+		this._loadSpelerBestandPrivate();
+		this._loadPlayersPrivate(Main.plugin.getServer().getOnlinePlayers());
+		
+		try {
+			this.dailyDiaDays = new DataFieldShort(new OverwritingFile(this.folderpath, -1, this.folderpath + "dailydia.kkp", DataFieldShort.VersionA, DataFieldShort.VersionB), "De laatste dag sinds de DailyDiaStartTime dat de speler zijn DailyDia's heeft gekregen", Short.MIN_VALUE);
+		} catch (Exception e) {
+			Logger.getLogger("Minecraft").warning("[KKP] Kon de dailyDia-data van de PlayerManager niet initializen:");
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	protected void _disableCore(){
+		if(this.as != null){
+			this.as.stop();
+		}
+		this.as = null;
+		if(this.saver == null)this.saver = new SaveQueue(this);
+		
+		Person[] sp = null;
+		if(this.loadedPlayers != null){
+			sp = new Person[this.loadedPlayers.size()];
+			sp = this.loadedPlayers.toArray(sp);
+		}
+		this.saver.saveAndStop(sp);
+		
+		try{
+			this.dailyDiaDays.SaveBlocking();
+		}catch(Exception e){
+			Logger.getLogger("Minecraft").warning("[KKP] Kon de DataFieldShort van de DailyDia niet bewaren:");
+			e.printStackTrace();
+		}
+		this.dailyDiaDays = null;
+		
+		this.loadedPlayers = new ArrayList<Person>(0);
+		this._online = new ArrayList<Person>(0);
+		this.counter = 0;
+		this.folderpath = "";
+		this.res = null;
+		this.saver = null;
+		this.slq = null;
+	}
+
+	/*public PlayerManager(InputStream is) throws Exception{
+		byte[] data = new byte[is.available()];
+		try {
+			is.read(data);
+		} catch (IOException e) {
+			System.out.println("Kan playerbestand niet laden: " + e.getMessage());
+		}
+		byte aantal = (byte) (data.length / 48);
+		p = new Person[aantal];
+		for(byte i = 0; i < aantal; i++){
+			p[i] = Person.LoadFrom(data, i * 48);
+		}
+		is.close();
+		loaded = true;
+	}*/
+	
+	/*public void checkFileExists(File f) throws Exception{
+		if(f == null)return;
+		f.createNewFile();
+		f.mkdirs();
+		
+		if(!f.exists()){
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aanmaken...");
+			InputStream is = me.vincentk.kartoffelkanaalplugin.Main.class.getResourceAsStream("playerdata.bin");
+			f.createNewFile();
+			FileOutputStream fos = new FileOutputStream(f);
+			{
+				byte[] a = new byte[16];
+				is.read(a);
+				fos.write(a);
+			}
+			
+			byte[] buffer = new byte[64];
+			
+			while(is.available() > 63){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			buffer = new byte[16];
+			while(is.available() > 15){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			while(is.available() > 0){
+				fos.write(is.read());
+			}
+			System.out.println("Data gekopieerd");
+			fos.close();
+			is.close();
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aangemaakt");
+		}
+	}*/
+	
+	/*public PlayerManager(InputStream is) throws Exception{
+		byte[] data = new byte[is.available()];
+		try {
+			is.read(data);
+		} catch (IOException e) {
+			System.out.println("Kan playerbestand niet laden: " + e.getMessage());
+		}
+		byte aantal = (byte) (data.length / 48);
+		p = new Person[aantal];
+		for(byte i = 0; i < aantal; i++){
+			p[i] = Person.LoadFrom(data, i * 48);
+		}
+		is.close();
+		loaded = true;
+	}*/
+	
+	/*public void checkFileExists(File f) throws Exception{
+		if(f == null)return;
+		f.createNewFile();
+		f.mkdirs();
+		
+		if(!f.exists()){
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aanmaken...");
+			InputStream is = me.vincentk.kartoffelkanaalplugin.Main.class.getResourceAsStream("playerdata.bin");
+			f.createNewFile();
+			FileOutputStream fos = new FileOutputStream(f);
+			{
+				byte[] a = new byte[16];
+				is.read(a);
+				fos.write(a);
+			}
+			
+			byte[] buffer = new byte[64];
+			
+			while(is.available() > 63){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			buffer = new byte[16];
+			while(is.available() > 15){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			while(is.available() > 0){
+				fos.write(is.read());
+			}
+			System.out.println("Data gekopieerd");
+			fos.close();
+			is.close();
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aangemaakt");
+		}
+	}*/
+	
+	public void _createNewSpelersBestandPrivate(){
+		Logger.getLogger("Minecraft").info("[KKP] PlayerManager: Nieuw SpelersBestand aanmaken...");
+		try {
+			KartoffelFile.saveDefaultFile(this.res, "DefaultSpelersBestandBody.bin");
+		} catch (Exception e) {
+			Logger.getLogger("Minecraft").warning("[KKP] PlayerManager: Kon geen nieuw Spelersbestand aanmaken:");
+			e.printStackTrace();
+			return;
+		}
+		Logger.getLogger("Minecraft").info("[KKP] PlayerManager: Nieuw SpelersBestand aangemaakt");
+	}
+
+	public void createNewSpelersBestand(){
+		if(this.preventAction())return;
+		this._createNewSpelersBestandPrivate();
+	}
+
+	private void _loadSpelerBestandPrivate(){		
+		SecureBestand sb = this.res.getResource();
+		if(sb == null){
+			this._createNewSpelersBestandPrivate();
+			sb = this.res.getResource();
+		}
+		
+		if(sb == null){
+			this.DisableCrash(new Exception("Omdat de resource null was en createNewSpelersBestand() kennelijk ook niet echt veel hielp, is het inladen van de PlayerManager onderbroken (A)"));
+			return;
+		}
+		
+		if(!sb.sessionSys.acquireAccess()){
+			this.DisableCrash(new Exception("Het SessionSystem van het SecureBestand geeft geen toegang"));
+			return;
+		}
+		File f = sb.getFile();
+		FileInputStream fis = null;
+		try{
+			if(f == null || !f.exists() || !f.isFile()){
+				this._createNewSpelersBestandPrivate();;
+				sb.sessionSys.releaseAccess();
+				
+				sb = this.res.getResource();
+				if(sb == null){
+					this.DisableCrash(new Exception("Omdat de resource null was en createNewSpelersBestand() kennelijk ook niet echt veel hielp, is het inladen van de PlayerManager onderbroken (B)"));
+					return;
+				}
+				
+				if(!sb.sessionSys.acquireAccess()){
+					this.DisableCrash(new Exception("Het SessionSystem van het SecureBestand geeft geen toegang"));
+					return;
+				}
+				
+				f = sb.getFile();
+				if(!f.exists()){
+					this.DisableCrash(new Exception("Omdat de resource niet bestaat (\"" + f.getAbsolutePath() + "\") was en createNewSpelersBestand() kennelijk ook niet echt veel hielp, is het inladen van de PlayerManager onderbroken (C)"));
+					return;
+				}
+			}
+			fis = new FileInputStream(f);
+			byte[] header = new byte[16];
+			fis.read(header);
+			if(header[0] != VersionA || header[1] != VersionB){
+				this.DisableCrash(new Exception("De Bestandsversie van " + f.getAbsolutePath() + " is niet ondersteund"));
+				sb.sessionSys.releaseAccess();
+				try{
+					fis.close();
+				}catch(Exception e){}
+				return;
+			}
+	
+			int bytecount = 0;
+			int i = fis.available();
+			while(i > 0){
+				bytecount += i;
+				fis.skip(i);
+				i = fis.available();
+			}
+			this.counter = (short) (bytecount / 64);
+	
+		} catch (Exception e) {
+			sb.sessionSys.releaseAccess();
+			this.DisableCrash(new Exception("Kon het SpelersBestand niet inladen", e));
+		}
+		try{
+			fis.close();
+		}catch(Exception e){}
+		
+		sb.sessionSys.releaseAccess();
+	}
+
+	/*public PlayerManager(InputStream is) throws Exception{
+		byte[] data = new byte[is.available()];
+		try {
+			is.read(data);
+		} catch (IOException e) {
+			System.out.println("Kan playerbestand niet laden: " + e.getMessage());
+		}
+		byte aantal = (byte) (data.length / 48);
+		p = new Person[aantal];
+		for(byte i = 0; i < aantal; i++){
+			p[i] = Person.LoadFrom(data, i * 48);
+		}
+		is.close();
+		loaded = true;
+	}*/
+	
+	/*public void checkFileExists(File f) throws Exception{
+		if(f == null)return;
+		f.createNewFile();
+		f.mkdirs();
+		
+		if(!f.exists()){
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aanmaken...");
+			InputStream is = me.vincentk.kartoffelkanaalplugin.Main.class.getResourceAsStream("playerdata.bin");
+			f.createNewFile();
+			FileOutputStream fos = new FileOutputStream(f);
+			{
+				byte[] a = new byte[16];
+				is.read(a);
+				fos.write(a);
+			}
+			
+			byte[] buffer = new byte[64];
+			
+			while(is.available() > 63){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			buffer = new byte[16];
+			while(is.available() > 15){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			while(is.available() > 0){
+				fos.write(is.read());
+			}
+			System.out.println("Data gekopieerd");
+			fos.close();
+			is.close();
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aangemaakt");
+		}
+	}*/
+	
+	public void loadSpelerBestand() throws Exception{
+		if(this.preventAction())return;
+		this._loadSpelerBestandPrivate();
+	}
+
+	/*public PlayerManager(InputStream is) throws Exception{
+		byte[] data = new byte[is.available()];
+		try {
+			is.read(data);
+		} catch (IOException e) {
+			System.out.println("Kan playerbestand niet laden: " + e.getMessage());
+		}
+		byte aantal = (byte) (data.length / 48);
+		p = new Person[aantal];
+		for(byte i = 0; i < aantal; i++){
+			p[i] = Person.LoadFrom(data, i * 48);
+		}
+		is.close();
+		loaded = true;
+	}*/
+	
+	/*public void checkFileExists(File f) throws Exception{
+		if(f == null)return;
+		f.createNewFile();
+		f.mkdirs();
+		
+		if(!f.exists()){
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aanmaken...");
+			InputStream is = me.vincentk.kartoffelkanaalplugin.Main.class.getResourceAsStream("playerdata.bin");
+			f.createNewFile();
+			FileOutputStream fos = new FileOutputStream(f);
+			{
+				byte[] a = new byte[16];
+				is.read(a);
+				fos.write(a);
+			}
+			
+			byte[] buffer = new byte[64];
+			
+			while(is.available() > 63){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			buffer = new byte[16];
+			while(is.available() > 15){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			while(is.available() > 0){
+				fos.write(is.read());
+			}
+			System.out.println("Data gekopieerd");
+			fos.close();
+			is.close();
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aangemaakt");
+		}
+	}*/
+	
+	private void _loadPlayersPrivate(Player[] players){
+		this._online.clear();
+		this.loadedPlayers.clear();
+		this.slq = new StartupLoadQueue(players, this);
+		Thread t = new Thread(slq);
+		t.start();
+	}
+
+	/*public PlayerManager(InputStream is) throws Exception{
+		byte[] data = new byte[is.available()];
+		try {
+			is.read(data);
+		} catch (IOException e) {
+			System.out.println("Kan playerbestand niet laden: " + e.getMessage());
+		}
+		byte aantal = (byte) (data.length / 48);
+		p = new Person[aantal];
+		for(byte i = 0; i < aantal; i++){
+			p[i] = Person.LoadFrom(data, i * 48);
+		}
+		is.close();
+		loaded = true;
+	}*/
+	
+	/*public void checkFileExists(File f) throws Exception{
+		if(f == null)return;
+		f.createNewFile();
+		f.mkdirs();
+		
+		if(!f.exists()){
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aanmaken...");
+			InputStream is = me.vincentk.kartoffelkanaalplugin.Main.class.getResourceAsStream("playerdata.bin");
+			f.createNewFile();
+			FileOutputStream fos = new FileOutputStream(f);
+			{
+				byte[] a = new byte[16];
+				is.read(a);
+				fos.write(a);
+			}
+			
+			byte[] buffer = new byte[64];
+			
+			while(is.available() > 63){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			buffer = new byte[16];
+			while(is.available() > 15){
+				is.read(buffer);
+				fos.write(buffer);
+			}
+			
+			while(is.available() > 0){
+				fos.write(is.read());
+			}
+			System.out.println("Data gekopieerd");
+			fos.close();
+			is.close();
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Nieuw SpelerBestand aangemaakt");
+		}
+	}*/
+	
+	public void loadPlayers(Player[] players) {
+		if(this.preventAction())return;
+		this._loadPlayersPrivate(players);
+	}
+
+	protected final void _loadPersonOnlinePrivate(Player pl, boolean checkOnline){
+		if(pl == null)return;
+		
+		/*if(checkOnline && !pl.isOnline()){//Als een speler online komt, is die nog niet gemarkeerd als online
+			System.out.println("PlayerManager: Persoon online laden is onderbroken omdat de speler niet online is");
+			return;
+		}*/
+		if(this.loadedPlayers == null)this.loadedPlayers = new ArrayList<Person>();
+		if(this._online == null)this._online = new ArrayList<Person>();
+		
+		Person p = null;
+		UUID id = pl.getUniqueId();
+		//if(Main.plugin.developermodus && Main.isDeveloper(id)){
+		//	p = Person.DEV;
+		//}else{
+		//System.out.println("PlayerManager: Zoeken in alreeds geladen personen");
+		for(int i = 0; i < this.loadedPlayers.size(); i++){
+			if(this.loadedPlayers.get(i) != null && id.equals(this.loadedPlayers.get(i).getUUID())){
+				p = this.loadedPlayers.get(i);
+			}
+		}
+		//System.out.println("PlayerManager: Gezocht is alreeds geladen personen");
+		if(p == null){
+			//System.out.println("PlayerManager: De persoon is niet gevonden in alreeds geladen personen, dus er wordt verder gezocht");
+			try {
+				p = _getSavedPlayerPrivate(pl.getUniqueId());
+			} catch (IOException e) {
+				Logger.getLogger("Minecraft").warning("[KKP] Kon het SpelersBestand van \"" + pl.getName() + "\" met UUID " + pl.getUniqueId() + " niet inladen: " + e);
+				e.printStackTrace();
+				return;
+			}
+			//System.out.println("PlayerManager: Gezocht in bewaarde personen, p = " + ((p == null)?"null":p));
+			if(p == null){
+				//System.out.println("PlayerManager: Er wordt een nieuw profiel aangemaakt voor de speler \"" + pl.getName() + "\" met UUID " + pl.getUniqueId());
+				p = new Person(pl, this);
+			}
+		}
+		if(!this._online.contains(p))this._online.add(p);
+		//}
+		//System.out.println("PlayerManager: Start-up processen van de inladende persoon worden nu uitgevoerd");
+		p.online = true;
+		p.configure(pl);
+		p.getSpelerOptions().refreshRank();
+		//p.ApplyRankTag();
+		
+		pl.sendMessage("§9Je rank is " + Rank.getRankName(p.getSpelerOptions().getRank()));
+		if(p.getSpelerOptions().getAmountDailyDiamonds() > 0 && p.getSpelerOptions().DailyDiamondReady()){
+			pl.sendMessage("§eJe dagelijkse diamonds zijn nog niet opgehaald! Krijg ze door §c/getdailydiamonds§f te gebruiken.");
+		}
+		if(DebugTools.developermodus && Main.isDeveloper(id))pl.sendMessage("Developermodus: true");
+		
+		if(Main.pulser != null){
+			Main.pulser.onPlayerLogin(p);
+		}
+		if(this.as == null)this.as = new AutoSaver(this);
+		this.as.checkConditions();
+	}
+
+	protected final void loadPersonOnline(Player pl, boolean checkOnline){
+		if(this.preventAction())return;
+		this._loadPersonOnlinePrivate(pl, checkOnline);
+	}
+
+	/*	protected void setResource(File f){
+		if(f != null && !f.getAbsolutePath().startsWith(folderpath)){
+			//File newFile = new File(this.folderpath + "spelerbestand");+
+			operationMode = true;
+			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Opgegeven nieuw spelerbestand is niet in de vereiste directory");
+			return;
+		}
+		Spelerbestand s = new Spelerbestand(f, this);
+		this.resource.markForDelete();
+		this.resource = s;
+		try {
+			checkFileExists(f);
+			
+			FileInputStream fis = new FileInputStream(f);
+			
+			if(fis.read() == versionA && fis.read() == versionB){
+				Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Playermanager: Bestandsversie ondersteunt");
+			}else{
+				Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Playermanager: Bestandsversie is niet ondersteunt");
+				operationMode = true;
+				Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Playermanager is nu in operationMode");
+			}
+			edition = ((fis.read() << 24) | (fis.read() << 16) | (fis.read() << 8) | (fis.read()));
+			
+			String newpath = f.getAbsolutePath();
+			newpath = newpath.substring(folderpath.length());
+			FileOutputStream fos = new FileOutputStream(linkingpath);
+			BufferedWriter d = new BufferedWriter(new OutputStreamWriter(fos));
+			d.write(newpath.toCharArray());
+			d.close();
+			fos.close();
+		} catch (Exception e) {
+			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Playermanager kon spelerbestand niet inladen");
+			operationMode = true;
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Playermanager is nu in operationMode");
+		}
+	}
+	
+	protected void writeCompleted(){
+		this.setResource(write);
+		try{
+			
+		}catch(Exception e){
+			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Kon Spelerbestandspad niet veranderen");
+		}
+	}*/
+	
+	protected void loadPersonExtra(UUID id){
+		if(id == null)return;
+		for(int i = 0; i < loadedPlayers.size(); ++i){
+			if(loadedPlayers.get(i).getUUID().equals(id))return;
+		}
+		Person p;
+		try {
+			p = this._getSavedPlayer(id);
+		} catch (Exception e) {return;}
+		if(p != null && !this.loadedPlayers.contains(p))loadedPlayers.add(p);
+	}
+
+	public Person[] getOnlinePlayers(){
+		if(this._online == null)return new Person[0];
+		Person[] abc = new Person[this._online.size()];
+		this._online.toArray(abc);
+		return abc;
+	}
+
+	public Person getPlayer(String name){
+		if(this.preventAction())return null;
+		{
+		Person p = getLoadedPlayer(name);
+		if(p != null)return p;
+		}
+		try{
+			return _getSavedPlayer(name);
+		}catch(Exception e){}
+		return null;
+	}
+
+	public Person getPlayer(UUID id){
+		if(this.preventAction())return null;
+		{
+		Person p = getLoadedPlayer(id);
+		if(p != null)return p;
+		}
+		try {
+			return _getSavedPlayer(id);
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
 	public Person getLoadedPerson(CommandSender a){
 		if(this.preventAction())return null;
 		//System.out.println("PlayerManager: Een persoon wordt gezocht");
@@ -125,187 +901,17 @@ public class PlayerManager extends KartoffelService implements Listener{
 		}
 	}*/
 	
-	public PlayerManager(){
-		super("PlayerManager");
-	}
-	
-	public void initialize(String folderpath, String filepath){
-		if(this.initialized)return;
+	protected Person getLoadedPlayer(UUID id){
+		if(this.preventAction())return null;
+		if(id == null)return null;
 		
-		if(this.running){
-			Logger.getLogger("Minecraft").info("[KKP] Kan de PlayerManager niet initializen als die aan staat");
+		if(DebugTools.developermodus && Main.isDeveloper(id))return Person.DEV;
+		for(int i = 0; i < loadedPlayers.size(); i++){
+			if(id.equals(loadedPlayers.get(i).getUUID()))return loadedPlayers.get(i);
 		}
-		this.folderpath = folderpath;
-		if(folderpath == null || filepath == null){
-			this.DisableCrash(new NullPointerException("De folder- en/of filepath voor het initializen van de PlayerManager is null"));
-			return;
-		}
-		//FileInputStream d = new FileInputStream();
-		if(!folderpath.endsWith(File.separator))folderpath += File.separatorChar;
-		this.folderpath = folderpath;
-		if(this.res == null)
-			try {
-				this.res = new RenewableFile(Main.plugin.keypaths[0], 1, "spelersbestand", "DefaultSpelersBestandBody.bin", VersionA, VersionB);
-			} catch (Exception e) {
-				return;
-			}
-		this.res.setResourceFile((filepath == null?null:(new SecureBestand(new File(Main.plugin.getDataFolderPath() + filepath), false))),true);
-		
-		this.initialized = true;
+		return null;
 	}
-	protected void _enableCore() throws Exception{
-		if(!this.initialized)throw new Exception("PlayerManager is niet initialized");
-		if(this.as == null)this.as = new AutoSaver(this);
-		this.as.checkConditions();
-		Main.plugin.getServer().getPluginManager().registerEvents(Main.pm, Main.plugin);
-		this._loadSpelerBestandPrivate();
-		this._loadPlayersPrivate(Main.plugin.getServer().getOnlinePlayers());
-		
-		try {
-			this.dailyDiaDays = new DataFieldShort(new OverwritingFile(this.folderpath, -1, this.folderpath + "dailydia.kkp", DataFieldShort.VersionA, DataFieldShort.VersionB), "De laatste dag sinds de DailyDiaStartTime dat de speler zijn DailyDia's heeft gekregen", Short.MIN_VALUE);
-		} catch (Exception e) {
-			Logger.getLogger("Minecraft").warning("[KKP] Kon de dailyDia-data van de PlayerManager niet initializen:");
-			e.printStackTrace();
-		}
-	}
-	
-	public void createNewSpelersBestand(){
-		if(this.preventAction())return;
-		this._createNewSpelersBestandPrivate();
-	}
-	
-	public void _createNewSpelersBestandPrivate(){
-		Logger.getLogger("Minecraft").info("[KKP] PlayerManager: Nieuw SpelersBestand aanmaken...");
-		try {
-			KartoffelFile.saveDefaultFile(this.res, "DefaultSpelersBestandBody.bin");
-		} catch (Exception e) {
-			Logger.getLogger("Minecraft").warning("[KKP] PlayerManager: Kon geen nieuw Spelersbestand aanmaken:");
-			e.printStackTrace();
-			return;
-		}
-		Logger.getLogger("Minecraft").info("[KKP] PlayerManager: Nieuw SpelersBestand aangemaakt");
-	}
-	
-	public void loadSpelerBestand() throws Exception{
-		if(this.preventAction())return;
-		this._loadSpelerBestandPrivate();
-	}
-	
-	private void _loadSpelerBestandPrivate(){		
-		SecureBestand sb = this.res.getResource();
-		if(sb == null){
-			this._createNewSpelersBestandPrivate();
-			sb = this.res.getResource();
-		}
-		
-		if(sb == null){
-			this.DisableCrash(new Exception("Omdat de resource null was en createNewSpelersBestand() kennelijk ook niet echt veel hielp, is het inladen van de PlayerManager onderbroken (A)"));
-			return;
-		}
-		
-		if(!sb.sessionSys.acquireAccess()){
-			this.DisableCrash(new Exception("Het SessionSystem van het SecureBestand geeft geen toegang"));
-			return;
-		}
-		File f = sb.getFile();
-		FileInputStream fis = null;
-		try{
-			if(f == null || !f.exists() || !f.isFile()){
-				this._createNewSpelersBestandPrivate();;
-				sb.sessionSys.releaseAccess();
-				
-				sb = this.res.getResource();
-				if(sb == null){
-					this.DisableCrash(new Exception("Omdat de resource null was en createNewSpelersBestand() kennelijk ook niet echt veel hielp, is het inladen van de PlayerManager onderbroken (B)"));
-					return;
-				}
-				
-				if(!sb.sessionSys.acquireAccess()){
-					this.DisableCrash(new Exception("Het SessionSystem van het SecureBestand geeft geen toegang"));
-					return;
-				}
-				
-				f = sb.getFile();
-				if(!f.exists()){
-					this.DisableCrash(new Exception("Omdat de resource niet bestaat (\"" + f.getAbsolutePath() + "\") was en createNewSpelersBestand() kennelijk ook niet echt veel hielp, is het inladen van de PlayerManager onderbroken (C)"));
-					return;
-				}
-			}
-			fis = new FileInputStream(f);
-			byte[] header = new byte[16];
-			fis.read(header);
-			if(header[0] != VersionA || header[1] != VersionB){
-				this.DisableCrash(new Exception("De Bestandsversie van " + f.getAbsolutePath() + " is niet ondersteund"));
-				sb.sessionSys.releaseAccess();
-				try{
-					fis.close();
-				}catch(Exception e){}
-				return;
-			}
 
-			int bytecount = 0;
-			int i = fis.available();
-			while(i > 0){
-				bytecount += i;
-				fis.skip(i);
-				i = fis.available();
-			}
-			this.counter = (short) (bytecount / 64);
-
-		} catch (Exception e) {
-			sb.sessionSys.releaseAccess();
-			this.DisableCrash(new Exception("Kon het SpelersBestand niet inladen", e));
-		}
-		try{
-			fis.close();
-		}catch(Exception e){}
-		
-		sb.sessionSys.releaseAccess();
-	}
-	
-	public void loadPlayers(Player[] players) {
-		if(this.preventAction())return;
-		this._loadPlayersPrivate(players);
-	}
-	private void _loadPlayersPrivate(Player[] players){
-		this._online.clear();
-		this.loadedPlayers.clear();
-		this.slq = new StartupLoadQueue(players, this);
-		Thread t = new Thread(slq);
-		t.start();
-	}
-	
-	@Override
-	protected void _disableCore(){
-		if(this.as != null){
-			this.as.stop();
-		}
-		this.as = null;
-		if(this.saver == null)this.saver = new SaveQueue(this);
-		
-		Person[] sp = null;
-		if(this.loadedPlayers != null){
-			sp = new Person[this.loadedPlayers.size()];
-			sp = this.loadedPlayers.toArray(sp);
-		}
-		this.saver.saveAndStop(sp);
-		
-		try{
-			this.dailyDiaDays.SaveBlocking();
-		}catch(Exception e){
-			Logger.getLogger("Minecraft").warning("[KKP] Kon de DataFieldShort van de DailyDia niet bewaren:");
-			e.printStackTrace();
-		}
-		this.dailyDiaDays = null;
-		
-		this.loadedPlayers = new ArrayList<Person>(0);
-		this._online = new ArrayList<Person>(0);
-		this.counter = 0;
-		this.folderpath = "";
-		this.res = null;
-		this.saver = null;
-		this.slq = null;
-	}
 	protected Person getLoadedPlayer(String name){
 		if(this.preventAction())return null;
 		if(name == null || name.length() == 0)return null;
@@ -383,36 +989,6 @@ public class PlayerManager extends KartoffelService implements Listener{
 		res.sessionSys.releaseAccess();
 		return null;
 	}
-	public Person getPlayer(String name){
-		if(this.preventAction())return null;
-		{
-		Person p = getLoadedPlayer(name);
-		if(p != null)return p;
-		}
-		try{
-			return _getSavedPlayer(name);
-		}catch(Exception e){}
-		return null;
-	}
-	
-	protected Person getLoadedPlayer(UUID id){
-		if(this.preventAction())return null;
-		if(id == null)return null;
-		
-		if(DebugTools.developermodus && Main.isDeveloper(id))return Person.DEV;
-		for(int i = 0; i < loadedPlayers.size(); i++){
-			if(id.equals(loadedPlayers.get(i).getUUID()))return loadedPlayers.get(i);
-		}
-		return null;
-	}
-	private Person _getSavedPlayer(UUID id) throws IOException{
-		if(this.preventAction()){
-			System.out.println("_getSavedPlayer: preventAction staat aan");
-			return null;
-		}
-		return this._getSavedPlayerPrivate(id);
-	}
-	
 	private Person _getSavedPlayerPrivate(UUID id) throws IOException{
 		if(id == null)return null;
 		
@@ -491,86 +1067,183 @@ public class PlayerManager extends KartoffelService implements Listener{
 		return null;
 		
 	}
-	public Person getPlayer(UUID id){
-		if(this.preventAction())return null;
-		{
-		Person p = getLoadedPlayer(id);
-		if(p != null)return p;
-		}
-		try {
-			return _getSavedPlayer(id);
-		} catch (IOException e) {
+
+	private Person _getSavedPlayer(UUID id) throws IOException{
+		if(this.preventAction()){
+			System.out.println("_getSavedPlayer: preventAction staat aan");
 			return null;
 		}
+		return this._getSavedPlayerPrivate(id);
 	}
-	
-	protected final void loadPersonOnline(Player pl, boolean checkOnline){
-		if(this.preventAction())return;
-		this._loadPersonOnlinePrivate(pl, checkOnline);
-	}
-	
-	protected final void _loadPersonOnlinePrivate(Player pl, boolean checkOnline){
-		if(pl == null)return;
-		
-		/*if(checkOnline && !pl.isOnline()){//Als een speler online komt, is die nog niet gemarkeerd als online
-			System.out.println("PlayerManager: Persoon online laden is onderbroken omdat de speler niet online is");
-			return;
-		}*/
-		if(this.loadedPlayers == null)this.loadedPlayers = new ArrayList<Person>();
-		if(this._online == null)this._online = new ArrayList<Person>();
-		
-		Person p = null;
-		UUID id = pl.getUniqueId();
-		//if(Main.plugin.developermodus && Main.isDeveloper(id)){
-		//	p = Person.DEV;
-		//}else{
-		//System.out.println("PlayerManager: Zoeken in alreeds geladen personen");
-		for(int i = 0; i < this.loadedPlayers.size(); i++){
-			if(this.loadedPlayers.get(i) != null && id.equals(this.loadedPlayers.get(i).getUUID())){
-				p = this.loadedPlayers.get(i);
-			}
-		}
-		//System.out.println("PlayerManager: Gezocht is alreeds geladen personen");
-		if(p == null){
-			//System.out.println("PlayerManager: De persoon is niet gevonden in alreeds geladen personen, dus er wordt verder gezocht");
-			try {
-				p = _getSavedPlayerPrivate(pl.getUniqueId());
-			} catch (IOException e) {
-				Logger.getLogger("Minecraft").warning("[KKP] Kon het SpelersBestand van \"" + pl.getName() + "\" met UUID " + pl.getUniqueId() + " niet inladen: " + e);
-				e.printStackTrace();
-				return;
-			}
-			//System.out.println("PlayerManager: Gezocht in bewaarde personen, p = " + ((p == null)?"null":p));
-			if(p == null){
-				//System.out.println("PlayerManager: Er wordt een nieuw profiel aangemaakt voor de speler \"" + pl.getName() + "\" met UUID " + pl.getUniqueId());
-				p = new Person(pl, this);
-			}
-		}
-		if(!this._online.contains(p))this._online.add(p);
-		//}
-		//System.out.println("PlayerManager: Start-up processen van de inladende persoon worden nu uitgevoerd");
-		p.online = true;
-		p.configure(pl);
-		p.getSpelerOptions().refreshRank();
-		//p.ApplyRankTag();
-		
-		pl.sendMessage("§9Je rank is " + Rank.getRankName(p.getSpelerOptions().getRank()));
-		if(p.getSpelerOptions().getAmountDailyDiamonds() > 0 && p.getSpelerOptions().DailyDiamondReady()){
-			pl.sendMessage("§eJe dagelijkse diamonds zijn nog niet opgehaald! Krijg ze door §c/getdailydiamonds§f te gebruiken.");
-		}		if(DebugTools.developermodus && Main.isDeveloper(id))pl.sendMessage("Developermodus: true");
-		
-		if(Main.pulser != null){
-			Main.pulser.onPlayerLogin(p);
-		}
-		if(this.as == null)this.as = new AutoSaver(this);
-		this.as.checkConditions();
-	}
-	
 	
 	protected void Save(boolean backup){
 		if(this.saver == null)throw new NullPointerException("De SaveQueue van de PlayerManager is null");
 		this.saver.add((Person[])this.loadedPlayers.toArray(), backup);
 	}
+	/*protected void Save(String path){//NOTE: src-values mogen niet veranderen
+		ArrayList<Person> array = new ArrayList<Person>();
+		ArrayList<Person> unplaced = new ArrayList<Person>();
+		array.addAll(online);
+		array.addAll(othersLoaded);
+		System.out.println("[KartoffelKanaalPlugin] Spelers sorteren...");
+		for(int i = 0; i < array.size(); ++i){
+			if(array.get(i).getSrcLocation() < 0){
+				if(array.get(i).getSrcLocation() != -100){
+					unplaced.add(array.get(i));
+				}
+				array.remove(i);
+				--i;
+			}
+		}
+		boolean changed;
+		do{
+			changed = false;
+			for(int t = 0; t < array.size(); ++t){
+				for(int i = 1; i < array.size(); ++i){
+					if(array.get(i).getSrcLocation() < array.get(i - 1).getSrcLocation()){
+						Person cache = array.get(i - 1);
+						array.set(i - 1, array.get(i));
+						array.set(i, cache);
+						changed = true;
+					}
+				}
+			}
+		}while(changed);
+		System.out.println("[KartoffelKanaalPlugin] Spelers gesorteerd");
+		Save(path, (Person[])array.toArray(), (Person[])unplaced.toArray());
+	}
+	protected void Save(String path, Person[] array, Person[] unplaced){
+		boolean previous = this.isServiceFrozen();
+		this.freezeOperator.freezeSystemError(r, detail, Thread.getAllStackTraces());true;
+		
+		
+		File main = new File(path + File.separatorCharChar + "playerdata.bin");
+		File fallback = new File(this.folder.getAbsolutePath() + File.separatorChar + "fallback.tmp");
+		Main.pm.setFilePath(fallback.getAbsolutePath());
+		try {
+			Files.copy(main.toPath(), fallback.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			System.out.println("[KartoffelKanaalPlugin] Kan spelerbestand niet kopiëren voor fallback");
+		}
+		
+		this.saveCurrent();
+		
+		Main.pm.setFilePath(main.getAbsolutePath());
+		fallback.delete();
+		
+		
+		try{
+		File dest = new File(path);
+		dest.createNewFile();
+		}catch(Exception ex){
+			System.out.println("[KartoffelKanaalPlugin] Kan spelerbestandfile niet vinden of aanmaken");
+		}
+		
+		FileOutputStream s;
+		try{
+			s = new FileOutputStream(path);
+		}catch(Exception ex){
+			System.out.println("[KartoffelKanaalPlugin] Kan niet schrijven naar spelerbestandfile");
+		}
+		s.
+		
+		this.freezeOperator.freezeSystemError(r, detail, Thread.getAllStackTraces());previous;
+	}*/
+	
+	
+	
+	
+/*	protected void setResource(File f){
+		if(f != null && !f.getAbsolutePath().startsWith(folderpath)){
+			//File newFile = new File(this.folderpath + "spelerbestand");+
+			operationMode = true;
+			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Opgegeven nieuw spelerbestand is niet in de vereiste directory");
+			return;
+		}
+		Spelerbestand s = new Spelerbestand(f, this);
+		this.resource.markForDelete();
+		this.resource = s;
+		try {
+			checkFileExists(f);
+			
+			FileInputStream fis = new FileInputStream(f);
+			
+			if(fis.read() == versionA && fis.read() == versionB){
+				Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Playermanager: Bestandsversie ondersteunt");
+			}else{
+				Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Playermanager: Bestandsversie is niet ondersteunt");
+				operationMode = true;
+				Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Playermanager is nu in operationMode");
+			}
+			edition = ((fis.read() << 24) | (fis.read() << 16) | (fis.read() << 8) | (fis.read()));
+			
+			String newpath = f.getAbsolutePath();
+			newpath = newpath.substring(folderpath.length());
+			FileOutputStream fos = new FileOutputStream(linkingpath);
+			BufferedWriter d = new BufferedWriter(new OutputStreamWriter(fos));
+			d.write(newpath.toCharArray());
+			d.close();
+			fos.close();
+		} catch (Exception e) {
+			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Playermanager kon spelerbestand niet inladen");
+			operationMode = true;
+			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Playermanager is nu in operationMode");
+		}
+	}
+	
+	protected void writeCompleted(){
+		this.setResource(write);
+		try{
+			
+		}catch(Exception e){
+			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Kon Spelerbestandspad niet veranderen");
+		}
+	}*/
+	
+	
+	
+	/*protected Person getPersonSaveAccess(String name){
+		if(name == null)return null;
+		if(name.length() > 16){
+			try{
+				UUID id = UUID.fromString(name);
+				return getPersonSaveAccess(id);
+			}catch(Exception e){
+				return null;
+			}
+		}
+		for(int i = 0; i < loadedPlayers.size(); ++i){
+			if(loadedPlayers.get(i).getName().equals(name))return loadedPlayers.get(i);
+		}
+		Person p;
+		try {
+			p = this._getSavedPlayer(name);
+		} catch (IOException e) {
+			return null;
+		}
+		if(p == null)return null;
+		loadedPlayers.add(p);
+		return p;
+	}
+	
+	protected void getPersonSaveRelease(Person p){
+		if(this.saver != null)this.saver.add(p);
+		for(int i = 0; i < loadedPlayers.size(); i++){
+			if(loadedPlayers.get(i).equals(p)){
+				loadedPlayers.remove(i);
+				return;
+			}
+		}
+	}
+	*/
+	
+	protected void saveAllPlayers(boolean backup) throws Exception {
+		if(this.saver == null)throw new NullPointerException("De SaveQueue van de PlayerManager is null");
+		List<Person> p = new ArrayList<Person>();
+		p.addAll(this.loadedPlayers);
+		this.saver.add((Person[])p.toArray(), backup);
+	}
+	
 	/*protected void Save(String path){//NOTE: src-values mogen niet veranderen
 		ArrayList<Person> array = new ArrayList<Person>();
 		ArrayList<Person> unplaced = new ArrayList<Person>();
@@ -653,7 +1326,7 @@ public class PlayerManager extends KartoffelService implements Listener{
 		}
 		//System.out.println("PlayerManager: onPlayerLogin event afgelopen");
 	}
-	
+
 	@EventHandler
 	public final void onPlayerQuit(PlayerQuitEvent e){
 		if(this.preventAction())return;
@@ -673,9 +1346,10 @@ public class PlayerManager extends KartoffelService implements Listener{
 					ex.printStackTrace();
 				}
 			}
-		}
-	}
+		}
 	
+	}
+
 	@EventHandler(priority = EventPriority.LOW)
 	public final void onPlayerChat(AsyncPlayerChatEvent e){
 		if(this.preventAction())return;
@@ -684,109 +1358,7 @@ public class PlayerManager extends KartoffelService implements Listener{
 			p.getSpelerOptions().refreshPrefix();
 		}
 	}
-	
-	
-/*	protected void setResource(File f){
-		if(f != null && !f.getAbsolutePath().startsWith(folderpath)){
-			//File newFile = new File(this.folderpath + "spelerbestand");+
-			operationMode = true;
-			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Opgegeven nieuw spelerbestand is niet in de vereiste directory");
-			return;
-		}
-		Spelerbestand s = new Spelerbestand(f, this);
-		this.resource.markForDelete();
-		this.resource = s;
-		try {
-			checkFileExists(f);
-			
-			FileInputStream fis = new FileInputStream(f);
-			
-			if(fis.read() == versionA && fis.read() == versionB){
-				Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Playermanager: Bestandsversie ondersteunt");
-			}else{
-				Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Playermanager: Bestandsversie is niet ondersteunt");
-				operationMode = true;
-				Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Playermanager is nu in operationMode");
-			}
-			edition = ((fis.read() << 24) | (fis.read() << 16) | (fis.read() << 8) | (fis.read()));
-			
-			String newpath = f.getAbsolutePath();
-			newpath = newpath.substring(folderpath.length());
-			FileOutputStream fos = new FileOutputStream(linkingpath);
-			BufferedWriter d = new BufferedWriter(new OutputStreamWriter(fos));
-			d.write(newpath.toCharArray());
-			d.close();
-			fos.close();
-		} catch (Exception e) {
-			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Playermanager kon spelerbestand niet inladen");
-			operationMode = true;
-			Logger.getLogger("Minecraft").info("[KartoffelKanaalPlugin] Playermanager is nu in operationMode");
-		}
-	}
-	
-	protected void writeCompleted(){
-		this.setResource(write);
-		try{
-			
-		}catch(Exception e){
-			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Kon Spelerbestandspad niet veranderen");
-		}
-	}*/
-	
-	protected void loadPersonExtra(UUID id){
-		if(id == null)return;
-		for(int i = 0; i < loadedPlayers.size(); ++i){
-			if(loadedPlayers.get(i).getUUID().equals(id))return;
-		}
-		Person p;
-		try {
-			p = this._getSavedPlayer(id);
-		} catch (Exception e) {return;}
-		if(p != null && !this.loadedPlayers.contains(p))loadedPlayers.add(p);
-	}
-	
-	/*protected Person getPersonSaveAccess(String name){
-		if(name == null)return null;
-		if(name.length() > 16){
-			try{
-				UUID id = UUID.fromString(name);
-				return getPersonSaveAccess(id);
-			}catch(Exception e){
-				return null;
-			}
-		}
-		for(int i = 0; i < loadedPlayers.size(); ++i){
-			if(loadedPlayers.get(i).getName().equals(name))return loadedPlayers.get(i);
-		}
-		Person p;
-		try {
-			p = this._getSavedPlayer(name);
-		} catch (IOException e) {
-			return null;
-		}
-		if(p == null)return null;
-		loadedPlayers.add(p);
-		return p;
-	}
-	
-	protected void getPersonSaveRelease(Person p){
-		if(this.saver != null)this.saver.add(p);
-		for(int i = 0; i < loadedPlayers.size(); i++){
-			if(loadedPlayers.get(i).equals(p)){
-				loadedPlayers.remove(i);
-				return;
-			}
-		}
-	}
-	*/
-	
-	protected void saveAllPlayers(boolean backup) throws Exception {
-		if(this.saver == null)throw new NullPointerException("De SaveQueue van de PlayerManager is null");
-		List<Person> p = new ArrayList<Person>();
-		p.addAll(this.loadedPlayers);
-		this.saver.add((Person[])p.toArray(), backup);
-	}
-	
+
 	protected short getAvailableLocation(){
 		if(counter == Short.MAX_VALUE){
 			Logger.getLogger("Minecraft").warning("[KKP] Maximum aantal personen in SpelerBestand bereikt. Hierdoor zal dataverlies ontstaan van de nieuwste spelers");
@@ -850,12 +1422,5 @@ public class PlayerManager extends KartoffelService implements Listener{
 			name.append((char)b[i]);
 		}
 		return name.toString();
-	}
-	
-	public Person[] getOnlinePlayers(){
-		if(this._online == null)return new Person[0];
-		Person[] abc = new Person[this._online.size()];
-		this._online.toArray(abc);
-		return abc;
 	}
 }

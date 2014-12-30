@@ -72,7 +72,7 @@ public class PersonSession {
 		}
 	}
 	
-	public boolean isPersonFounded(){
+	public boolean foundPerson(){
 		return p != null;
 	}
 	

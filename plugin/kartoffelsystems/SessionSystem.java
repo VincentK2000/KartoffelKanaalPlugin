@@ -12,19 +12,14 @@ public final class SessionSystem {
 		this.listener = listener;
 	}
 	
-	public boolean isReleased(){
-		if(accessors == null)return true;
-		for(int i = 0; i < accessors.length; i++){
-			if(accessors[i] != null && accessors[i].isAlive())return false;
+	public boolean hasThreadAccess(Thread t){
+		if(this.accessors == null)return false;
+		for(int i = 0; i < this.accessors.length; i++){
+			if(this.accessors[i] == t)return true;
 		}
-		return true;
+		return false;
 	}
-	
-	public boolean setDenyNew(){
-		//this.acceptNewAccessors = false;
-		return true;
-	}
-	
+
 	public boolean acquireAccess(){
 		//if(!this.acceptNewAccessors)return false;
 		Thread t = Thread.currentThread();
@@ -66,6 +61,14 @@ public final class SessionSystem {
 		//System.out.println("SessionSystem: Thread \"" + t.toString() + "\" heeft toegang gekregen in een nieuw gegenereede array");
 		return true;
 	}
+
+	public boolean isReleased(){
+		if(accessors == null)return true;
+		for(int i = 0; i < accessors.length; i++){
+			if(accessors[i] != null && accessors[i].isAlive())return false;
+		}
+		return true;
+	}
 	
 	public void releaseAccess(){
 		if(this.accessors == null)return;
@@ -90,7 +93,7 @@ public final class SessionSystem {
 		}
 		this.cleanUpEmpty();
 	}
-	
+
 	public void cleanUpEmpty(){
 		if(this.accessors == null)return;
 		int latestActiveIndex = 0;
@@ -122,12 +125,9 @@ public final class SessionSystem {
 			//System.out.println("SessionSystem: cleanUpEmpty, geen verkleining van accessorsList");
 		}
 	}
-	
-	public boolean hasThreadAccess(Thread t){
-		if(this.accessors == null)return false;
-		for(int i = 0; i < this.accessors.length; i++){
-			if(this.accessors[i] == t)return true;
-		}
-		return false;
+
+	public boolean setDenyNew(){
+		//this.acceptNewAccessors = false;
+		return true;
 	}
 }

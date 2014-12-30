@@ -60,12 +60,121 @@ public class Person implements ISessionSystemListener{
 		this._latestAccessTime = System.currentTimeMillis();
 	}
 	
+	public short getKartoffelID(){
+		return this.kartoffelID;
+	}
+
+	public String getName(){
+		return new String(this.name);
+	}
+
+	public UUID getUUID(){
+		return new UUID(this.UniqueID.getMostSignificantBits(), this.UniqueID.getLeastSignificantBits());
+	}
+
+	public void printInfo(CommandSender a){
+		SpelerOptions o = this.getSpelerOptions();
+		a.sendMessage("§eProfiel van " + this.name);
+		a.sendMessage("§e------------------------------");
+		a.sendMessage("§eUUID: " + this.UniqueID.toString());
+		a.sendMessage("§eNaam: " + this.name);
+		a.sendMessage("§eKartoffelID: " + this.getKartoffelID());
+		a.sendMessage("§eRank: " + Rank.getRankDisplay(o.getRank()));
+		a.sendMessage("§eDonateurrank: " + Rank.getRankDisplay(o.getDonatorRank()));
+		a.sendMessage("§eLaatste DailyDia day: " + this.getSpelerOptions().getLatestDailyDiamondDay());
+		a.sendMessage("§ePersonal Prefix: \"" + Person.getPersonalPrefix(this.UniqueID) + "\"");
+		a.sendMessage("§eOnline: " + this.online);
+	}
+
+	protected void printInfo(SpelerOptions executor, CommandSender a){
+		if(a == null)return;
+		if(executor == null){
+			try{
+				a.sendMessage("ERROR: Onbekende executor");
+			}catch(Throwable t){}
+			return;
+		}
+		if(executor.getRank() < 70){
+			a.sendMessage("Je hebt de rank Admin nodig");
+			return;
+		}
+		printInfo(a);
+	}
+
+	public void configure(Player pl){
+		this.UniqueID = pl.getUniqueId();
+		this.name = pl.getName();
+		this.player = pl;
+		this.getSpelerOptions().refreshRankRequirments();
+		this.getSpelerOptions().refreshRank();
+	}
+
+	public boolean isProfileOf(Player p){
+		if(p == null)return false;
+		if(this.UniqueID == null){
+			Logger.getLogger("Minecraft").warning("[KKP] Person: Het UUID van een Person is null");
+			return false;
+		}
+		
+		if(p.getUniqueId().equals(this.UniqueID)){
+			this.name = p.getName();
+			return true;
+		}
+		return false;
+	}
+
 	public SpelerOptions getSpelerOptions(){
 		return (a==null)?SpelerOptions.getDefaultOptions():a;
 	}
 	protected void setSpelerOptions(SpelerOptions so){
 		a = (so==null)?SpelerOptions.getDefaultOptions():so;
 	}
+	public void sendMessage(String m){
+		if(this == CONSOLE){
+			Logger.getLogger("Minecraft").info("[KKP] " + m);
+		}else{
+			if(player != null)player.sendMessage(m);
+		}
+	}
+
+	public void refreshBukkitPermissions(){
+		Rank.setBukkitPermissions(this.getSpelerOptions().getRank(), this);
+	}
+
+	public static String getPersonalPrefix(UUID id){
+		if(id == null)return "";
+		
+		//Laurens:
+		if(id.getMostSignificantBits() == -1495606991996763821L && id.getLeastSignificantBits() == -4952185009421044715L)return "[Youtube]";
+		
+		//Jelle:
+		if(id.getMostSignificantBits() == 646058613273347619L && id.getLeastSignificantBits() == -8526719427494299834L)return "[Youtube]";
+		
+		//Ik (Vincent):
+		if(id.getMostSignificantBits() == -6815922346184850659L && id.getLeastSignificantBits() == -4613213530685400101L)return "[Dev]";
+		
+		//Thomas:
+		if(id.getMostSignificantBits() == 1964234760505215656L && id.getLeastSignificantBits() == -8997581284896420049L)return "[SlothKing]";
+		
+		//Jaydey:
+		if(id.getMostSignificantBits() == 2629709164696322931L && id.getLeastSignificantBits() == -6055477513425670297L)return "[Cheater]";
+		
+		//Ben:
+		if(id.getMostSignificantBits() == -4255981295660744184L && id.getLeastSignificantBits() == -4950278195741411073L)return "[Panda]";
+		
+		//Merlijn:
+		if(id.getMostSignificantBits() == 599675639036594379L && id.getLeastSignificantBits() == -7269402673099981783L)return "[JuniorDev]";
+		
+		//ricopaolo:
+		if(id.getMostSignificantBits() == -701441263009968402L && id.getLeastSignificantBits() == -4626076513974838330L)return "[FunnyKing]";
+		
+		//just_nickryan:
+		if(id.getMostSignificantBits() == -9066992836862394032L && id.getLeastSignificantBits() == -5172913128725560681L)return "[FunnyKing]";
+		
+		
+		return "";
+	}
+
 	public static Person LoadFrom(byte[] uuiddata, byte[] namedata, byte[] data, short srcid) throws Exception{
 		if(namedata == null || uuiddata == null || data == null)return null;
 		if(namedata.length != 16 || uuiddata.length != 16 || data.length != 32)return null;
@@ -158,120 +267,20 @@ public class Person implements ISessionSystemListener{
 		}
 		return buffer;	}
 	
-	@Override
-	public String toString(){
-		return (this.UniqueID == null?"nullUniqueID":this.UniqueID.toString()) + ":" + (this.name == null?"nullName":this.name);
-	}
-	
-	public boolean isProfileOf(Player p){
-		if(p == null)return false;
-		if(this.UniqueID == null){
-			Logger.getLogger("Minecraft").warning("[KKP] Person: Het UUID van een Person is null");
-			return false;
-		}
-		
-		if(p.getUniqueId().equals(this.UniqueID)){
-			this.name = p.getName();
-			return true;
-		}
-		return false;
-	}
-	
-	public void refreshBukkitPermissions(){
-		Rank.setBukkitPermissions(this.getSpelerOptions().getRank(), this);
-	}
-	
-	public void sendMessage(String m){
-		if(this == CONSOLE){
-			Logger.getLogger("Minecraft").info("[KKP] " + m);
-		}else{
-			if(player != null)player.sendMessage(m);
+	protected void onSaveComplete(long snapshotTime){
+		this.getSpelerOptions().latestSaved = snapshotTime;
+		if(this.useFinished()){
+			if(this.isChanged()){
+				this.pm.saver.add(this);
+			}else{
+				this.pm.unloadPlayer(this);
+			}
+		}else if(!this.isCurrentlyUsed()){
+			this.pm.as.start();
 		}
 	}
+
 	
-	public static String getPersonalPrefix(UUID id){
-		if(id == null)return "";
-		
-		//Laurens:
-		if(id.getMostSignificantBits() == -1495606991996763821L && id.getLeastSignificantBits() == -4952185009421044715L)return "[Youtube]";
-		
-		//Jelle:
-		if(id.getMostSignificantBits() == 646058613273347619L && id.getLeastSignificantBits() == -8526719427494299834L)return "[Youtube]";
-		
-		//Ik (Vincent):
-		if(id.getMostSignificantBits() == -6815922346184850659L && id.getLeastSignificantBits() == -4613213530685400101L)return "[Dev]";
-		
-		//Thomas:
-		if(id.getMostSignificantBits() == 1964234760505215656L && id.getLeastSignificantBits() == -8997581284896420049L)return "[SlothKing]";
-		
-		//Jaydey:
-		if(id.getMostSignificantBits() == 2629709164696322931L && id.getLeastSignificantBits() == -6055477513425670297L)return "[Cheater]";
-		
-		//Ben:
-		if(id.getMostSignificantBits() == -4255981295660744184L && id.getLeastSignificantBits() == -4950278195741411073L)return "[Panda]";
-		
-		//Merlijn:
-		if(id.getMostSignificantBits() == 599675639036594379L && id.getLeastSignificantBits() == -7269402673099981783L)return "[JuniorDev]";
-		
-		//ricopaolo:
-		if(id.getMostSignificantBits() == -701441263009968402L && id.getLeastSignificantBits() == -4626076513974838330L)return "[FunnyKing]";
-		
-		//just_nickryan:
-		if(id.getMostSignificantBits() == -9066992836862394032L && id.getLeastSignificantBits() == -5172913128725560681L)return "[FunnyKing]";
-		
-		
-		return "";
-	}
-	
-	public UUID getUUID(){
-		return new UUID(this.UniqueID.getMostSignificantBits(), this.UniqueID.getLeastSignificantBits());
-	}
-	
-	public String getName(){
-		return new String(this.name);
-	}
-	public void configure(Player pl){
-		this.UniqueID = pl.getUniqueId();
-		this.name = pl.getName();
-		this.player = pl;
-		this.getSpelerOptions().refreshRankRequirments();
-		this.getSpelerOptions().refreshRank();
-	}
-	public void printInfo(CommandSender a){
-		SpelerOptions o = this.getSpelerOptions();
-		a.sendMessage("§eProfiel van " + this.name);
-		a.sendMessage("§e------------------------------");
-		a.sendMessage("§eUUID: " + this.UniqueID.toString());
-		a.sendMessage("§eNaam: " + this.name);
-		a.sendMessage("§eKartoffelID: " + this.getKartoffelID());
-		a.sendMessage("§eRank: " + Rank.getRankDisplay(o.getRank()));
-		a.sendMessage("§eDonateurrank: " + Rank.getRankDisplay(o.getDonatorRank()));
-		a.sendMessage("§eLaatste DailyDia day: " + this.getSpelerOptions().getLatestDailyDiamondDay());
-		a.sendMessage("§ePersonal Prefix: \"" + Person.getPersonalPrefix(this.UniqueID) + "\"");
-		a.sendMessage("§eOnline: " + this.online);
-	}
-	protected void printInfo(SpelerOptions executor, CommandSender a){
-		if(a == null)return;
-		if(executor == null){
-			try{
-				a.sendMessage("ERROR: Onbekende executor");
-			}catch(Throwable t){}
-			return;
-		}
-		if(executor.getRank() < 70){
-			a.sendMessage("Je hebt de rank Admin nodig");
-			return;
-		}
-		printInfo(a);
-	}
-	public short getKartoffelID(){
-		return this.kartoffelID;
-	}
-	
-	protected void setOnline(boolean state){
-		this.online = state;
-		this.checkLoadConditions();
-	}
 	
 	/*public long acquireAccessKey(){
 		long ans = this.pm.keyRandomizer.nextLong();
@@ -293,26 +302,18 @@ public class Person implements ISessionSystemListener{
 		}
 	}
 	
-	protected void onSaveComplete(long snapshotTime){
-		this.getSpelerOptions().latestSaved = snapshotTime;
-		if(this.useFinished()){
-			if(this.isChanged()){
-				this.pm.saver.add(this);
-			}else{
-				this.pm.unloadPlayer(this);
-			}
-		}else if(!this.isCurrentlyUsed()){
-			this.pm.as.start();
-		}
+	@Override
+	public void onAccessReceived(Thread t) {}
+
+	protected void setOnline(boolean state){
+		this.online = state;
+		this.checkLoadConditions();
 	}
-	
+
 	@Override
 	public void onAccessReleased(){
 		this.checkLoadConditions();
 	}
-	
-	@Override
-	public void onAccessReceived(Thread t) {}
 	
 	public void checkLoadConditions(){
 		if(this.online || !this.sessionSys.isReleased()/*|| this.accessKeys.size() > 0 || this.isCurrentlyUsed()*/)return;
@@ -338,5 +339,10 @@ public class Person implements ISessionSystemListener{
 	
 	public boolean checkCorrectAutoSaveConditions(){
 		return this.isChanged() && this.getSpelerOptions().getTimeSinceLatestSave() >= 300000;
+	}
+
+	@Override
+	public String toString(){
+		return (this.UniqueID == null?"nullUniqueID":this.UniqueID.toString()) + ":" + (this.name == null?"nullName":this.name);
 	}
 }
