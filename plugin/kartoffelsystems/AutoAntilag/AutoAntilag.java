@@ -92,7 +92,7 @@ public class AutoAntilag extends KartoffelService implements Runnable{
 				endtime = System.currentTimeMillis() + timeout;
 				Thread.sleep(timeout);
 				if(this.preventAction())return;
-				Logger.getLogger("Minecraft").info("[KKP] AutoAntilag wordt uitgevoerd...");
+				//Logger.getLogger("Minecraft").info("[KKP] AutoAntilag wordt uitgevoerd...");
 				try{
 					s.dispatchCommand(s.getConsoleSender(), "nolagg gc");
 				}catch(Throwable e){
