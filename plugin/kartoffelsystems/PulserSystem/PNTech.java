@@ -96,18 +96,7 @@ public abstract class PNTech implements IObjectCommandHandable{
 	
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
-		if(a == null)return true;
-		if(executor == null){
-			a.sendMessage("§4ERROR: Executor is null bij PulserNotif-deel");
-			return true;
-		}
-		
-		if(args == null || args.length < 1){
-			a.sendMessage("§eNotif-deel: §c<" + this.getTopLevelPossibilitiesString() + "> ...");
-			return true;
-		}
-		
-		String label = args[0].toLowerCase();
+		String label = args[0];
 		
 		if(label.equals("visibility")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
@@ -154,7 +143,7 @@ public abstract class PNTech implements IObjectCommandHandable{
 	
 	@Override
 	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception {
-		String label = args[0].toLowerCase();
+		String label = args[0];
 		if(args.length == 1){
 			if("visibility".startsWith(label))a.add("visibility");
 		}else if(args.length >= 2){
@@ -170,8 +159,13 @@ public abstract class PNTech implements IObjectCommandHandable{
 	}
 	
 	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception{
+	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
 		return a;
+	}
+	
+	@Override
+	public IObjectCommandHandable getSubObjectCH(String s) throws Exception {
+		return null;
 	}
 	
 	public String getTopLevelPossibilitiesString(){

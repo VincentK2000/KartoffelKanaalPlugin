@@ -133,14 +133,8 @@ public abstract class PNCondition implements IObjectCommandHandable {
 		return value;
 	}
 	protected abstract boolean calculateValue();
-	protected abstract PNCondition createCopy(int conditionID, PNTechCondition base);//{
-		//return new PNCondition(this.source);
-	//}
-		//return new PNCondition(this.source);
-	//}
-	public abstract PNCondition copyCondition(int ID, PNTechCondition root) throws Exception;
+	protected abstract PNCondition createCopy(int conditionID, PNTechCondition base) throws Exception;
 	
-
 	public boolean isInvisible(){
 		return this.invisible;
 	}
@@ -152,20 +146,8 @@ public abstract class PNCondition implements IObjectCommandHandable {
 	}
 	
 	@Override
-	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
-		if(a == null)return true;
-		if(executor == null){
-			a.sendMessage("§4ERROR: Executor is null bij PulserNotif-deel");
-			return true;
-		}
-		
-		if(args == null || args.length < 1){
-			a.sendMessage("§eCondition-deel: §c<" + this.getTopLevelPossibilitiesString() + "> ...");
-			return true;
-		}
-		
-		String label = args[0].toLowerCase();
-		
+	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {		
+		String label = args[0];
 		if(label.equals("visibility")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("§4Je hebt geen toegang tot dit commando");
@@ -290,8 +272,7 @@ public abstract class PNCondition implements IObjectCommandHandable {
 	
 	@Override
 	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception {
-		if(args.length == 0)return null;
-		String label = args[0].toLowerCase();
+		String label = args[0];
 		if(args.length == 1){
 			if("visibility".startsWith(label))a.add("visibility");
 			if("value".startsWith(label))a.add("value");

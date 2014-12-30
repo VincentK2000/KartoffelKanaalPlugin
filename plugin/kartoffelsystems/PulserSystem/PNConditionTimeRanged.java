@@ -121,11 +121,6 @@ public class PNConditionTimeRanged extends PNCondition{
 		
 		return ans;
 	}
-	
-	@Override
-	protected PNConditionTimeRanged createCopy(int id, PNTechCondition root) {
-		return new PNConditionTimeRanged(starttime, endtime, this.options, this.invisible, id, root);
-	}
 
 	@Override
 	protected int getEstimatedSize() {
@@ -135,8 +130,7 @@ public class PNConditionTimeRanged extends PNCondition{
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
-		if(args.length == 0)return false;
-		String label = args[0].toLowerCase();
+		String label = args[0];
 		if(label.equals("starttijd")){
 			boolean useRawTime = attribSys.hasAttrib("useRawTime");
 			if(args.length == 1){
@@ -195,10 +189,8 @@ public class PNConditionTimeRanged extends PNCondition{
 
 	@Override
 	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception {
-		a = super.autoCompleteObjectCommand(args, a);
-		if(args.length == 0)return a;
-		
-		String label = args[0].toLowerCase();
+		a = super.autoCompleteObjectCommand(args, a);		
+		String label = args[0];
 		if(args.length == 1){
 			if("starttijd".startsWith(label))a.add("starttijd");
 			if("stoptijd".startsWith(label))a.add("stoptijd");
@@ -208,7 +200,7 @@ public class PNConditionTimeRanged extends PNCondition{
 	}
 	
 	@Override
-	public PNConditionTimeRanged copyCondition(int ID, PNTechCondition root) throws Exception {
+	public PNConditionTimeRanged createCopy(int ID, PNTechCondition root) throws Exception {
 		return new PNConditionTimeRanged(this.starttime, this.endtime, this.options, true, ID, root);
 	}
 	

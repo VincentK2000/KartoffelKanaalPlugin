@@ -1,9 +1,6 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.ArrayList;
 import java.util.UUID;
-
-import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 
 public class PNTechSpecEditAccess extends PNTech{
 	@Override
@@ -122,18 +119,6 @@ public class PNTechSpecEditAccess extends PNTech{
 			}
 		}
 		return false;
-	}
-
-
-	@Override
-	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
-		return super.autoCompleteSubObjectCH(s, a);
 	}
 	
 	public static PNTechCondition createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {

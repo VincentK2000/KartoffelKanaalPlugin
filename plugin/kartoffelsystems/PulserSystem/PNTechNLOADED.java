@@ -1,9 +1,5 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.ArrayList;
-
-import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
-
 public class PNTechNLOADED extends PNTech{
 //NLOADED = Not loaded
 //Dit is geen Tech voor een PulserNotification, maar een vervanger voor een niet-virtuele of ongeladen data
@@ -28,17 +24,6 @@ public class PNTechNLOADED extends PNTech{
 	@Override
 	public int getEstimatedSize() {
 		return data.length;
-	}
-
-	@Override
-	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
-		return super.autoCompleteSubObjectCH(s, a);
 	}
 	
 	public static PNTechCondition createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {

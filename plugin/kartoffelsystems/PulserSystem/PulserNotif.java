@@ -174,6 +174,7 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 	public abstract void doCrashTest(Player pl) throws Exception;
 	
 	//public abstract void handleLocalCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception;
+	/*
 	public abstract String[] getLocalTopLevelArgsPossibilities();
 	public final    String[] getTotalTopLevelArgsPossibilities(){
 		String[] general = new String[]{"actief","read-only","forceSend"};
@@ -184,21 +185,10 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 		System.arraycopy(general, 0, total, 0, general.length);
 		System.arraycopy(local, 0, total, general.length, local.length);
 		return total;
-	}
+	}*/
 
 	@Override
-	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception{
-		if(a == null)return true;
-		if(executor == null){
-			a.sendMessage("§4ERROR: Executor is null bij PulserNotif-deel");
-			return true;
-		}
-		
-		if(args == null || args.length < 1){
-			a.sendMessage("§eNotif-deel: §c<" + this.getTopLevelPossibilitiesString() + "> ...");
-			return true;
-		}
-		
+	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception{		
 		String label = args[0].toLowerCase();
 		
 		if(label.equals("actief")){
@@ -296,7 +286,7 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 		return true;
 	}
 	
-	private String getTopLevelPossibilitiesString(){
+	/*private String getTopLevelPossibilitiesString(){
 		String[] total = this.getTotalTopLevelArgsPossibilities();
 		if(total.length == 0)return "";
 		StringBuilder sb = new StringBuilder(20);
@@ -309,21 +299,16 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 			sb.append(total[total.length - 1]);
 		}
 		return sb.toString();
-	}
+	}*/
 	
 	@Override
 	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception{
+		String label = args[0];
 		if(args.length == 1){
-			String label = args[0].toLowerCase();
-			label = label.toLowerCase();
-			String[] possibilities = this.getTotalTopLevelArgsPossibilities();
-			for(int i = 0; i < possibilities.length; i++){
-				if(possibilities[i] != null && possibilities[i].startsWith(label)){
-					a.add(possibilities[i]);
-				}
-			}
+			if("actief".startsWith(label))a.add("actief");
+			if("read-only".startsWith(label))a.add("read-only");
+			if("forcesend".startsWith(label))a.add("forcesend");
 		}else if(args.length > 1){
-			String label = args[0].toLowerCase();
 			if(label.equals("actief")){
 				if("aan".startsWith(args[1]))a.add(args[1]);
 				if("uit".startsWith(args[1]))a.add(args[1]);

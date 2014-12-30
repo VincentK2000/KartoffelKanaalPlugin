@@ -1,9 +1,5 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.ArrayList;
-
-import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
-
 public class PNTechNotifSize extends PNTech{
 	@Override
 	public byte getTechType() {return 4;}
@@ -112,17 +108,6 @@ public class PNTechNotifSize extends PNTech{
 	@Override
 	public int getEstimatedSize() {
 		return PNTech.generalInfoLength() + 13;
-	}
-
-	@Override
-	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
-		return super.autoCompleteSubObjectCH(s, a);
 	}
 	
 	public static PNTechCondition createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {

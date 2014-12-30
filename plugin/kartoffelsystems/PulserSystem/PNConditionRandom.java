@@ -6,7 +6,6 @@ import java.util.Random;
 import org.bukkit.command.CommandSender;
 
 import KartoffelKanaalPlugin.plugin.AttribSystem;
-import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 
 public class PNConditionRandom extends PNCondition{
@@ -77,11 +76,6 @@ public class PNConditionRandom extends PNCondition{
 	}
 
 	@Override
-	protected PNCondition createCopy(int id, PNTechCondition root) {
-		return new PNConditionRandom(this.total, this.positiveAmount, this.options, this.invisible, id, root);
-	}
-
-	@Override
 	protected int getEstimatedSize() {
 		return 8 + PNCondition.generalInfoLength();
 	}
@@ -89,8 +83,8 @@ public class PNConditionRandom extends PNCondition{
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
-		String commandLabel = args[0].toLowerCase();
-		if(commandLabel.equals("chance")){
+		String label = args[0];
+		if(label.equals("chance")){
 			if(args.length != 1){
 				a.sendMessage("§eDe kans dat de Condition positief is, is " + this.positiveAmount + " op de " + this.total + " (" + (((double)this.positiveAmount / this.total) * 100) + "%)");
 				a.sendMessage("§cVerander de kans met: §chance <nieuwePosAmount/nieuweTotalAmount>|<nieuwePercentage>%  [^geenVereenvoudigen]");
@@ -185,23 +179,14 @@ public class PNConditionRandom extends PNCondition{
 	@Override
 	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception {
 		a = super.autoCompleteObjectCommand(args, a);
-
+		if(args.length == 1){
+			if("change".startsWith(args[0]))a.add("change");
+		}
 		return a;
-	}
-
-	@Override
-	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
-		return super.autoCompleteSubObjectCH(s, a);
 	}
 	
 	@Override
-	public PNConditionRandom copyCondition(int ID, PNTechCondition root) throws Exception {
+	public PNConditionRandom createCopy(int ID, PNTechCondition root) throws Exception {
 		return new PNConditionRandom(this.total, this.positiveAmount, this.options, true, ID, root);
 	}
 	

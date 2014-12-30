@@ -2,12 +2,10 @@ package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import org.bukkit.entity.Player;
 
-import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 import KartoffelKanaalPlugin.plugin.Main;
 
 public class PNTechTextProvRaw extends PNTechTextProv{
@@ -29,10 +27,6 @@ public class PNTechTextProvRaw extends PNTechTextProv{
 	
 	public int getEstimatedSize(){
 		return PNTech.generalInfoLength() + rawtext.length();
-	}
-	
-	protected void handleCommand(String[] args, int startindex){
-		
 	}
 	
 	protected String getMessage(){
@@ -99,17 +93,6 @@ public class PNTechTextProvRaw extends PNTechTextProv{
 	public void doCrashTest(Player pl) throws Exception {
 		if(pl == null)throw new Exception("Player is null!");
 		Main.plugin.getServer().dispatchCommand(Main.plugin.getServer().getConsoleSender(), "tellraw " + pl.getName() + ' ' + this.getMessage());
-	}
-
-	@Override
-	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
-		return super.autoCompleteSubObjectCH(s, a);
 	}
 	
 	public static PNTechTextProvRaw createFromParams(String[] params, int ID, PulserNotifStandard notificationBase) throws Exception {

@@ -698,11 +698,6 @@ public class PulserNotifStandard extends PulserNotif{
 	}
 
 	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		return new String[]{"interval","technics"};
-	}
-
-	@Override
 	public boolean activationRequiresCrashTest(){
 		return (this.textProv == null)?false:this.textProv.crashTestRequired();
 	}

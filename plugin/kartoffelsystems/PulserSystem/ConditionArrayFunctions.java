@@ -139,7 +139,7 @@ public class ConditionArrayFunctions {
 							}
 							PNCondition newObject;
 							try{
-								newObject = ((PNCondition)objCH).copyCondition(600, affectedCondition.root);
+								newObject = ((PNCondition)objCH).createCopy(600, affectedCondition.root);
 							}catch(Exception e){
 								a.sendMessage("§4Kon geen kopie maken van het object: " + e);
 								return currentArray;

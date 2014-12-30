@@ -55,11 +55,6 @@ public class PNConditionDataField extends PNCondition{
 	}
 
 	@Override
-	protected PNConditionDataField createCopy(int id, PNTechCondition base) {
-		return new PNConditionDataField(this.data, this.options, this.invisible, id, base);
-	}
-
-	@Override
 	protected int getEstimatedSize() {
 		return data.length + PNCondition.generalInfoLength();
 	}
@@ -91,7 +86,7 @@ public class PNConditionDataField extends PNCondition{
 
 	
 	@Override
-	public PNCondition copyCondition(int ID, PNTechCondition root) throws Exception {
+	public PNCondition createCopy(int ID, PNTechCondition root) throws Exception {
 		throw new Exception("Functie nog niet beschikbaar");
 	}
 	

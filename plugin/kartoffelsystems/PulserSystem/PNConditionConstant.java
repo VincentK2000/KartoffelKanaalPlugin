@@ -46,11 +46,6 @@ public class PNConditionConstant extends PNCondition{
 	}
 
 	@Override
-	protected PNConditionConstant createCopy(int id, PNTechCondition base) {
-		return new PNConditionConstant(this.options, this.invisible, id, base);
-	}
-
-	@Override
 	protected int getEstimatedSize() {
 		return PNCondition.generalInfoLength();
 	}
@@ -58,17 +53,17 @@ public class PNConditionConstant extends PNCondition{
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
-		if(args.length == 0)return false;
-		String label = args[0].toLowerCase();
+		String label = args[0];
 		if(label.equals("aan") || label.equals("on") || label.equals("true") || label.equals("+")){
 			this.options |= 0x20;
 			a.sendMessage("§eDe ConditionConstant staat nu op §2aan§e.");
 		}else if(label.equals("uit") || label.equals("off") || label.equals("false") || label.equals("-")){
 			this.options &= 0xDF;
 			a.sendMessage("§eDe ConditionConstant staat nu op §2uit§e.");
+		}else{
+			return false;
 		}
-		
-		return false;
+		return true;
 	}
 
 	@Override
@@ -89,7 +84,7 @@ public class PNConditionConstant extends PNCondition{
 	}
 	
 	@Override
-	public PNConditionConstant copyCondition(int ID, PNTechCondition root) throws Exception {
+	public PNConditionConstant createCopy(int ID, PNTechCondition root) throws Exception {
 		return new PNConditionConstant(this.options, true, ID, root);
 	}
 	

@@ -31,11 +31,6 @@ public class PNConditionNLOADED extends PNCondition{
 	}
 
 	@Override
-	protected PNConditionNLOADED createCopy(int conditionID, PNTechCondition base) {
-		return new PNConditionNLOADED(data, this.options, this.conditionID);
-	}
-
-	@Override
 	protected int getEstimatedSize() {
 		return (data == null)?0:data.length;
 	}
@@ -52,7 +47,7 @@ public class PNConditionNLOADED extends PNCondition{
 	}
 	
 	@Override
-	public PNCondition copyCondition(int ID, PNTechCondition root) throws Exception {
+	public PNCondition createCopy(int ID, PNTechCondition root) throws Exception {
 		throw new Exception("Je kan geen kopie maken van een PNConditionNLOADED");
 	}
 	

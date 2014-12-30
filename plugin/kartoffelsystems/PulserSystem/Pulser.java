@@ -413,6 +413,20 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 		}
 		return result;
 	}
+	public static String formatListToString(ArrayList<String> list, String separator){
+		if(list == null || list.size() == 0 || separator == null)return "";
+		StringBuilder sb = new StringBuilder(20);
+		for(int i = 0; i < list.size() - 1; i++){
+			String s = list.get(i);
+			if(s == null || s.length() == 0)continue;
+			sb.append(separator);
+		}
+		String last = list.get(list.size() - 1);
+		if(last != null){
+			sb.append(last);
+		}
+		return sb.toString();
+	}
 
 	@Override
 	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {

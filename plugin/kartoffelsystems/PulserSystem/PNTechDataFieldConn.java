@@ -1,9 +1,5 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.ArrayList;
-
-import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
-
 public class PNTechDataFieldConn extends PNTech{
 	byte[] toIncrease;
 	
@@ -86,16 +82,6 @@ public class PNTechDataFieldConn extends PNTech{
 		
 		return new PNTechDataFieldConn(increase, src);
 		
-	}
-
-	@Override
-	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
-		return null;
-	}
-
-	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
-		return super.autoCompleteSubObjectCH(s, a);
 	}
 
 

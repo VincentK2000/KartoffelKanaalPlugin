@@ -1,5 +1,7 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
+import java.util.ArrayList;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -215,8 +217,18 @@ public class CommandsPulser {
 				a.sendMessage("§4Er is niks gevonden op dat path");
 				return;
 			}
+			if(args.length < 2){
+				try{
+					a.sendMessage("§eBeschikbare commando's: §c" + Pulser.formatListToString(n.autoCompleteObjectCommand(new String[]{""}, new ArrayList<String>(5)), "§e, §c"));
+				}catch(Exception e){
+					a.sendMessage("§4Kon beschikbare commando's niet weergeven: " + e.getMessage());
+				}
+				return;
+			}
+			
 			String[] newArgs = new String[args.length - 1];
 			System.arraycopy(args, 1, newArgs, 0, newArgs.length);
+			newArgs[0] = newArgs[0].toLowerCase();
 			try{
 				if(!n.handleObjectCommand(p, a, attribSys, newArgs)){
 					a.sendMessage("§4Onbekend commando voor dat element");

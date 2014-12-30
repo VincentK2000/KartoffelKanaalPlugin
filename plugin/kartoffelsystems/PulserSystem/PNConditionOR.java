@@ -76,11 +76,6 @@ public class PNConditionOR extends PNCondition{
 	}
 
 	@Override
-	protected PNConditionOR createCopy(int id, PNTechCondition base) {
-		return null;
-	}
-
-	@Override
 	protected int getEstimatedSize() {
 		if(arr == null)return PNCondition.generalInfoLength();
 		int l = PNCondition.generalInfoLength() + arr.length * 4;
@@ -93,8 +88,7 @@ public class PNConditionOR extends PNCondition{
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
-		if(args.length == 0)return false;
-		String commandLabel = args[0].toLowerCase();
+		String commandLabel = args[0];
 		if(commandLabel.equals("array")){
 			this.arr = ConditionArrayFunctions.handleSubCommand(executor, a, attribSys, args, this, this.arr);
 		}else{
@@ -107,7 +101,7 @@ public class PNConditionOR extends PNCondition{
 	public ArrayList<String> autoCompleteObjectCommand(String[] args, ArrayList<String> a) throws Exception {
 		a = super.autoCompleteObjectCommand(args, a);
 		
-		String commandLabel = args[0].toLowerCase();
+		String commandLabel = args[0];
 		if(commandLabel.equals("array")){
 			a = ConditionArrayFunctions.autoCompleteSubCommand(args, a);
 		}
@@ -135,7 +129,7 @@ public class PNConditionOR extends PNCondition{
 	}
 
 	@Override
-	public PNConditionOR copyCondition(int ID, PNTechCondition root) throws Exception {
+	public PNConditionOR createCopy(int ID, PNTechCondition root) throws Exception {
 		PNCondition[] children = null;
 		if(this.arr == null){
 			children = new PNCondition[0];
@@ -143,7 +137,7 @@ public class PNConditionOR extends PNCondition{
 			children = new PNCondition[this.arr.length];
 			for(int i = 0; i < this.arr.length; i++){
 				if(this.arr[i] != null){
-					children[i] = this.arr[i].copyCondition(601, root);//TODO De Condition-ID moet dynamisch asigned worden
+					children[i] = this.arr[i].createCopy(601, root);//TODO De Condition-ID moet dynamisch asigned worden
 				}
 			}
 		}

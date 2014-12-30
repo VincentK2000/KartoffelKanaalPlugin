@@ -417,13 +417,12 @@ public class Main extends JavaPlugin implements Listener {
 						}catch(Exception e){return null;}
 						String[] newArgs = new String[args.length - 1];
 						System.arraycopy(args, 1, newArgs, 0, newArgs.length);
+						newArgs[0] = newArgs[0].toLowerCase();
 						try{
 							return objCH.autoCompleteObjectCommand(newArgs, new ArrayList<String>(1));
 						}catch(Exception e){return null;}
 					}
 				}
-			}else if(args.length > 0 && !(args[0].equals("receive") && args.length == 3)){
-				return new ArrayList<String>(0);
 			}
 		}
 		

@@ -72,6 +72,11 @@ public class PNTechCondition extends PNTech{
 
 	@Override
 	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
+		{
+		IObjectCommandHandable c = super.getSubObjectCH(path);
+		if(c != null)return c;
+		}
+		
 		if(path.equals("root") || path.equals("base") || path.equals("condition"))return this.root;
 		return null;
 	}

@@ -10,21 +10,10 @@ import org.bukkit.command.CommandSender;
 
 import KartoffelKanaalPlugin.plugin.AdvancedChat;
 import KartoffelKanaalPlugin.plugin.AttribSystem;
-import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 import KartoffelKanaalPlugin.plugin.StoreTechnics;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 
 public abstract class PNTechTextProvFormatted extends PNTechTextProv {
-	@Override
-	public IObjectCommandHandable getSubObjectCH(String path) throws Exception {
-		return null;
-	}
-
-	@Override
-	public ArrayList<String> autoCompleteSubObjectCH(String s, ArrayList<String> a) throws Exception {
-		return super.autoCompleteSubObjectCH(s, a);
-	}
-
 	@Override
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;

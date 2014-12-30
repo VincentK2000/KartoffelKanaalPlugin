@@ -38,11 +38,6 @@ public class PulserNotifNLOADED extends PulserNotif{
 	}
 
 	@Override
-	public String[] getLocalTopLevelArgsPossibilities() {
-		return new String[0];
-	}
-
-	@Override
 	public boolean activationRequiresCrashTest() {
 		return false;
 	}
