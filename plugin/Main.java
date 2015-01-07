@@ -18,9 +18,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Animals;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
@@ -38,6 +36,7 @@ import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Rank;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.SpelerOptions;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.CommandsPulser;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.Pulser;
+import org.bukkit.projectiles.ProjectileSource;
 
 
 public class Main extends JavaPlugin implements Listener {
@@ -633,18 +632,27 @@ public class Main extends JavaPlugin implements Listener {
 	}
 
 	@EventHandler
-	public void onEntityDamageEntityEvent(org.bukkit.event.entity.EntityDamageByEntityEvent e){
+	public void onEntityDamageByEntityEvent(org.bukkit.event.entity.EntityDamageByEntityEvent e){
 		Player p;
-		if(e.getDamager() instanceof  Player)
-			p = (Player)e.getDamager();
-		else
+		if(e.getDamager() instanceof  Player) {
+			p = (Player) e.getDamager();
+		}else if(e.getDamager() instanceof Projectile){
+			Projectile proj = (Projectile)e.getDamager();
+			ProjectileSource projSource = proj.getShooter();
+			if(projSource != null && projSource instanceof Player){
+				p = (Player)projSource;
+			}else{
+				return;
+			}
+		}else{
 			return;
+		}
 
-		if(e.getEntity() instanceof Animals){
+		if(!(e.getEntity() instanceof Monster) && !(e.getEntity() instanceof  Player)/*e.getEntity() instanceof Animals || e.getEntity() instanceof Villager || e.getEntity()instanceof EnderCrystal*/){
 			if(p.isOp())return;
 			try{
 				if(!WorldGuardPlugin.inst().getGlobalRegionManager().canBuild(p, e.getEntity().getLocation())){
-					p.sendMessage("§4Je hebt geen permissions om in die region Animals te damagen.");
+					p.sendMessage("§4Je hebt geen permissions om Entities in die region te damagen.");
 					e.setCancelled(true);
 				}
 			}catch(Exception ex){}
