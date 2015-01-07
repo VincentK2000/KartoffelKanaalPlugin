@@ -43,16 +43,16 @@ public class Rank {
 		return "Onbekend:" + r;
 	}
 	public static String getRankPrefix(byte r){
-		if(r >= 100)return "งb[Owner]";
-		if(r >=  70)return "ง4[Admin]";
+		if(r >= 100)return "ยงb[Owner]";
+		if(r >=  70)return "ยง4[Admin]";
 		
-		if(r >=  35)return "ง9[God]";
-		if(r >=  30)return "ง6[Lord]";
-		if(r >=  25)return "ง2[VIP]";
-		if(r >=  20)return "งd[Kartoffel]";
+		if(r >=  35)return "ยง9[God]";
+		if(r >=  30)return "ยง6[Lord]";
+		if(r >=  25)return "ยง2[VIP]";
+		if(r >=  20)return "ยงd[Kartoffel]";
 		
-		if(r >=  10)return "งe[Veteran]";
-		if(r >=   5)return "ง7[Builder]";
+		if(r >=  10)return "ยงe[Veteran]";
+		if(r >=   5)return "ยง7[Builder]";
 		return "";
 	}
 	public static char getRankColor(byte r){
@@ -67,7 +67,10 @@ public class Rank {
 		if(r >=  10)return 'e';
 		if(r >=   5)return '7';
 		return 'f';
-	}	public static String getRankDisplay(byte r){		return "\"" + getRankName(r) + "\" (" + r + ")";	}
+	}
+	public static String getRankDisplay(byte r){
+		return "\"" + getRankName(r) + "\" (" + r + ")";
+	}
 
 	public static void setBukkitPermissions(byte r, Person p){
 		if(p == null || p.player == null)return;
@@ -116,25 +119,31 @@ public class Rank {
 			a.setPermission("sg.arena.join.*", true);
 			a.setPermission("sg.arena.vote", true);
 			a.setPermission("sg.arena.spectate", true);
-			a.setPermission("sg.lobby.join", true);
+			a.setPermission("sg.lobby.join", true);
+
 		if(r < 5)return; //Builder
 			a.setPermission("essentials.sethome.multiple", true);
-			a.setPermission("essentials.sethome.multiple.twohomes", true);
+			a.setPermission("essentials.sethome.multiple.twohomes", true);
+
 		if(r < 10)return; //Veteran
 			a.setPermission("essentials.hat", true);
-			a.setPermission("essentials.sethome.multiple.threehomes", true);
+			a.setPermission("essentials.sethome.multiple.threehomes", true);
+
 		if(r < 20)return; //Kartoffel
 			a.setPermission("essentials.workbench", true);
 			a.setPermission("essentials.teleport.timer.bypass", true);
-			a.setPermission("essentials.teleport.timer.move", true);
+			a.setPermission("essentials.teleport.timer.move", true);
+
 		if(r < 25)return; //KartoffelVIP
 			a.setPermission("essentials.nick", true);
 			a.setPermission("essentials.nick.color",true);
 			a.setPermission("essentials.heal", true);
-			a.setPermission("essentials.sethome.multiple.fivehomes", true);
+			a.setPermission("essentials.sethome.multiple.fivehomes", true);
+
 		if(r < 30)return; //KartoffelLord
 			a.setPermission("essentials.top", true);
-			a.setPermission("essentials.sethome.multiple.sevenhomes", true);
+			a.setPermission("essentials.sethome.multiple.sevenhomes", true);
+
 		if(r < 35)return; //KartoffelGod
 			a.setPermission("essentials.weather", true);
 			a.setPermission("bukkit.command.weather", true);

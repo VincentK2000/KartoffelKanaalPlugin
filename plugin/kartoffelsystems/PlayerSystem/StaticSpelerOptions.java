@@ -13,31 +13,31 @@ public class StaticSpelerOptions extends SpelerOptions {
 	@Override
 	public void setRank(byte r, SpelerOptions executor, CommandSender a, boolean notifyAffected){
 		if(a == null)return;
-		a.sendMessage("ง4Je kan de rank niet veranderen van deze persoon");
+		a.sendMessage("ยง4Je kan de rank niet veranderen van deze persoon");
 	}
 	
 	@Override
 	public void setDonatorRank(byte r, SpelerOptions executor, CommandSender a, boolean notifyAffected){
 		if(a == null)return;
-		a.sendMessage("ง4Je kan de donateurrank niet veranderen van deze persoon");
+		a.sendMessage("ยง4Je kan de donateurrank niet veranderen van deze persoon");
 	}
 	
 	@Override
 	public void giveDailyDiamonds(Player p){
 		if(p == null)return;
-		p.sendMessage("ง4De SpelerOptions is een StaticSpelerOptions");
+		p.sendMessage("ยง4De SpelerOptions is een StaticSpelerOptions");
 	}
 	
 	@Override
 	protected void setOption(byte adress, boolean on, SpelerOptions executor, CommandSender a, boolean notifyAffectedPerson){
 		if(a == null)return;
-		a.sendMessage("ง4Je kan geen options veranderen van deze persoon");
+		a.sendMessage("ยง4Je kan geen options veranderen van deze persoon");
 	}
 	
 	@Override
 	public void setPermission(byte adress, boolean on, boolean isStatic, SpelerOptions executor, CommandSender a, boolean notifyAffectedPerson){
 		if(a == null)return;
-		a.sendMessage("ง4Je kan geen permissions veranderen van deze persoon");
+		a.sendMessage("ยง4Je kan geen permissions veranderen van deze persoon");
 	}
 	
 	@Override

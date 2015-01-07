@@ -95,8 +95,8 @@ public class PNConditionRandom extends PNCondition{
 		String label = args[0];
 		if(label.equals("chance")){
 			if(args.length != 1){
-				a.sendMessage("§eDe kans dat de Condition positief is, is " + this.positiveAmount + " op de " + this.total + " (" + (((double)this.positiveAmount / this.total) * 100) + "%)");
-				a.sendMessage("§cVerander de kans met: §chance <nieuwePosAmount/nieuweTotalAmount>|<nieuwePercentage>%  [^geenVereenvoudigen]");
+				a.sendMessage("Â§eDe kans dat de Condition positief is, is " + this.positiveAmount + " op de " + this.total + " (" + (((double)this.positiveAmount / this.total) * 100) + "%)");
+				a.sendMessage("Â§cVerander de kans met: Â§chance <nieuwePosAmount/nieuweTotalAmount>|<nieuwePercentage>%  [^geenVereenvoudigen]");
 			}else if(args.length == 2){
 				int deviderIndex = args[1].indexOf((int)'/');
 				if(deviderIndex >= 0 && deviderIndex < args[1].length()){
@@ -105,7 +105,7 @@ public class PNConditionRandom extends PNCondition{
 						newPosAmount = Integer.parseInt(args[1].substring(0, deviderIndex));
 						if(newPosAmount < 0)throw new Exception("Positive amount is kleiner dan 0");
 					}catch(Exception e){
-						a.sendMessage("§4Oncorrecte positive amount. Bedenk dat het een natuurlijk getal moet zijn.");
+						a.sendMessage("Â§4Oncorrecte positive amount. Bedenk dat het een natuurlijk getal moet zijn.");
 						return true;
 					}
 					
@@ -114,7 +114,7 @@ public class PNConditionRandom extends PNCondition{
 						newTotalAmount = Integer.parseInt(args[1].substring(deviderIndex + 1));
 						if(newTotalAmount <= 0)throw new Exception("Total amount is kleiner dan of gelijk aan 0");
 					}catch(Exception e){
-						a.sendMessage("§4Oncorrecte total amount. Bedenk dat het een natuurlijk getal groter dan 0 moet zijn.");
+						a.sendMessage("Â§4Oncorrecte total amount. Bedenk dat het een natuurlijk getal groter dan 0 moet zijn.");
 						return true;
 					}
 					this.positiveAmount = newPosAmount;
@@ -124,7 +124,7 @@ public class PNConditionRandom extends PNCondition{
 					try{
 						percentage = Double.parseDouble(args[1].substring(0, args[1].length() - 1));
 					}catch(Exception e){
-						a.sendMessage("§4Oncorrecte percentage. Bedenk dat het een decimaal getal moet zijn (tussen (incl.) 0% en 100%).");
+						a.sendMessage("Â§4Oncorrecte percentage. Bedenk dat het een decimaal getal moet zijn (tussen (incl.) 0% en 100%).");
 						return true;
 					}
 					if(percentage <= 0){
@@ -156,7 +156,7 @@ public class PNConditionRandom extends PNCondition{
 					}
 					
 				}else{
-					a.sendMessage("§4De nieuwe value moet of een breuk zijn (bv. 2/5 ) of een percentage (bv. 25.5% ).");
+					a.sendMessage("Â§4De nieuwe value moet of een breuk zijn (bv. 2/5 ) of een percentage (bv. 25.5% ).");
 				}
 				if(!attribSys.hasAttrib("geenVereenvoudigen")){
 					int numb1 = this.positiveAmount;
@@ -178,7 +178,7 @@ public class PNConditionRandom extends PNCondition{
 					this.positiveAmount /= numb1;
 					this.total /= numb1;
 				}
-				a.sendMessage("§eDe kans dat de Condition positief is, is nu " + this.positiveAmount + " op de " + this.total + " (" + (((double)this.positiveAmount / this.total) * 100) + "%)");
+				a.sendMessage("Â§eDe kans dat de Condition positief is, is nu " + this.positiveAmount + " op de " + this.total + " (" + (((double)this.positiveAmount / this.total) * 100) + "%)");
 			}
 		}
 		

@@ -74,16 +74,16 @@ public class Person implements ISessionSystemListener{
 
 	public void printInfo(CommandSender a){
 		SpelerOptions o = this.getSpelerOptions();
-		a.sendMessage("§eProfiel van " + this.name);
-		a.sendMessage("§e------------------------------");
-		a.sendMessage("§eUUID: " + this.UniqueID.toString());
-		a.sendMessage("§eNaam: " + this.name);
-		a.sendMessage("§eKartoffelID: " + this.getKartoffelID());
-		a.sendMessage("§eRank: " + Rank.getRankDisplay(o.getRank()));
-		a.sendMessage("§eDonateurrank: " + Rank.getRankDisplay(o.getDonatorRank()));
-		a.sendMessage("§eLaatste DailyDia day: " + this.getSpelerOptions().getLatestDailyDiamondDay());
-		a.sendMessage("§ePersonal Prefix: \"" + Person.getPersonalPrefix(this.UniqueID) + "\"");
-		a.sendMessage("§eOnline: " + this.online);
+		a.sendMessage("Â§eProfiel van " + this.name);
+		a.sendMessage("Â§e------------------------------");
+		a.sendMessage("Â§eUUID: " + this.UniqueID.toString());
+		a.sendMessage("Â§eNaam: " + this.name);
+		a.sendMessage("Â§eKartoffelID: " + this.getKartoffelID());
+		a.sendMessage("Â§eRank: " + Rank.getRankDisplay(o.getRank()));
+		a.sendMessage("Â§eDonateurrank: " + Rank.getRankDisplay(o.getDonatorRank()));
+		a.sendMessage("Â§eLaatste DailyDia day: " + this.getSpelerOptions().getLatestDailyDiamondDay());
+		a.sendMessage("Â§ePersonal Prefix: \"" + Person.getPersonalPrefix(this.UniqueID) + "\"");
+		a.sendMessage("Â§eOnline: " + this.online);
 	}
 
 	protected void printInfo(SpelerOptions executor, CommandSender a){
@@ -256,7 +256,8 @@ public class Person implements ISessionSystemListener{
 			if(end > 16){
 				end = 16;
 				Logger.getLogger("Minecraft").warning("[KKP] Bij het saven van een profiel is de naam (" + this.name +") afgekapt naar 16 characters");
-			}			for(int i = 0; i < end; i++){
+			}
+			for(int i = 0; i < end; i++){
 				buffer[i + 16] = (byte)this.name.charAt(i);
 			}
 		}
@@ -265,7 +266,8 @@ public class Person implements ISessionSystemListener{
 		for(int i = 0; i < 32; i++){
 			buffer[i + 32] = data[i];
 		}
-		return buffer;	}
+		return buffer;
+	}
 	
 	protected void onSaveComplete(long snapshotTime){
 		this.getSpelerOptions().latestSaved = snapshotTime;

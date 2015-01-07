@@ -187,10 +187,10 @@ public abstract class PNCondition implements IObjectCommandHandable {
 		String label = args[0];
 		if(label.equals("visibility")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
-				throw new Exception("§4Je hebt geen toegang tot dit commando");
+				throw new Exception("Â§4Je hebt geen toegang tot dit commando");
 			}
 			if(args.length < 2){
-				a.sendMessage("§eDe Condition is " + (this.isInvisible()?"§4invisible":"§2visible"));
+				a.sendMessage("Â§eDe Condition is " + (this.isInvisible()?"Â§4invisible":"Â§2visible"));
 			}else{
 				args[1] = args[1].toLowerCase();
 				boolean invisibilityValue;
@@ -199,26 +199,26 @@ public abstract class PNCondition implements IObjectCommandHandable {
 				}else if(args[1].equals("invisibile") || args[1].equals("invis") || args[1].equals("off") || args[1].equals("-")){
 					invisibilityValue = true;
 				}else{
-					a.sendMessage("§4Mogelijke nieuwe waarden voor de staat zijn: §2visible, aan, +§f of §4invisible, off, -");
+					a.sendMessage("Â§4Mogelijke nieuwe waarden voor de staat zijn: Â§2visible, aan, +Â§f of Â§4invisible, off, -");
 					return true;
 				}
 				this.setInvisible(invisibilityValue);
-				a.sendMessage("§eDe Condition is nu " + (this.isInvisible()?"§4invisible":"§2visible"));
+				a.sendMessage("Â§eDe Condition is nu " + (this.isInvisible()?"Â§4invisible":"Â§2visible"));
 			}
 		}else if(label.equals("value")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
-				throw new Exception("§4Je hebt geen toegang tot dit commando");
+				throw new Exception("Â§4Je hebt geen toegang tot dit commando");
 			}
 			if(args.length < 2){
-				a.sendMessage("§eWaardes van de condition-value:");
-				a.sendMessage("§eDe value is " + (((this.options & 0x40) == 0x40)?"§4closed (de waarde wordt niet berekend maar de defaultValue wordt gebruikt)":"§2niet-closed (de waarde wordt elke keer berekend)"));
-				a.sendMessage("§eDe defaultValue is " + (((this.options & 0x20) == 0x20)?"§2aan":"§4uit") + "§e (" + ((this.options & 0x20) == 0x20) + ")");
-				a.sendMessage("§eDe laatste value (kan incorrect zijn als de waarde nog niet is opgevraagd na inladen) is " + (((this.options & 0x10) == 0x10)?"§2aan":"§4uit") + "§e (" + ((this.options & 0x10) == 0x10) + ")"); 
+				a.sendMessage("Â§eWaardes van de condition-value:");
+				a.sendMessage("Â§eDe value is " + (((this.options & 0x40) == 0x40)?"Â§4closed (de waarde wordt niet berekend maar de defaultValue wordt gebruikt)":"Â§2niet-closed (de waarde wordt elke keer berekend)"));
+				a.sendMessage("Â§eDe defaultValue is " + (((this.options & 0x20) == 0x20)?"Â§2aan":"Â§4uit") + "Â§e (" + ((this.options & 0x20) == 0x20) + ")");
+				a.sendMessage("Â§eDe laatste value (kan incorrect zijn als de waarde nog niet is opgevraagd na inladen) is " + (((this.options & 0x10) == 0x10)?"Â§2aan":"Â§4uit") + "Â§e (" + ((this.options & 0x10) == 0x10) + ")");
 			}else{
 				args[1] = args[1].toLowerCase();
 				if(args[1].equals("closed")){
 					if(args.length == 2){
-						a.sendMessage("§eDe value is " + (((this.options & 0x40) == 0x40)?"§4closed (de waarde wordt niet berekend maar de defaultValue wordt gebruikt)":"§2niet-closed (de waarde wordt elke keer berekend)"));	
+						a.sendMessage("Â§eDe value is " + (((this.options & 0x40) == 0x40)?"Â§4closed (de waarde wordt niet berekend maar de defaultValue wordt gebruikt)":"Â§2niet-closed (de waarde wordt elke keer berekend)"));
 					}else if(args.length == 3){
 						boolean newValue;
 						if(args[2].equals("closed") || args[2].equals("on") || args[2].equals("aan")){
@@ -226,7 +226,7 @@ public abstract class PNCondition implements IObjectCommandHandable {
 						}else if(args[2].equals("niet-closed") || args[2].equals("off") || args[2].equals("uit")){
 							newValue = false;
 						}else{
-							a.sendMessage("§4Mogelijke nieuwe waarden voor de staat zijn: §2closed, on, aan§f of §4niet-closed, off, uit");
+							a.sendMessage("Â§4Mogelijke nieuwe waarden voor de staat zijn: Â§2closed, on, aanÂ§f of Â§4niet-closed, off, uit");
 							return true;
 						}
 						this.checkDenyChanges();
@@ -236,13 +236,13 @@ public abstract class PNCondition implements IObjectCommandHandable {
 							this.options &= 0xBF;
 						}
 						this.notifyChange();
-						a.sendMessage("§eDe value is nu " + (((this.options & 0x40) == 0x40)?"§4closed (de waarde wordt niet berekend maar de defaultValue wordt gebruikt)":"§2niet-closed (de waarde wordt elke keer berekend)"));
+						a.sendMessage("Â§eDe value is nu " + (((this.options & 0x40) == 0x40)?"Â§4closed (de waarde wordt niet berekend maar de defaultValue wordt gebruikt)":"Â§2niet-closed (de waarde wordt elke keer berekend)"));
 					}else{
-						a.sendMessage("§eCondition-command: §cvalue last [nieuwe waarde]");
+						a.sendMessage("Â§eCondition-command: Â§cvalue last [nieuwe waarde]");
 					}
 				}else if(args[1].equals("default")){
 					if(args.length == 2){
-						a.sendMessage("§eDe defaultValue is " + (((this.options & 0x20) == 0x20)?"§2aan":"§4uit") + "§e (" + ((this.options & 0x20) == 0x20) + ")");
+						a.sendMessage("Â§eDe defaultValue is " + (((this.options & 0x20) == 0x20)?"Â§2aan":"Â§4uit") + "Â§e (" + ((this.options & 0x20) == 0x20) + ")");
 					}else if(args.length == 3){
 						boolean newValue;
 						if(args[2].equals("aan") || args[2].equals("on") || args[2].equals("+")){
@@ -250,7 +250,7 @@ public abstract class PNCondition implements IObjectCommandHandable {
 						}else if(args[2].equals("uit") || args[2].equals("off") || args[2].equals("-")){
 							newValue = false;
 						}else{
-							a.sendMessage("§4Mogelijke nieuwe waarden voor de staat zijn: §2aan, on, +§f of §4uit, off, -");
+							a.sendMessage("Â§4Mogelijke nieuwe waarden voor de staat zijn: Â§2aan, on, +Â§f of Â§4uit, off, -");
 							return true;
 						}
 						this.checkDenyChanges();
@@ -260,15 +260,15 @@ public abstract class PNCondition implements IObjectCommandHandable {
 							this.options &= 0xDF;
 						}
 						this.notifyChange();
-						a.sendMessage("§eDe defaultValue is nu " + (((this.options & 0x20) == 0x20)?"§2aan":"§4uit") + "§e (" + ((this.options & 0x20) == 0x20) + ")");
+						a.sendMessage("Â§eDe defaultValue is nu " + (((this.options & 0x20) == 0x20)?"Â§2aan":"Â§4uit") + "Â§e (" + ((this.options & 0x20) == 0x20) + ")");
 					}else{
-						a.sendMessage("§eCondition-command: §cvalue default [nieuwe waarde]");
+						a.sendMessage("Â§eCondition-command: Â§cvalue default [nieuwe waarde]");
 					}
 				}else if(args[1].equals("laatste")){
 					if(args.length == 2){
-						a.sendMessage("§eDe laatste value (kan incorrect zijn als de waarde nog niet is opgevraagd na inladen) is " + (((this.options & 0x10) == 0x10)?"§2aan":"§4uit") + "§e (" + ((this.options & 0x10) == 0x10) + ")"); 
+						a.sendMessage("Â§eDe laatste value (kan incorrect zijn als de waarde nog niet is opgevraagd na inladen) is " + (((this.options & 0x10) == 0x10)?"Â§2aan":"Â§4uit") + "Â§e (" + ((this.options & 0x10) == 0x10) + ")");
 					}else{
-						a.sendMessage("§eCondition-command: §cvalue last");
+						a.sendMessage("Â§eCondition-command: Â§cvalue last");
 					}
 				}else if(args[1].equals("calculate")){
 					if(args.length == 2){
@@ -276,29 +276,29 @@ public abstract class PNCondition implements IObjectCommandHandable {
 						boolean value = this.getConditionValue();
 						long stop = System.currentTimeMillis();
 						long duration = stop - start;
-						a.sendMessage("§eDe berekende waarde is " + (value?"§2aan":"§4uit") + "§e (" + value + "). Het duurde ongeveer " + duration + " milliseconden om de waarde te berekenen");
+						a.sendMessage("Â§eDe berekende waarde is " + (value?"Â§2aan":"Â§4uit") + "Â§e (" + value + "). Het duurde ongeveer " + duration + " milliseconden om de waarde te berekenen");
 					}else{
-						a.sendMessage("§eCondition-command: §cvalue calculate");
+						a.sendMessage("Â§eCondition-command: Â§cvalue calculate");
 					}
 				}else{
-					a.sendMessage("§eCondition-command: §cvalue <closed|default|laatste|calculate> <...>");
+					a.sendMessage("Â§eCondition-command: Â§cvalue <closed|default|laatste|calculate> <...>");
 				}
 			}
 		}else if(label.equals("conditionid")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
 			}
-			a.sendMessage("§eConditionID = " + this.conditionID);
+			a.sendMessage("Â§eConditionID = " + this.conditionID);
 		}else if(label.equals("gettype")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
 			}
-			a.sendMessage("§eConditionType = " + this.getConditionType());
+			a.sendMessage("Â§eConditionType = " + this.getConditionType());
 		}else if(label.equals("tostring")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
 			}
-			a.sendMessage("§etoString() = " + this.toString());
+			a.sendMessage("Â§etoString() = " + this.toString());
 		}else{
 			return false;
 		}

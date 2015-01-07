@@ -135,10 +135,10 @@ public abstract class PNTech implements IObjectCommandHandable{
 		
 		if(label.equals("visibility")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
-				throw new Exception("§4Je hebt geen toegang tot dit commando");
+				throw new Exception("Â§4Je hebt geen toegang tot dit commando");
 			}
 			if(args.length < 2){
-				a.sendMessage("§eDe Technic is " + (this.isInvisible()?"§4invisible":"§2visible"));
+				a.sendMessage("Â§eDe Technic is " + (this.isInvisible()?"Â§4invisible":"Â§2visible"));
 			}else{
 				args[1] = args[1].toLowerCase();
 				boolean invisibilityValue;
@@ -147,27 +147,27 @@ public abstract class PNTech implements IObjectCommandHandable{
 				}else if(args[1].equals("invisible") || args[1].equals("invis") || args[1].equals("off") || args[1].equals("-")){
 					invisibilityValue = true;
 				}else{
-					a.sendMessage("§4Mogelijke nieuwe waarden voor de staat zijn: §2visible, aan, +§f of §4invisible, off, -");
+					a.sendMessage("Â§4Mogelijke nieuwe waarden voor de staat zijn: Â§2visible, aan, +Â§f of Â§4invisible, off, -");
 					return true;
 				}
 				this.setInvisible(invisibilityValue);
-				a.sendMessage("§eDe Technic is nu " + (this.isInvisible()?"§4invisible":"§2visible"));
+				a.sendMessage("Â§eDe Technic is nu " + (this.isInvisible()?"Â§4invisible":"Â§2visible"));
 			}
 		}else if(label.equals("id")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
 			}
-			a.sendMessage("§eID = " + this.ID);
+			a.sendMessage("Â§eID = " + this.ID);
 		}else if(label.equals("gettype")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
 			}
-			a.sendMessage("§eTechType = " + this.getTechType() + " (" + this.getTypeName() + ")");
+			a.sendMessage("Â§eTechType = " + this.getTechType() + " (" + this.getTypeName() + ")");
 		}else if(label.equals("tostring")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
 			}
-			a.sendMessage("§etostring() = " + this.toString());
+			a.sendMessage("Â§etostring() = " + this.toString());
 		}else{
 			return false;
 		}

@@ -271,7 +271,7 @@ public class SaveQueue implements Runnable{
 				Thread.sleep(1000);
 				if(!t.isAlive())return this.list[0].error;
 			}
-			l.warning("[KartoffelKanaalPlugin] Kon de persoon " + this.list[0].specifier + " niet bewaren binnen de 15 seconden. Process wordt beëindigt");
+			l.warning("[KartoffelKanaalPlugin] Kon de persoon " + this.list[0].specifier + " niet bewaren binnen de 15 seconden. Process wordt beÂ§indigt");
 			t.interrupt();
 			return new Exception("Kon de persoon niet bewaren binnen de 15 seconden");
 		}catch(InterruptedException ex){

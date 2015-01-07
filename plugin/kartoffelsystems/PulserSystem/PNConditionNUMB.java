@@ -122,19 +122,19 @@ public class PNConditionNUMB extends PNCondition{
 			this.arr = ConditionArrayFunctions.handleSubCommand(executor, a, attribSys, args, this, this.arr);
 		}else if(commandLabel.equals("bounds")){
 			if(args.length == 1){
-				a.sendMessage("§eEr moeten minimum " + this.min + " en maximum " + this.max + " conditions van de " + (this.arr == null?0:this.arr.length) + " conditions juist zijn om de waarde van deze condition true maken.");
+				a.sendMessage("Â§eEr moeten minimum " + this.min + " en maximum " + this.max + " conditions van de " + (this.arr == null?0:this.arr.length) + " conditions juist zijn om de waarde van deze condition true maken.");
 			}else if(args.length == 2){
 				byte exact;
 				try{
 					exact = Byte.parseByte(args[1]);
 				}catch(NumberFormatException e){
-					a.sendMessage("§4De nieuwe, exacte value moet een getal van 0 tot 127 zijn.");
+					a.sendMessage("Â§4De nieuwe, exacte value moet een getal van 0 tot 127 zijn.");
 					return true;
 				}
 				if(exact < 0)exact = 0;
 				min = exact;
 				max = exact;
-				a.sendMessage("§eHet aantal ware conditions moet nu exact " + exact + " zijn");
+				a.sendMessage("Â§eHet aantal ware conditions moet nu exact " + exact + " zijn");
 			}else if(args.length == 3){
 				byte bound1;
 				byte bound2;
@@ -142,7 +142,7 @@ public class PNConditionNUMB extends PNCondition{
 					bound1 = Byte.parseByte(args[1]);
 					bound2 = Byte.parseByte(args[2]);
 				}catch(NumberFormatException e){
-					a.sendMessage("§4De nieuwe bounds moeten allebei een getal van 0 tot 127 zijn.");
+					a.sendMessage("Â§4De nieuwe bounds moeten allebei een getal van 0 tot 127 zijn.");
 					return true;
 				}
 				
@@ -150,9 +150,9 @@ public class PNConditionNUMB extends PNCondition{
 				this.min = (reverse)?bound2:bound1;
 				this.max = (reverse)?bound1:bound2;
 				
-				a.sendMessage("§eEr moeten minimum " + this.min + " en maximum " + this.max + " conditions van de " + (this.arr == null?0:this.arr.length) + " conditions juist zijn om de waarde van deze condition true maken.");
+				a.sendMessage("Â§eEr moeten minimum " + this.min + " en maximum " + this.max + " conditions van de " + (this.arr == null?0:this.arr.length) + " conditions juist zijn om de waarde van deze condition true maken.");
 			}else{
-				a.sendMessage("§eObjectCommand: §cbounds [<<bound 1> <bound 2>>|<nieuwe exacte value>]");
+				a.sendMessage("Â§eObjectCommand: Â§cbounds [<<bound 1> <bound 2>>|<nieuwe exacte value>]");
 			}
 		}else{
 			return false;

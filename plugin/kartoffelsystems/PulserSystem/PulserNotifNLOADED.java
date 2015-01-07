@@ -33,7 +33,7 @@ public class PulserNotifNLOADED extends PulserNotif{
 
 	@Override
 	public void doCrashTest(Player pl) throws Exception{
-		pl.sendMessage("ง4Geen crash-test beschikbaar voor niet geladen notifications");
+		pl.sendMessage("ยง4Geen crash-test beschikbaar voor niet geladen notifications");
 	}
 
 	protected byte[] saveNotif(){

@@ -53,7 +53,7 @@ public class DebugTools implements Listener {
 		}else if(input[0].equals("speleroptions")){
 			DebugTools.executeDebugSPELEROPTIONS(p, input);
 		}else{
-			p.sendMessage("ง4Onbekend Debug-Command");
+			p.sendMessage("ยง4Onbekend Debug-Command");
 		}
 	}
 	private static void executeDebugPERM(Player p, String[] input){
@@ -62,11 +62,11 @@ public class DebugTools implements Listener {
 		}else{
 			if(input[1].equals("get")){
 				if(input.length != 3){
-					p.sendMessage("งc$perm get <player> <permission>");
+					p.sendMessage("ยงc$perm get <player> <permission>");
 				}
 				Person person = Main.pm.getPlayer(input[2]);
 				if(person == null){
-					p.sendMessage("ง4Speler niet gevonden");
+					p.sendMessage("ยง4Speler niet gevonden");
 					return;
 				}
 				
@@ -75,7 +75,7 @@ public class DebugTools implements Listener {
 				p.sendMessage("PermissionAdress: " + adress + " | PermissionName: " + SpelerOptions.getAdressName(adress, false));
 				p.sendMessage("Playername: " + p.getName() + " | PlayerUUID: " + p.getUniqueId().toString());
 				if(adress == 0x7F){
-					p.sendMessage("ง4Onbekende permission");
+					p.sendMessage("ยง4Onbekende permission");
 					return;
 				}
 				p.sendMessage("Get Value: " + so.getSwitch(adress, false) + " (" + (so.getSwitch(adress, true)?'S':'D') + ")");
@@ -88,7 +88,7 @@ public class DebugTools implements Listener {
 					//if((input[4].equals("0") || input[4].equals("1") && (input[5].equals("0") || input[5].equals("1") || input[5].equals("S") || input[5].equals("D")))){
 					Person person = Main.pm.getPlayer(input[2]);
 					if(person == null){
-						p.sendMessage("ง4Speler niet gevonden");
+						p.sendMessage("ยง4Speler niet gevonden");
 						return;
 					}
 					SpelerOptions so = person.getSpelerOptions();
@@ -96,7 +96,7 @@ public class DebugTools implements Listener {
 					p.sendMessage("PermissionAdress: " + adress + " | PermissionName: " + SpelerOptions.getAdressName(adress, true));
 					p.sendMessage("Playername: " + p.getName() + " | PlayerUUID: " + p.getUniqueId().toString());
 					if(adress == 0x7F){
-						p.sendMessage("ง4Onbekende permission");
+						p.sendMessage("ยง4Onbekende permission");
 						return;
 					}
 					boolean on;
@@ -106,8 +106,8 @@ public class DebugTools implements Listener {
 					}else if(input[4] == "0" || input[4] == "off" || input[4] == "-"){
 						on = false;
 					}else{
-						p.sendMessage("ง4Invalid \"value\"-value");
-						p.sendMessage("งc$perm " + (update?"set":"_set") + " <player> <permission> <value> <static?>");
+						p.sendMessage("ยง4Invalid \"value\"-value");
+						p.sendMessage("ยงc$perm " + (update?"set":"_set") + " <player> <permission> <value> <static?>");
 						return;
 					}
 								
@@ -116,8 +116,8 @@ public class DebugTools implements Listener {
 					}else if(input[5] == "0" || input[5] == "off" || input[5] == "-" || input[5] == "D" || input[5] == "dynamic"){
 						isStatic = false;
 					}else{
-						p.sendMessage("ง4Invalid \"isStatic\"-value");
-						p.sendMessage("งc$perm " + (update?"set":"_set") + " <player> <permission> <value> <static?>");
+						p.sendMessage("ยง4Invalid \"isStatic\"-value");
+						p.sendMessage("ยงc$perm " + (update?"set":"_set") + " <player> <permission> <value> <static?>");
 						return;
 					}
 					so.setPermission(adress, on, isStatic, update);
@@ -137,33 +137,33 @@ public class DebugTools implements Listener {
 			p.sendMessage("De pulser is null");
 		}
 		if(input.length < 2){
-			p.sendMessage("งc$pulser <tick|tickinterval|notification|on|off|loadNotifications|timesticked> <...>");
+			p.sendMessage("ยงc$pulser <tick|tickinterval|notification|on|off|loadNotifications|timesticked> <...>");
 			return;
 		}
 		if(input[1].equals("tick")){
 			if(input.length < 3){
-				p.sendMessage("งc$pulser tick <set|execute|get> <...>");
+				p.sendMessage("ยงc$pulser tick <set|execute|get> <...>");
 				return;
 			}
 			if(input[2].equals("set")){
 				if(input.length < 4){
-					p.sendMessage("งc$pulser tick set <newvalue: [~]getal>");
+					p.sendMessage("ยงc$pulser tick set <newvalue: [~]getal>");
 					return;
 				}
 				if(input[3].length() == 0){
-					p.sendMessage("ง4Nieuwe value is leeg");
+					p.sendMessage("ยง4Nieuwe value is leeg");
 					return;
 				}
 				if(input[3].charAt(0) == '~'){
 					if(input[3].length() == 1){
-						p.sendMessage("ง4Na de \"~\" dient er een relatief getal te worden geplaatst, je mag het getal hier niet weglaten zoals in Minecraft omdat het geen zin heeft een value te veranderen naar zichzelf");
+						p.sendMessage("ยง4Na de \"~\" dient er een relatief getal te worden geplaatst, je mag het getal hier niet weglaten zoals in Minecraft omdat het geen zin heeft een value te veranderen naar zichzelf");
 						return;
 					}
 					int i;
 					try{
 						i = Integer.parseInt(input[3].substring(1));
 					}catch(Exception e){
-						p.sendMessage("ง4Na de \"~\" dient er een relatief getal (signed int) te worden geplaatst");
+						p.sendMessage("ยง4Na de \"~\" dient er een relatief getal (signed int) te worden geplaatst");
 						return;
 					}
 					Pulser.tickcount += i;
@@ -172,7 +172,7 @@ public class DebugTools implements Listener {
 					try{
 						i = Integer.parseInt(input[3]);
 					}catch(Exception e){
-						p.sendMessage("ง4Onjuist getal");
+						p.sendMessage("ยง4Onjuist getal");
 						return;
 					}
 					Pulser.tickcount = i;
@@ -193,13 +193,13 @@ public class DebugTools implements Listener {
 					int tick;
 					if(input[3].charAt(0) == '~'){
 						if(input[3].length() == 1){
-							p.sendMessage("ง4Na de \"~\" dient er een relatief getal te worden geplaatst, je mag het getal hier niet weglaten zoals in Minecraft omdat het geen zin heeft een value te veranderen naar zichzelf");
+							p.sendMessage("ยง4Na de \"~\" dient er een relatief getal te worden geplaatst, je mag het getal hier niet weglaten zoals in Minecraft omdat het geen zin heeft een value te veranderen naar zichzelf");
 							return;
 						}
 						try{
 							tick = Integer.parseInt(input[3].substring(1));
 						}catch(Exception e){
-							p.sendMessage("ง4Na de \"~\" dient er een relatief getal (signed int) te worden geplaatst");
+							p.sendMessage("ยง4Na de \"~\" dient er een relatief getal (signed int) te worden geplaatst");
 							return;
 						}
 						tick += Pulser.tickcount;
@@ -207,7 +207,7 @@ public class DebugTools implements Listener {
 						try{
 							tick = Integer.parseInt(input[3]);
 						}catch(Exception e){
-							p.sendMessage("ง4Onjuist getal");
+							p.sendMessage("ยง4Onjuist getal");
 							return;
 						}
 					}
@@ -218,20 +218,20 @@ public class DebugTools implements Listener {
 				}
 			}else if(input[2].equals("get")){
 				if(input.length > 2){
-					p.sendMessage("งc$pulser get");
+					p.sendMessage("ยงc$pulser get");
 				}
 				p.sendMessage("Tick: " + Pulser.tickcount);
 			}
 		}else if(input[1].equals("tickinterval")){
 			if(input.length < 3){
-				p.sendMessage("งc$pulser tickinterval <set|get> <...>");
+				p.sendMessage("ยงc$pulser tickinterval <set|get> <...>");
 				return;
 			}
 			if(input[2].equals("set")){
 				int newInterval;
 				int multiplier = 60000;
 				if(input.length == 3 || input.length > 5){
-					p.sendMessage("ง4$pulser tickinterval set <newInterval> [ms|s|m|u]");
+					p.sendMessage("ยง4$pulser tickinterval set <newInterval> [ms|s|m|u]");
 					return;
 				}else if(input.length == 5){
 					if(input[4].equals("ms")){
@@ -248,7 +248,7 @@ public class DebugTools implements Listener {
 				try{
 					abc = Double.parseDouble(input[3]);
 				}catch(Exception e){
-					p.sendMessage("ง4Incorrecte Double: " + String.valueOf(input[3]));
+					p.sendMessage("ยง4Incorrecte Double: " + String.valueOf(input[3]));
 					return;
 				}
 				newInterval = (int) (abc * multiplier);
@@ -261,7 +261,7 @@ public class DebugTools implements Listener {
 				p.sendMessage("tickinterval = " + interval + "ms = " + (interval / 1000) + "s = " + (interval / 60000) + "m");
 			}else if(input[2].equals("get")){
 				if(input.length > 3){
-					p.sendMessage("งc$pulser tickinterval get");
+					p.sendMessage("ยงc$pulser tickinterval get");
 				}
 				int interval = Main.pulser.getTimeout();
 				p.sendMessage("tickinterval = " + interval + "ms = " + (interval / 1000) + "s = " + (interval / 60000) + "m");
@@ -280,18 +280,18 @@ public class DebugTools implements Listener {
 			p.sendMessage("Notifications reset");
 		}else if(input[1].equals("timesticked")){
 			if(Main.pulser == null || Main.pulser.timesTicked == null){
-				p.sendMessage("ง4TimesTicked DataField onbereikbaar");
+				p.sendMessage("ยง4TimesTicked DataField onbereikbaar");
 				return;
 			}
 			if(input.length < 3){
-				p.sendMessage("ง4$pulser timesticked <kartoffelid> [newValue]");
+				p.sendMessage("ยง4$pulser timesticked <kartoffelid> [newValue]");
 				return;
 			}
 			short kartoffelid;
 			try{
 				kartoffelid = Short.parseShort(input[2]);
 			}catch(Exception e){
-				p.sendMessage("ง4Oncorrecte short");
+				p.sendMessage("ยง4Oncorrecte short");
 				return;
 			}
 			
@@ -304,7 +304,7 @@ public class DebugTools implements Listener {
 				try{
 					newvalue = Integer.parseInt(input[3]);
 				}catch(Exception e){
-					p.sendMessage("ง4Oncorrecte integer");
+					p.sendMessage("ยง4Oncorrecte integer");
 					return;
 				}
 				Main.pulser.timesTicked.setValue(kartoffelid, newvalue);
@@ -313,14 +313,14 @@ public class DebugTools implements Listener {
 				p.sendMessage("Value van " + kartoffelid + " is " + Main.pulser.timesTicked.getValue(kartoffelid));
 			}
 		}else{
-			p.sendMessage("งc$pulser <on|off|tick|tickinterval|notification|loadNotifications|timesticked> <...>");
+			p.sendMessage("ยงc$pulser <on|off|tick|tickinterval|notification|loadNotifications|timesticked> <...>");
 		}
 	}
 	
 	private static void executeDebugLORE(Player p, String[] input){
 		ItemStack is = p.getInventory().getItemInHand();
 		if(is == null){
-			p.sendMessage("ง4Item in hand is null");
+			p.sendMessage("ยง4Item in hand is null");
 			return;
 		}
 		List<String> lore = is.getItemMeta().getLore();
@@ -331,22 +331,22 @@ public class DebugTools implements Listener {
 		}else{
 			if(input[1].equals("set")){
 				if(input.length != 4){
-					p.sendMessage("งc$lore set <number> <text...>");
+					p.sendMessage("ยงc$lore set <number> <text...>");
 					return;
 				}
 				int index;
 				try{
 					index = Integer.parseInt(input[2]);
 				}catch(Exception ex){
-					p.sendMessage("ง4Incorrecte index: " + input[2]);
+					p.sendMessage("ยง4Incorrecte index: " + input[2]);
 					return;
 				}
 				if(index < 0){
-					p.sendMessage("ง4Index is kleiner dan 0: " + index);
+					p.sendMessage("ยง4Index is kleiner dan 0: " + index);
 					return;
 				}
 				if(index > lore.size()){//de index mag wel 1 hoger zijn dan de lengte van de lijst
-					p.sendMessage("ง4Index is te hoog omdate de size van de lore " + lore.size() + " is");
+					p.sendMessage("ยง4Index is te hoog omdate de size van de lore " + lore.size() + " is");
 					return;
 				}
 				String loretext = input[3];
@@ -364,22 +364,22 @@ public class DebugTools implements Listener {
 				is.setItemMeta(im);
 			}else if(input[1].equals("del")){
 				if(input.length != 3){
-					p.sendMessage("งc$lore del <number>");
+					p.sendMessage("ยงc$lore del <number>");
 					return;
 				}
 				int index;
 				try{
 					index = Integer.parseInt(input[2]);
 				}catch(Exception ex){
-					p.sendMessage("ง4Incorrecte index: " + input[2]);
+					p.sendMessage("ยง4Incorrecte index: " + input[2]);
 					return;
 				}
 				if(index < 0){
-					p.sendMessage("ง4Index is kleiner dan 0: " + index);
+					p.sendMessage("ยง4Index is kleiner dan 0: " + index);
 					return;
 				}
 				if(lore == null || index >= lore.size()){
-					p.sendMessage("ง4Index is te hoog omdat de size van de lore " + (lore==null?0:lore.size()) + " is");
+					p.sendMessage("ยง4Index is te hoog omdat de size van de lore " + (lore==null?0:lore.size()) + " is");
 					return;
 				}
 				lore.remove(index);
@@ -389,22 +389,22 @@ public class DebugTools implements Listener {
 				is.setItemMeta(im);
 			}else if(input[1].equals("add")){
 				if(input.length != 4){
-					p.sendMessage("งc$lore add <number> <text...>");
+					p.sendMessage("ยงc$lore add <number> <text...>");
 					return;
 				}
 				int index;
 				try{
 					index = Integer.parseInt(input[2]);
 				}catch(Exception ex){
-					p.sendMessage("ง4Incorrecte index: " + input[2]);
+					p.sendMessage("ยง4Incorrecte index: " + input[2]);
 					return;
 				}
 				if(index < 0){
-					p.sendMessage("ง4Index is kleiner dan 0: " + index);
+					p.sendMessage("ยง4Index is kleiner dan 0: " + index);
 					return;
 				}
 				if(index > lore.size()){
-					p.sendMessage("ง4Index is te hoog omdat de size van de lore " + (lore==null?0:lore.size()) + " is");
+					p.sendMessage("ยง4Index is te hoog omdat de size van de lore " + (lore==null?0:lore.size()) + " is");
 					return;
 				}
 				String loretext = input[3];
@@ -423,7 +423,7 @@ public class DebugTools implements Listener {
 				is.setItemMeta(im);
 			}else if(input[1].equals("+")){
 				if(input.length < 3){
-					p.sendMessage("งc$lore + <text...>");
+					p.sendMessage("ยงc$lore + <text...>");
 					return;
 				}
 
@@ -454,24 +454,24 @@ public class DebugTools implements Listener {
 			try{
 				b = p.getLastTwoTargetBlocks(null, 100).get(1).getState();
 			}catch(Exception e){
-				p.sendMessage("ง4Kon TargetBlock niet allocaten");
+				p.sendMessage("ยง4Kon TargetBlock niet allocaten");
 				return;
 			}
 			if(b == null){
-				p.sendMessage("ง4De BlockState van de TargetBlock is null");
+				p.sendMessage("ยง4De BlockState van de TargetBlock is null");
 			}
 			if(b instanceof InventoryHolder){
 				inv = ((InventoryHolder)b).getInventory();
 			}else{
-				p.sendMessage("ง4Het Block is geen InventoryHolder");
+				p.sendMessage("ยง4Het Block is geen InventoryHolder");
 				return;
 			}
 		}else{
-			p.sendMessage("ง4Onbekend type voor het attribuut \"container\": \"" + container + "\", mogelijke waardes zijn \"inv\" en \"block\"");
+			p.sendMessage("ยง4Onbekend type voor het attribuut \"container\": \"" + container + "\", mogelijke waardes zijn \"inv\" en \"block\"");
 		}
 		
 		if(inv == null){
-			p.sendMessage("ง4Inventory is null");
+			p.sendMessage("ยง4Inventory is null");
 			return;
 		}
 		
@@ -525,7 +525,7 @@ public class DebugTools implements Listener {
 				a.setLore(new ArrayList<String>(0));
 				is.setItemMeta(a);
 			}else{
-				p.sendMessage("งDe operation is onbekend");
+				p.sendMessage("ยงDe operation is onbekend");
 				return;
 			}
 		}else{
@@ -569,7 +569,7 @@ public class DebugTools implements Listener {
 					a.setLore(new ArrayList<String>(0));
 					is.setItemMeta(a);
 				}else{
-					p.sendMessage("งDe operation is onbekend");
+					p.sendMessage("ยงDe operation is onbekend");
 					return;
 				}
 				amount--;
@@ -613,11 +613,11 @@ public class DebugTools implements Listener {
 	
 	private static void executeDebugSETTINGS(Player p, String[] input){	
 		if(Main.sm == null){
-			p.sendMessage("ง4ERROR: SettingsManager is null");
+			p.sendMessage("ยง4ERROR: SettingsManager is null");
 			return;
 		}
 		if(input.length < 2){
-			p.sendMessage("งc$settings <save|saveDefault|load|changed|edition|dailydiatime|startAutoAntilag|startPlayerSystem|startPulserSystem>");
+			p.sendMessage("ยงc$settings <save|saveDefault|load|changed|edition|dailydiatime|startAutoAntilag|startPlayerSystem|startPulserSystem>");
 			return;
 		}
 		if(input[1].equals("save")){
@@ -631,14 +631,14 @@ public class DebugTools implements Listener {
 			p.sendMessage("De Settings zijn geladen");
 		}else if(input[1].equals("changed")){
 			if(input.length < 3){
-				p.sendMessage("งc$settings changed <get|set>");
+				p.sendMessage("ยงc$settings changed <get|set>");
 				return;
 			}
 			if(input[2].equals("get")){
 				p.sendMessage("Changed van Settings: " + Main.sm.changed);
 			}else if(input[2].equals("set")){
 				if(input.length < 4){
-					p.sendMessage("งc$settings changed set <true|false>");
+					p.sendMessage("ยงc$settings changed set <true|false>");
 					return;
 				}
 				
@@ -647,21 +647,21 @@ public class DebugTools implements Listener {
 				}else if(input[3].equals("false")){
 					Main.sm.changed = false;
 				}else{
-					p.sendMessage("งc$settings changed set <true|false>");
+					p.sendMessage("ยงc$settings changed set <true|false>");
 				}
 			}else{
-				p.sendMessage("งc$settings changed <get|set>");
+				p.sendMessage("ยงc$settings changed <get|set>");
 			}
 		}else if(input[1].equals("startAutoAntilag")){
 			if(input.length < 3){
-				p.sendMessage("งc$settings startAutoAntilag <get|set>");
+				p.sendMessage("ยงc$settings startAutoAntilag <get|set>");
 				return;
 			}
 			if(input[2].equals("get")){
 				p.sendMessage("startAutoAntilag: " + Main.sm.getStartAutoAntilag());
 			}else if(input[2].equals("set")){
 				if(input.length < 4){
-					p.sendMessage("งc$settings startAutoAntilag set <true|false>");
+					p.sendMessage("ยงc$settings startAutoAntilag set <true|false>");
 					return;
 				}
 				
@@ -670,21 +670,21 @@ public class DebugTools implements Listener {
 				}else if(input[3].equals("false")){
 					Main.sm.setStartAutoAntilag(false);
 				}else{
-					p.sendMessage("งc$settings startAutoAntilag set <true|false>");
+					p.sendMessage("ยงc$settings startAutoAntilag set <true|false>");
 				}
 			}else{
-				p.sendMessage("งc$settings startAutoAntilag <get|set>");
+				p.sendMessage("ยงc$settings startAutoAntilag <get|set>");
 			}
 		}else if(input[1].equals("startPlayerSystem")){
 			if(input.length < 3){
-				p.sendMessage("งc$settings startPlayerSystem <get|set>");
+				p.sendMessage("ยงc$settings startPlayerSystem <get|set>");
 				return;
 			}
 			if(input[2].equals("get")){
 				p.sendMessage("startPlayerSystem: " + Main.sm.getStartPlayerSystem());
 			}else if(input[2].equals("set")){
 				if(input.length < 4){
-					p.sendMessage("งc$settings startPlayerSystem set <true|false>");
+					p.sendMessage("ยงc$settings startPlayerSystem set <true|false>");
 					return;
 				}
 				
@@ -693,21 +693,21 @@ public class DebugTools implements Listener {
 				}else if(input[3].equals("false")){
 					Main.sm.setStartPlayerSystem(false);
 				}else{
-					p.sendMessage("งc$settings startPlayerSystem set <true|false>");
+					p.sendMessage("ยงc$settings startPlayerSystem set <true|false>");
 				}
 			}else{
-				p.sendMessage("งc$settings startPlayerSystem <get|set>");
+				p.sendMessage("ยงc$settings startPlayerSystem <get|set>");
 			}
 		}else if(input[1].equals("startPulserSystem")){
 			if(input.length < 3){
-				p.sendMessage("งc$settings startPulserSystem <get|set>");
+				p.sendMessage("ยงc$settings startPulserSystem <get|set>");
 				return;
 			}
 			if(input[2].equals("get")){
 				p.sendMessage("startPulserSystem: " + Main.sm.getStartPulserSystem());
 			}else if(input[2].equals("set")){
 				if(input.length < 4){
-					p.sendMessage("งc$settings startPulserSystem set <true|false>");
+					p.sendMessage("ยงc$settings startPulserSystem set <true|false>");
 					return;
 				}
 				
@@ -716,14 +716,14 @@ public class DebugTools implements Listener {
 				}else if(input[3].equals("false")){
 					Main.sm.setStartPulserSystem(false);
 				}else{
-					p.sendMessage("งc$settings startPulserSystem set <true|false>");
+					p.sendMessage("ยงc$settings startPulserSystem set <true|false>");
 				}
 			}else{
-				p.sendMessage("งc$settings startPulserSystem <get|set>");
+				p.sendMessage("ยงc$settings startPulserSystem <get|set>");
 			}
 		}else if(input[1].equals("edition")){
 			if(input.length < 3){
-				p.sendMessage("งc$settings edition <get|set>");
+				p.sendMessage("ยงc$settings edition <get|set>");
 				return;
 			}
 			if(input[2].equals("get")){
@@ -740,23 +740,23 @@ public class DebugTools implements Listener {
 				}
 			/*}else if(input[2].equals("set")){
 				if(input.length < 4){
-					p.sendMessage("งc$settings edition set <newValue>");
+					p.sendMessage("ยงc$settings edition set <newValue>");
 					return;
 				}
 				short newValue;
 				try{
 					newValue = Short.parseShort(input[3]);
 				}catch(Exception e){
-					p.sendMessage("ง4Invalid Short");
+					p.sendMessage("ยง4Invalid Short");
 					return;
 				}
 				Main.sm.edition = newValue;*/
 			}else{
-				p.sendMessage("งc$settings edition <get>");
+				p.sendMessage("ยงc$settings edition <get>");
 			}
 		}else if(input[1].equals("dailydiatime")){
 			if(input.length < 3){
-				p.sendMessage("งc$settings dailydiatime <getLong|getDate|getToday|setToday>");
+				p.sendMessage("ยงc$settings dailydiatime <getLong|getDate|getToday|setToday>");
 				return;
 			}
 			
@@ -769,7 +769,7 @@ public class DebugTools implements Listener {
 				p.sendMessage("Vandaag is de " + Main.sm.getDailyDiaDay() + "th DailyDiaDay");
 			}else if(input[2].equals("setToday")){
 				if(input.length < 4){
-					p.sendMessage("งc$settings dailydiatime setToday <short>");
+					p.sendMessage("ยงc$settings dailydiatime setToday <short>");
 					return;
 				}
 				
@@ -777,7 +777,7 @@ public class DebugTools implements Listener {
 				try{
 					a = Short.parseShort(input[3]);
 				}catch(Exception e){
-					p.sendMessage("ง4Invalid Short");
+					p.sendMessage("ยง4Invalid Short");
 					return;
 				}
 				Calendar c = Calendar.getInstance();
@@ -787,10 +787,10 @@ public class DebugTools implements Listener {
 				
 				p.sendMessage("DailyDia time is veranderd");
 			}else{
-				p.sendMessage("งc$settings dailydiatime <getLong|getDate|getToday|setToday>");
+				p.sendMessage("ยงc$settings dailydiatime <getLong|getDate|getToday|setToday>");
 			}
 		}else{
-			p.sendMessage("งc$settings <save|changed|edition|dailydiatime|startAutoAntilag|startPlayerSystem|startPulserSystem>");
+			p.sendMessage("ยงc$settings <save|changed|edition|dailydiatime|startAutoAntilag|startPlayerSystem|startPulserSystem>");
 			return;
 		}
 	}

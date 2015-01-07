@@ -55,7 +55,7 @@ public class AutoAntilag extends KartoffelService implements Runnable{
 		this.timeout = minutesTimeout * 60000;	
 		Logger.getLogger("Minecraft").info("[KKP] De AutoAntilag timeout is veranderd naar " + minutesTimeout + " minuten (" + timeout + " milliseconden)");
 		if(!(cs instanceof ConsoleCommandSender)){
-			cs.sendMessage("§eDe AutoAntilag timeout is veranderend naar " + minutesTimeout + " minuten (" + timeout + " milliseconden)");
+			cs.sendMessage("Â§eDe AutoAntilag timeout is veranderend naar " + minutesTimeout + " minuten (" + timeout + " milliseconden)");
 		}
 		if(this.t != null && this.t.isAlive()){
 			Logger.getLogger("Minecraft").info("[KKP] AutoAntilag wordt herstart vanwege veranderingen aan de timeout...");
@@ -63,7 +63,7 @@ public class AutoAntilag extends KartoffelService implements Runnable{
 			this.t = new Thread(this);
 			t.start();
 		}else{
-			cs.sendMessage("§4NOTE: AutoAntilag staat niet aan!");
+			cs.sendMessage("Â§4NOTE: AutoAntilag staat niet aan!");
 		}
 	}
 

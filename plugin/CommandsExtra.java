@@ -20,23 +20,23 @@ public class CommandsExtra {
 				}else{
 					w = Main.plugin.getServer().getWorld(args[0]);
 					if(w == null){
-						sender.sendMessage("Onbekende wereld: §e\"§f" + args[0] + "§e\"");
+						sender.sendMessage("Onbekende wereld: Â§e\"Â§f" + args[0] + "Â§e\"");
 						return;
 					}
 				}
 			}else if(args.length == 2){
 				w = Main.plugin.getServer().getWorld(args[0]);
 				if(!args[1].equals("-death")){
-					sender.sendMessage("§c/angrypigmen [world] [-death]");
+					sender.sendMessage("Â§c/angrypigmen [world] [-death]");
 					return;
 				}
 				death = true;
 				if(w == null){
-					sender.sendMessage("Onbekende wereld: §e\"§f" + args[0] + "§e\"");
+					sender.sendMessage("Onbekende wereld: Â§e\"Â§f" + args[0] + "Â§e\"");
 					return;
 				}
 			}
-			if(w == null)sender.sendMessage("§4Je dient een wereld in te voeren");
+			if(w == null)sender.sendMessage("Â§4Je dient een wereld in te voeren");
 			int total = 0;
 			Collection<PigZombie> a = w.getEntitiesByClass(PigZombie.class);
 			PigZombie[] pz = new PigZombie[a.size()];
@@ -59,7 +59,7 @@ public class CommandsExtra {
 			}
 			return;
 		}else{
-			sender.sendMessage("§4Je hebt geen toegang tot dit commando");
+			sender.sendMessage("Â§4Je hebt geen toegang tot dit commando");
 		}
 	}
 }

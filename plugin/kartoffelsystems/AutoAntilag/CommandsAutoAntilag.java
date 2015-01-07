@@ -16,7 +16,7 @@ public class CommandsAutoAntilag {
 		}
 		
 		if(Main.aa == null){
-			sender.sendMessage("§4AutoAntilag is niet bereikbaar");
+			sender.sendMessage("Â§4AutoAntilag is niet bereikbaar");
 			return;
 		}
 		if(sender.isOp() || (executor != null && (executor.getSpelerOptions().getOpStatus() >= 2 || executor.getSpelerOptions().getSwitches((byte)18,(byte)0x80)))){
@@ -31,9 +31,9 @@ public class CommandsAutoAntilag {
 				}
 			}else if(args.length == 1){
 				if(args[0].equalsIgnoreCase("help")){
-					sender.sendMessage("§c/autoantilag §f: Geeft info over de status van auto antilag");
-					sender.sendMessage("§c/autoantilag <aan|uit|0> §f: Verander de status van auto antilag");
-					sender.sendMessage("§c/autoantilag <aantal minuten> §f: Verander de timeout voor het nogmaals wordt uitgevoerd");
+					sender.sendMessage("Â§c/autoantilag Â§f: Geeft info over de status van auto antilag");
+					sender.sendMessage("Â§c/autoantilag <aan|uit|0> Â§f: Verander de status van auto antilag");
+					sender.sendMessage("Â§c/autoantilag <aantal minuten> Â§f: Verander de timeout voor het nogmaals wordt uitgevoerd");
 				}else if(args[0].equalsIgnoreCase("aan")){
 					SettingsManager.EnableAutoAntilag();
 					if(Main.aa.isRunning()){
@@ -54,14 +54,14 @@ public class CommandsAutoAntilag {
 					try{
 						i = Integer.parseInt(args[0]);
 					}catch(NumberFormatException e){
-						sender.sendMessage("Onjuiste parameter, probeer §c/autoantilag help§f");
+						sender.sendMessage("Onjuiste parameter, probeer Â§c/autoantilag helpÂ§f");
 						return;
 					}
 					Main.aa.setTimeout(i, sender);
 				}
 			}
 		}else{
-			sender.sendMessage("§4Je hebt geen toegang om het AutoAntilag-commando te gebruiken");
+			sender.sendMessage("Â§4Je hebt geen toegang om het AutoAntilag-commando te gebruiken");
 		}
 	}
 }

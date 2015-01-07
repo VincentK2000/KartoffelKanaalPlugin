@@ -69,29 +69,29 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 	public void activate(CommandSender a, AttribSystem attribSys) throws Exception{
 		if(a == null || attribSys == null)throw new NullPointerException("CommandSender of AttribSystem is null");
 		if(!a.isOp()){
-			a.sendMessage("§4Je moet Op zijn om deze actie uit te mogen voeren");
+			a.sendMessage("Â§4Je moet Op zijn om deze actie uit te mogen voeren");
 			return;
 		}
 		this.checkDenyChanges();
 		int activationStage = (this.activationRequiresCrashTest() || attribSys.hasAttrib("doCrashTest"))?attribSys.getIntValue("_activationStage", 0):100;
 		if(a instanceof ConsoleCommandSender && attribSys.hasAttrib("skipCrashTest")){
-			a.sendMessage("§4Crash-test skippen. Onthoud dat de crash test wel een nut heeft en je wilt natuurlijk niet dat clients crashen omwille van een foute PulserNotifications...");
+			a.sendMessage("Â§4Crash-test skippen. Onthoud dat de crash test wel een nut heeft en je wilt natuurlijk niet dat clients crashen omwille van een foute PulserNotifications...");
 			activationStage = 100;
 		}
 		if(activationStage == 0){
-			a.sendMessage("§eWegens grote veranderingen moet er een crash-test uitgevoerd worden om te kijken of clients niet crashen door de PulserNotifications.");
+			a.sendMessage("Â§eWegens grote veranderingen moet er een crash-test uitgevoerd worden om te kijken of clients niet crashen door de PulserNotifications.");
 			if(!(a instanceof Player)){
-				a.sendMessage("§4Deze test is alleen beschikbaar voor spelers. Gebruik het attribuut \"^skipCrashTest\" als je op de Console bent om de test over te slaan");
+				a.sendMessage("Â§4Deze test is alleen beschikbaar voor spelers. Gebruik het attribuut \"^skipCrashTest\" als je op de Console bent om de test over te slaan");
 				return;
 			}
 			Player pl = (Player) a;
-			pl.sendMessage("§eTijdens de test zullen een of meerdere berichten naar je gestuurd worden. Als je de berichten correct ontvangt, moet je op [Activeer] duwen om het correct ontvangen te bevestigen.");
-			pl.sendMessage("§eKlik op [Start] om de test te beginnen");
+			pl.sendMessage("Â§eTijdens de test zullen een of meerdere berichten naar je gestuurd worden. Als je de berichten correct ontvangt, moet je op [Activeer] duwen om het correct ontvangen te bevestigen.");
+			pl.sendMessage("Â§eKlik op [Start] om de test te beginnen");
 			CommandsPulser.activationComponent = this;
 			Main.plugin.getServer().dispatchCommand(Main.plugin.getServer().getConsoleSender(), "tellraw " + pl.getName() + " [{text:\"Klik om de crash-test te beginnen: \",color:\"yellow\"},{text:\"[Start]\",color:\"dark_red\",bold:true,clickEvent:{action:\"run_command\",value:\"/pulser _activation ^doCrashTest ^_activationStage:1\"}}]");
 		}else if(activationStage == 1){
 			if(!(a instanceof Player)){
-				a.sendMessage("§4Deze test is alleen beschikbaar voor spelers. Gebruik het attribuut \"^skipCrashTest\" als je op de Console bent om de test over te slaan");
+				a.sendMessage("Â§4Deze test is alleen beschikbaar voor spelers. Gebruik het attribuut \"^skipCrashTest\" als je op de Console bent om de test over te slaan");
 				return;
 			}
 			Player pl = (Player) a;
@@ -99,7 +99,7 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 				this.doCrashTest(pl);
 			}catch(Exception e){//Misschien kan er een Exception voorkomen als de client omwille van een crash eerder de server verlaat dan het volgende bericht gestuurd wordt
 				if(pl.isOnline()){
-					pl.sendMessage("§4Hmm... De crash-test is om de een of andere reden mislukt...");
+					pl.sendMessage("Â§4Hmm... De crash-test is om de een of andere reden mislukt...");
 					return;
 				}
 			}
@@ -109,14 +109,14 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 			}
 		}else if(activationStage == 100){
 			if(!(a instanceof ConsoleCommandSender) && (this.activationRequiresCrashTest() || attribSys.hasAttrib("doCrashTest")) && this.specialOperationLockKey != attribSys.getIntValue("_specialOperationLockKey", -1)){
-				a.sendMessage("§4Oncorrecte specialOperationKey. Doe de test misschien opnieuw. Als dit probleem zich weer voordoet, contacteer dan de developer van de KKP");
+				a.sendMessage("Â§4Oncorrecte specialOperationKey. Doe de test misschien opnieuw. Als dit probleem zich weer voordoet, contacteer dan de developer van de KKP");
 				return;
 			}
 			this.invisible = false;
 			this.notifyChange();
-			a.sendMessage("§eDe PulserNotif is geactiveerd");
+			a.sendMessage("Â§eDe PulserNotif is geactiveerd");
 		}else{
-			a.sendMessage("§4ERROR: Onbekende activationStage!");
+			a.sendMessage("Â§4ERROR: Onbekende activationStage!");
 		}
 	}
 
@@ -210,19 +210,19 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 		
 		if(label.equals("actief")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
-				throw new Exception("§4Je hebt geen toegang tot dit commando");
+				throw new Exception("Â§4Je hebt geen toegang tot dit commando");
 			}
 			if(args.length < 2){
-				a.sendMessage("§eDe staat van de notification is " + (this.isActive()?"§2aan":"§4uit"));
+				a.sendMessage("Â§eDe staat van de notification is " + (this.isActive()?"Â§2aan":"Â§4uit"));
 			}else{
 				args[1] = args[1].toLowerCase();
 				if(args[1].equals("on") || args[1].equals("aan") || args[1].equals("+")){
 					this.activate(a, attribSys);
 				}else if(args[1].equals("off") || args[1].equals("uit") || args[1].equals("-")){
 					this.deactivate();
-					a.sendMessage("§eDe staat van de notification is nu " + (this.isActive()?"§2aan":"§4uit"));
+					a.sendMessage("Â§eDe staat van de notification is nu " + (this.isActive()?"Â§2aan":"Â§4uit"));
 				}else{
-					a.sendMessage("§4Mogelijke nieuwe waarden voor de staat zijn: §2on, aan, +§f of §4off, uit, -");
+					a.sendMessage("Â§4Mogelijke nieuwe waarden voor de staat zijn: Â§2on, aan, +Â§f of Â§4off, uit, -");
 					return true;
 				}
 			}
@@ -231,10 +231,10 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 				throw new Exception("Je hebt geen toegang tot dit commando");
 			}
 			if(args.length < 2){
-				a.sendMessage("§eRead-only staat " + (((this.options & 0x20) == 0x20)?"§4aan":"§2uit") + "§e en is " + (((this.options & 0x10) == 0x10)?"wel":"niet") + " locked door de Console of Dev");
+				a.sendMessage("Â§eRead-only staat " + (((this.options & 0x20) == 0x20)?"Â§4aan":"Â§2uit") + "Â§e en is " + (((this.options & 0x10) == 0x10)?"wel":"niet") + " locked door de Console of Dev");
 			}else{
 				if(executor.getSpelerOptions().getOpStatus() < 3 && ((this.options & 0x10) == 0x10)){
-					a.sendMessage("§4De read-only is locked door de Console of de Dev");
+					a.sendMessage("Â§4De read-only is locked door de Console of de Dev");
 					return true;
 				}
 				boolean nieuweWaarde;
@@ -244,7 +244,7 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 				}else if(args[1].equals("off") || args[1].equals("uit") || args[1].equals("-")){
 					nieuweWaarde = false;
 				}else{
-					a.sendMessage("§4Mogelijke nieuwe waarden voor de staat zijn: §2on, aan, +§f of §4off, uit, -");
+					a.sendMessage("Â§4Mogelijke nieuwe waarden voor de staat zijn: Â§2on, aan, +Â§f of Â§4off, uit, -");
 					return true;
 				}
 				if(nieuweWaarde){
@@ -253,18 +253,18 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 					this.options &= 0xDF;
 				}
 				this.notifyChange();
-				a.sendMessage("§eDe notification is nu " + (((this.options & 0x20) == 0x20)?"§4read-only":"§2niet read-only"));
+				a.sendMessage("Â§eDe notification is nu " + (((this.options & 0x20) == 0x20)?"Â§4read-only":"Â§2niet read-only"));
 			}
 		}else if(label.equals("forcesend")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
 			}
 			if(args.length < 2){
-				a.sendMessage("§eDit bericht wordt enkel naar jou gestuurd. Gebruik Notif-Deel: \"forceSend all\" of \"forceSend <spelernamen...>\"");
+				a.sendMessage("Â§eDit bericht wordt enkel naar jou gestuurd. Gebruik Notif-Deel: \"forceSend all\" of \"forceSend <spelernamen...>\"");
 				this.sendMessage(new Person[]{executor}, new boolean[]{true});
 			}else{
 				if(Main.pm == null || Main.pm.preventAction()){
-					a.sendMessage("§4De PlayerManager is niet beschikbaar");
+					a.sendMessage("Â§4De PlayerManager is niet beschikbaar");
 					return true;
 				}
 				Person[] online = Main.pm.getOnlinePlayers();
@@ -285,18 +285,18 @@ public abstract class PulserNotif implements IObjectCommandHandable {
 					}
 				}
 				this.sendMessage(online, receive);
-				a.sendMessage("§eBericht(en) gestuurd");
+				a.sendMessage("Â§eBericht(en) gestuurd");
 			}
 		}else if(label.equals("getType")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
 			}
-			a.sendMessage("§eNotificationType = " + this.getNotifType());
+			a.sendMessage("Â§eNotificationType = " + this.getNotifType());
 		}else if(label.equals("toString")){
 			if(executor.getSpelerOptions().getOpStatus() < 2){
 				throw new Exception("Je hebt geen toegang tot dit commando");
 			}
-			a.sendMessage("§etoString() = " + this.toString());
+			a.sendMessage("Â§etoString() = " + this.toString());
 		}else{		
 			return false;
 		}

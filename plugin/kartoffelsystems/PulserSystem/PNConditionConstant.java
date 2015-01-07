@@ -69,7 +69,7 @@ public class PNConditionConstant extends PNCondition{
 			}
 			return new PNConditionConstant(options, true, ID, root);
 		}else{
-			throw new Exception("Om een ConditionConstant te maken, moet je de beginstaat specifiëren (aan/uit)");
+			throw new Exception("Om een ConditionConstant te maken, moet je de beginstaat specifiÂ§ren (aan/uit)");
 		}
 	}
 
@@ -84,10 +84,10 @@ public class PNConditionConstant extends PNCondition{
 		String label = args[0];
 		if(label.equals("aan") || label.equals("on") || label.equals("true") || label.equals("+")){
 			this.options |= 0x20;
-			a.sendMessage("§eDe ConditionConstant staat nu op §2aan§e.");
+			a.sendMessage("Â§eDe ConditionConstant staat nu op Â§2aanÂ§e.");
 		}else if(label.equals("uit") || label.equals("off") || label.equals("false") || label.equals("-")){
 			this.options &= 0xDF;
-			a.sendMessage("§eDe ConditionConstant staat nu op §2uit§e.");
+			a.sendMessage("Â§eDe ConditionConstant staat nu op Â§2uitÂ§e.");
 		}else{
 			return false;
 		}

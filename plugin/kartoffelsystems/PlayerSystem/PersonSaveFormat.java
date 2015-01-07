@@ -146,7 +146,7 @@ public final class PersonSaveFormat implements Runnable {
 		
 		int a = this.dest * 64;
 		
-		//Data Kopiëren
+		//Data KopiÂ§ren
 		byte[] buffer = new byte[256];
 		while(a > 255 && is.available() > 255){
 			is.read(buffer);
@@ -188,7 +188,7 @@ public final class PersonSaveFormat implements Runnable {
 		is.skip(64);
 		os.write(data);
 		
-		//Data kopiëren
+		//Data kopiÂ§ren
 		buffer = new byte[256];
 		while(is.available() > 255){
 			is.read(buffer);

@@ -37,7 +37,7 @@ public class ThreadChecker{}
 			l.warning("[KartoffelKanaalPlugin] Persoon \"" + String.valueOf(psf.name) + "\" bewaren duurt al 10 seconden...");
 			l.warning("[KartoffelKanaalPlugin] Nog 5 seconden left om persoon \"" + String.valueOf(psf.name) + "\" met UUID = " + psf.id.toString() + " te bewaren");
 			Thread.sleep(5000);
-			l.warning("[KartoffelKanaalPlugin] Kon de persoon \"" + String.valueOf(psf.name) + "\" met UUID = " + psf.id.toString() + " niet bewaren binnen 15 seconden. Process wordt beëindigt");
+			l.warning("[KartoffelKanaalPlugin] Kon de persoon \"" + String.valueOf(psf.name) + "\" met UUID = " + psf.id.toString() + " niet bewaren binnen 15 seconden. Process wordt beÂ§indigt");
 			active.interrupt();
 			this.error(new Exception("Kon de persoon niet bewaren binnen de 15 seconden"));
 		} catch (InterruptedException e) {}

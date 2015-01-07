@@ -476,8 +476,8 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 		operationName = operationName.toLowerCase();
 		if(operationName.equals("add")){
 			if(operationArgs.length == 0){
-				a.sendMessage("§cadd <mode> ...");
-				a.sendMessage("§eMogelijke modes: create, copy");
+				a.sendMessage("Â§cadd <mode> ...");
+				a.sendMessage("Â§eMogelijke modes: create, copy");
 			}else if(operationArgs.length >= 1){
 				String modeSelection = operationArgs[0].toLowerCase();
 				if(modeSelection.equals("create")){
@@ -486,16 +486,16 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 					}else if(originalArray instanceof PulserNotif[]){
 						
 					}else{
-						a.sendMessage("§4Creatie van dat type object is niet ondersteund");
+						a.sendMessage("Â§4Creatie van dat type object is niet ondersteund");
 						return originalArray;
 					}
 				}else if(modeSelection.equals("copy")){
 					if(!(originalArray instanceof PNTech[] || originalArray instanceof PulserNotif[])){
-						a.sendMessage("§4Copieëring van dat type object is niet ondersteund");
+						a.sendMessage("Â§4CopieÂ§ring van dat type object is niet ondersteund");
 						return originalArray;
 					}
 					if(operationArgs.length != 2){
-						a.sendMessage("§cadd copy <copy van path>");
+						a.sendMessage("Â§cadd copy <copy van path>");
 						return originalArray;
 					}else{
 						String path = operationArgs[1];
@@ -503,16 +503,16 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 						try{
 							objCH = Pulser.getObjectCommandHandable(Main.pulser, path);
 						}catch(Exception e){
-							a.sendMessage("§4Kon het van-object niet vinden: " + e);
+							a.sendMessage("Â§4Kon het van-object niet vinden: " + e);
 							return originalArray;
 						}
 						if(objCH == null){
-							a.sendMessage("§4Kon het van-object niet vinden");
+							a.sendMessage("Â§4Kon het van-object niet vinden");
 							return originalArray;
 						}
 						
 						//if(!((Object)(objCH) instanceof Class<?>)){
-						//	a.sendMessage("§4Het van-object is niet van het juiste type");
+						//	a.sendMessage("Â§4Het van-object is niet van het juiste type");
 						//	return originalArray;
 						//}
 						if(originalArray instanceof PNTech[]){
@@ -523,7 +523,7 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 					}						
 				}else if(modeSelection.equals("copyinstance")){
 					if(operationArgs.length != 2){
-						a.sendMessage("§cadd copyinstance <copy van path>");
+						a.sendMessage("Â§cadd copyinstance <copy van path>");
 						return originalArray;
 					}else{
 						String path = operationArgs[1];
@@ -531,18 +531,18 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 						try{
 							objCH = Pulser.getObjectCommandHandable(Main.pulser, path);
 						}catch(Exception e){
-							a.sendMessage("§4Kon het van-object niet vinden: " + e);
+							a.sendMessage("Â§4Kon het van-object niet vinden: " + e);
 							return originalArray;
 						}
 						if(objCH == null){
-							a.sendMessage("§4Kon het van-object niet vinden");
+							a.sendMessage("Â§4Kon het van-object niet vinden");
 							return originalArray;
 						}
 						T instanceToCopy;
 						try{
 							instanceToCopy = (T)objCH;
 						}catch(Exception e){
-							a.sendMessage("§4Couldn't catch object to the right type");
+							a.sendMessage("Â§4Couldn't catch object to the right type");
 							return originalArray;
 						}
 						if(originalArray == null){

@@ -145,8 +145,8 @@ public class PNConditionTimeRanged extends PNCondition{
 			boolean useRawTime = attribSys.hasAttrib("useRawTime");
 			if(args.length == 1){
 				long startTime = this.getStartTime(useRawTime);
-				a.sendMessage("§eDe starttijd is op " + (new Date(startTime)).toString() + " (" + SettingsManager.getTimeRelation(this.starttime) + ").");
-				a.sendMessage("§eVerander het met §cstarttijd <over|absoluut> <...>");
+				a.sendMessage("Â§eDe starttijd is op " + (new Date(startTime)).toString() + " (" + SettingsManager.getTimeRelation(this.starttime) + ").");
+				a.sendMessage("Â§eVerander het met Â§cstarttijd <over|absoluut> <...>");
 			}else if(args.length > 1){
 				String[] newArgs = new String[args.length - 2];
 				System.arraycopy(args, 2, newArgs, 0, newArgs.length);
@@ -156,15 +156,15 @@ public class PNConditionTimeRanged extends PNCondition{
 				this.setStartTime(newStartTime, useRawTime);
 				
 				long startTime = this.getStartTime(useRawTime);
-				a.sendMessage("§eDe starttijd is nu op " + (new Date(startTime)).toString() + " (" + SettingsManager.getTimeRelation(this.starttime) + ").");
+				a.sendMessage("Â§eDe starttijd is nu op " + (new Date(startTime)).toString() + " (" + SettingsManager.getTimeRelation(this.starttime) + ").");
 			}
 			
 		}else if(label.equals("stoptijd")){
 			boolean useRawTime = attribSys.hasAttrib("useRawTime");
 			if(args.length == 1){
 				long endTime = this.getEndTime(useRawTime);
-				a.sendMessage("§eDe stoptijd is op " + (new Date(endTime)).toString() + " (" + SettingsManager.getTimeRelation(this.endtime) + ").");
-				a.sendMessage("§eVerander het met §cstoptijd <over|absoluut> <...>");
+				a.sendMessage("Â§eDe stoptijd is op " + (new Date(endTime)).toString() + " (" + SettingsManager.getTimeRelation(this.endtime) + ").");
+				a.sendMessage("Â§eVerander het met Â§cstoptijd <over|absoluut> <...>");
 			}else if(args.length > 1){
 				String[] newArgs = new String[args.length - 2];
 				System.arraycopy(args, 2, newArgs, 0, newArgs.length);
@@ -174,7 +174,7 @@ public class PNConditionTimeRanged extends PNCondition{
 				this.setEndTime(newStopTime, useRawTime);
 				
 				long endTime = this.getEndTime(useRawTime);
-				a.sendMessage("§eDe stoptijd is nu op " + (new Date(endTime)).toString() + " (" + SettingsManager.getTimeRelation(this.endtime) + ").");
+				a.sendMessage("Â§eDe stoptijd is nu op " + (new Date(endTime)).toString() + " (" + SettingsManager.getTimeRelation(this.endtime) + ").");
 			}
 		}else if(label.equals("tijden")){
 			boolean useRawTime = attribSys.hasAttrib("useRawTime");
@@ -189,9 +189,9 @@ public class PNConditionTimeRanged extends PNCondition{
 				}
 				long startTime = this.getStartTime(useRawTime);
 				long endTime = this.getEndTime(useRawTime);
-				a.sendMessage("§eDe condition is true vanaf " + (new Date(startTime)).toString() + " tot " + (new Date(endTime)).toString() + " (" + timeRelation + ").");
+				a.sendMessage("Â§eDe condition is true vanaf " + (new Date(startTime)).toString() + " tot " + (new Date(endTime)).toString() + " (" + timeRelation + ").");
 			}else{
-				a.sendMessage("§4Verander de tijden met §cstarttijd§4 en §cstoptijd§4.");
+				a.sendMessage("Â§4Verander de tijden met Â§cstarttijdÂ§4 en Â§cstoptijdÂ§4.");
 			}
 		}
 		return false;

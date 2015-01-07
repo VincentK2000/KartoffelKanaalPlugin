@@ -9,11 +9,11 @@ import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 public class CommandsKartoffel {
 	public static void executeKartoffelCommand(Person p, CommandSender a, String[] args){		
 		if(!a.isOp() && !(a instanceof Player && Main.isDeveloper(((Player)a).getUniqueId()) && DebugTools.developermodus)){
-			a.sendMessage("§4Je hebt geen permission om het Kartoffel-commando te gebruiken");
+			a.sendMessage("Â§4Je hebt geen permission om het Kartoffel-commando te gebruiken");
 			return;
 		}
 		if(args.length == 0){
-			a.sendMessage("§c/kartoffel <autoantilag|playersystem|pulsersystem>");
+			a.sendMessage("Â§c/kartoffel <autoantilag|playersystem|pulsersystem>");
 			return;
 		}
 		String search = args[0].toLowerCase();
@@ -35,23 +35,23 @@ public class CommandsKartoffel {
 			}
 		}else if(search.equals("printloadedplayers")){
 			if(Main.pm == null){
-				a.sendMessage("§4PlayerManager is null");
+				a.sendMessage("Â§4PlayerManager is null");
 				return;
 			}
 			Main.pm._debugPrintLoadedPlayers();
 			if(!(a instanceof ConsoleCommandSender)){
-				a.sendMessage("§eZie Console voor de debugPrint");
+				a.sendMessage("Â§eZie Console voor de debugPrint");
 			}
 		}else if(search.equals("printdatafield")){
 			if(args.length != 2){
-				p.sendMessage("§c/kartoffel printDataField <name>");
+				p.sendMessage("Â§c/kartoffel printDataField <name>");
 				return;
 			}
 			String dataFieldName = args[1].toLowerCase();
 			if(dataFieldName.equals("timesticked")){
 				Main.pulser.timesTicked._printDebug();
 			}else{
-				p.sendMessage("§4Unknown DataField");
+				p.sendMessage("Â§4Unknown DataField");
 				return;
 			}
 		}else if(search.equals("displayname")){
@@ -61,11 +61,11 @@ public class CommandsKartoffel {
 			}else{
 				Player[] plList = Main.plugin.getServer().getOnlinePlayers();
 				if(plList == null || plList.length == 0){
-					a.sendMessage("§4De PlayerList is null");
+					a.sendMessage("Â§4De PlayerList is null");
 					return;
 				}
 				if(plList[0] == null){
-					a.sendMessage("§4De eerste Player is null");
+					a.sendMessage("Â§4De eerste Player is null");
 					return;
 				}
 				pl = plList[0];
@@ -81,7 +81,7 @@ public class CommandsKartoffel {
 				pl.sendMessage("DisplayName = " + pl.getDisplayName());
 			}
 		}else{
-			a.sendMessage("§c/kartoffel <autoantilag|playersystem|pulsersystem>");
+			a.sendMessage("Â§c/kartoffel <autoantilag|playersystem|pulsersystem>");
 		}
 	}
 	

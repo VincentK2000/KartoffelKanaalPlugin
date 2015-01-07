@@ -13,9 +13,12 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 import java.util.*;
 
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -233,12 +236,12 @@ public class Main extends JavaPlugin implements Listener {
 			return true;
 		}
 		if(pm == null || pm.preventAction()){
-			sender.sendMessage("§4Dit commando kan niet worden uitgevoerd zolang PlayerManager niet beschikbaar is");
+			sender.sendMessage("Â§4Dit commando kan niet worden uitgevoerd zolang PlayerManager niet beschikbaar is");
 			return true;
 		}
 		Person p = pm.getLoadedPerson(sender);
 		if(p == null){
-			sender.sendMessage("§4ERROR: Speler niet gevonden in ingeladen personen, het §c/profile refresh§4 commando wordt uitgevoerd...");
+			sender.sendMessage("Â§4ERROR: Speler niet gevonden in ingeladen personen, het Â§c/profile refreshÂ§4 commando wordt uitgevoerd...");
 			CommandsPlayerSystem.executeRefreshCommand(null, sender, args);;
 			return true;
 		}
@@ -258,9 +261,9 @@ public class Main extends JavaPlugin implements Listener {
 				if(sender instanceof Player)
 					p.getSpelerOptions().giveDailyDiamonds((Player)sender);
 				else
-					sender.sendMessage("§4Je moet een speler zijn om dit te kunnen gebruiken");
+					sender.sendMessage("Â§4Je moet een speler zijn om dit te kunnen gebruiken");
 			}else{
-				sender.sendMessage("§c/getdailydiamonds");
+				sender.sendMessage("Â§c/getdailydiamonds");
 			}
 		}else if(label.equals("notifications")){
 			CommandsPulser.executePulserNotifsCommand(p, sender, attribSys, args);
@@ -604,7 +607,7 @@ public class Main extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e){
 		char[] s = e.getJoinMessage().toCharArray();
-		if(s[0] == '§'){
+		if(s[0] == 'Â§'){
 			s[1] = 'a';
 			e.setJoinMessage(new String(s));
 		}
@@ -613,7 +616,7 @@ public class Main extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent e){
 		char[] s = e.getQuitMessage().toCharArray();
-		if(s[0] == '§'){
+		if(s[0] == 'Â§'){
 			s[1] = 'c';
 			e.setQuitMessage(new String(s));
 		}
@@ -628,5 +631,23 @@ public class Main extends JavaPlugin implements Listener {
 	public void onEntityExplode(EntityExplodeEvent e){
 		e.setCancelled(true);
 	}
-	
+
+	@EventHandler
+	public void onEntityDamageEntityEvent(org.bukkit.event.entity.EntityDamageByEntityEvent e){
+		Player p;
+		if(e.getDamager() instanceof  Player)
+			p = (Player)e.getDamager();
+		else
+			return;
+
+		if(e.getEntity() instanceof Animals){
+			if(p.isOp())return;
+			try{
+				if(!WorldGuardPlugin.inst().getGlobalRegionManager().canBuild(p, e.getEntity().getLocation())){
+					p.sendMessage("Â§4Je hebt geen permissions om in die region Animals te damagen.");
+					e.setCancelled(true);
+				}
+			}catch(Exception ex){}
+		}
+	}
 }

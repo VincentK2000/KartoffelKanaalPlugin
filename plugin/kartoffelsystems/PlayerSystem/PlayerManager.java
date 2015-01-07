@@ -718,9 +718,9 @@ public class PlayerManager extends KartoffelService implements Listener{
 		p.getSpelerOptions().refreshRank();
 		//p.ApplyRankTag();
 		
-		pl.sendMessage("§9Je rank is " + Rank.getRankName(p.getSpelerOptions().getRank()));
+		pl.sendMessage("Â§9Je rank is " + Rank.getRankName(p.getSpelerOptions().getRank()));
 		if(p.getSpelerOptions().getAmountDailyDiamonds() > 0 && p.getSpelerOptions().DailyDiamondReady()){
-			pl.sendMessage("§eJe dagelijkse diamonds zijn nog niet opgehaald! Krijg ze door §c/getdailydiamonds§f te gebruiken.");
+			pl.sendMessage("Â§eJe dagelijkse diamonds zijn nog niet opgehaald! Krijg ze door Â§c/getdailydiamondsÂ§f te gebruiken.");
 		}
 		if(DebugTools.developermodus && Main.isDeveloper(id))pl.sendMessage("Developermodus: true");
 		
@@ -834,18 +834,30 @@ public class PlayerManager extends KartoffelService implements Listener{
 		if(a == null){
 			//System.out.println("PlayerManager: De gezochte persoon is null");
 			return null;
-		}		if(a instanceof Player){
-			//System.out.println("PlayerManager: De gezochte persoon is een Player");			return getLoadedPlayer((Player)a);		}else if(a instanceof ConsoleCommandSender || a instanceof RemoteConsoleCommandSender){
-			//System.out.println("PlayerManager: De gezochte persoon is een ConsoleCommandSender");			return Person.CONSOLE;		}else if(a instanceof BlockCommandSender || a instanceof CommandMinecart){
+		}
+		if(a instanceof Player){
+			//System.out.println("PlayerManager: De gezochte persoon is een Player");
+			return getLoadedPlayer((Player)a);
+		}else if(a instanceof ConsoleCommandSender || a instanceof RemoteConsoleCommandSender){
+			//System.out.println("PlayerManager: De gezochte persoon is een ConsoleCommandSender");
+			return Person.CONSOLE;
+		}else if(a instanceof BlockCommandSender || a instanceof CommandMinecart){
 			//System.out.println("PlayerManager: De gezochte persoon is een BlockCommandSender of een CommandMinecart");
 			return Person.BLOCKEXECUTOR;
-		}		return null;	}	public Person getLoadedPlayer(Player p){
+		}
+		return null;
+	}
+	public Person getLoadedPlayer(Player p){
 		if(this.preventAction())return null;
 		if(DebugTools.developermodus && Person.DEV.isProfileOf(p)){
 			return Person.DEV;
-		}		for(int i = 0; i < this.loadedPlayers.size(); ++i){
+		}
+		for(int i = 0; i < this.loadedPlayers.size(); ++i){
 			if(this.loadedPlayers.get(i) == null)continue;
-			if(this.loadedPlayers.get(i).isProfileOf(p))return this.loadedPlayers.get(i);		}		return null;	}
+			if(this.loadedPlayers.get(i).isProfileOf(p))return this.loadedPlayers.get(i);
+		}
+		return null;
+	}
 	/*public PlayerManager(InputStream is) throws Exception{
 		byte[] data = new byte[is.available()];
 		try {
@@ -1123,7 +1135,7 @@ public class PlayerManager extends KartoffelService implements Listener{
 		try {
 			Files.copy(main.toPath(), fallback.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
-			System.out.println("[KartoffelKanaalPlugin] Kan spelerbestand niet kopiëren voor fallback");
+			System.out.println("[KartoffelKanaalPlugin] Kan spelerbestand niet kopiÂ§ren voor fallback");
 		}
 		
 		this.saveCurrent();
@@ -1287,7 +1299,7 @@ public class PlayerManager extends KartoffelService implements Listener{
 		try {
 			Files.copy(main.toPath(), fallback.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
-			System.out.println("[KartoffelKanaalPlugin] Kan spelerbestand niet kopiëren voor fallback");
+			System.out.println("[KartoffelKanaalPlugin] Kan spelerbestand niet kopiÂ§ren voor fallback");
 		}
 		
 		this.saveCurrent();

@@ -24,7 +24,7 @@ public class AdvancedChat implements Listener{
 		boolean code = false;
 		for(int i = 0; i < src.length; i++){
 			if(vlak || i == src.length - 1){
-				if(src[i] == 'ง')
+				if(src[i] == 'ยง')
 					nieuwbericht.append('&');
 				else
 					nieuwbericht.append(src[i]);
@@ -33,22 +33,22 @@ public class AdvancedChat implements Listener{
 				if(code){
 					if(src[i] == '~'){
 						code = false;
-						nieuwbericht.append("งr");
+						nieuwbericht.append("ยงr");
 					}else if(src[i] == '\\'){
 						vlak = true;
 					}else{
 						nieuwbericht.append(src[i]);
 					}
 				}else{
-					if(src[i] == '&' || src[i] == 'ง'){
+					if(src[i] == '&' || src[i] == 'ยง'){
 						if(isOpmaakSoort(src[i + 1])){
-							nieuwbericht.append('ง');
+							nieuwbericht.append('ยง');
 						}else{
 							nieuwbericht.append('&');
 						}
 					}else if(src[i] == '~'){
 						code = true;
-						nieuwbericht.append("งrงc");
+						nieuwbericht.append("ยงrยงc");
 					}else if(src[i] == '\\'){
 						vlak = true;
 					}else{

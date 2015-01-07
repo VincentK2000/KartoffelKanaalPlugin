@@ -214,11 +214,11 @@ public abstract class PNTechTextProvFormatted extends PNTechTextProv {
 	public boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception {
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
 		if(args.length < 1){
-			a.sendMessage("§ePNTechTextProvFormatted-deel van het commando: §c<parameter> <...>");
+			a.sendMessage("Â§ePNTechTextProvFormatted-deel van het commando: Â§c<parameter> <...>");
 			return true;
 		}
 		if(executor.getSpelerOptions().getOpStatus() < 2){
-			a.sendMessage("§4Je hebt geen toegang tot dit commando");
+			a.sendMessage("Â§4Je hebt geen toegang tot dit commando");
 			return true;
 		}
 		args[0] = args[0].toLowerCase();
@@ -233,39 +233,39 @@ public abstract class PNTechTextProvFormatted extends PNTechTextProv {
 					try{
 						index = Integer.parseInt(args[1].substring(1));
 					}catch(NumberFormatException e){
-						a.sendMessage("§4Oncorrecte parameterIndex");
+						a.sendMessage("Â§4Oncorrecte parameterIndex");
 						return true;
 					}
 				}else{
 					index = this.getNamedParameterIndex(args[1]);
 				}
 				if(index < 0 || index >= this.parameters.length){
-					a.sendMessage("§4Onbekende parameterNaam");
+					a.sendMessage("Â§4Onbekende parameterNaam");
 					return true;
 				}
-				a.sendMessage("§eDe parameter (#" + index + ") \"" + args[1] + "\" is " + ((this.parameters[index] == null || this.parameters[index].length() == 0)?("leeg"):("\"" + this.parameters[index] + "\"")));
+				a.sendMessage("Â§eDe parameter (#" + index + ") \"" + args[1] + "\" is " + ((this.parameters[index] == null || this.parameters[index].length() == 0)?("leeg"):("\"" + this.parameters[index] + "\"")));
 			}else if(args.length >= 3){
 				int index;
 				if(args[1].startsWith("#")){
 					try{
 						index = Integer.parseInt(args[1].substring(1));
 					}catch(NumberFormatException e){
-						a.sendMessage("§4Oncorrecte parameterIndex");
+						a.sendMessage("Â§4Oncorrecte parameterIndex");
 						return true;
 					}
 				}else{
 					index = this.getNamedParameterIndex(args[1]);
 				}
 				if(index < 0 || index >= this.parameters.length){
-					a.sendMessage("§4Onbekende parameterNaam");
+					a.sendMessage("Â§4Onbekende parameterNaam");
 					return true;
 				}
 				this.notificationBase.checkPermission(this, a, executor, this.getParameterChangeAccessLevel(index));
 				if(args.length == 3 && args[2].equals("leeg")){
 					if(this.setParameter(index, "")){
-						a.sendMessage("§eDe parameter \"" + args[1] + "\" is veranderd naar een lege status");
+						a.sendMessage("Â§eDe parameter \"" + args[1] + "\" is veranderd naar een lege status");
 					}else{
-						a.sendMessage("§4De parameter \"" + args[1] + "\" kon niet veranderd worden naar een lege status");
+						a.sendMessage("Â§4De parameter \"" + args[1] + "\" kon niet veranderd worden naar een lege status");
 					}
 				}else{
 					StringBuilder sb = new StringBuilder();
@@ -278,19 +278,19 @@ public abstract class PNTechTextProvFormatted extends PNTechTextProv {
 					if(attribSys.hasAttrib("verkleur")){
 						if(isSectionSignFormatAccepted(index)){
 							v = AdvancedChat.verkleurUitgebreid(v);
-							a.sendMessage("§eSectionSign-format is uitgevoerd");
+							a.sendMessage("Â§eSectionSign-format is uitgevoerd");
 						}else{
-							a.sendMessage("§4SectionSign-format is niet geaccepteerd voor de parameter op index " + index);
+							a.sendMessage("Â§4SectionSign-format is niet geaccepteerd voor de parameter op index " + index);
 						}
 					}
 					if(this.setParameter(index, v)){
-						a.sendMessage("§eDe parameter \"" + args[1] + "\" is veranderd naar \"§r§f" + v + "§r§e\"");
+						a.sendMessage("Â§eDe parameter \"" + args[1] + "\" is veranderd naar \"Â§rÂ§f" + v + "Â§rÂ§e\"");
 					}else{
-						a.sendMessage("§4De parameter \"" + args[1] + "\" kon niet veranderd worden naar \"§r§f" + v + "§r§4\"");
+						a.sendMessage("Â§4De parameter \"" + args[1] + "\" kon niet veranderd worden naar \"Â§rÂ§f" + v + "Â§rÂ§4\"");
 					}
 				}
 			}else{
-				a.sendMessage("§ePNTechTextProvFormatted-deel van het commando: §cparameter <parameterNaam> [nieuwe waarde]");
+				a.sendMessage("Â§ePNTechTextProvFormatted-deel van het commando: Â§cparameter <parameterNaam> [nieuwe waarde]");
 			}
 		}else{
 			return false;

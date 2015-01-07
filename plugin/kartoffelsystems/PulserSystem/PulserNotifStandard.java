@@ -232,7 +232,7 @@ public class PulserNotifStandard extends PulserNotif{
 	@Override
 	public void doCrashTest(Player pl) throws Exception{
 		if(this.textProv == null){
-			pl.sendMessage("§4ERROR: De textProvider is null");
+			pl.sendMessage("Â§4ERROR: De textProvider is null");
 		}else{
 			this.textProv.doCrashTest(pl);
 		}
@@ -390,11 +390,11 @@ public class PulserNotifStandard extends PulserNotif{
 		if(super.handleObjectCommand(executor, a, attribSys, args))return true;
 		
 		if(executor.getSpelerOptions().getOpStatus() < 2){
-			throw new Exception("§4Je hebt geen toegang tot dit commando");
+			throw new Exception("Â§4Je hebt geen toegang tot dit commando");
 		}
 		if(args[0].equals("interval")){
 			if(args.length == 1){
-				a.sendMessage("§eDe interval is " + this.interval + " en de offset is " + this.offset);
+				a.sendMessage("Â§eDe interval is " + this.interval + " en de offset is " + this.offset);
 			}else if(args.length == 2){
 				this.checkDenyChanges();
 				int newValue;
@@ -409,7 +409,7 @@ public class PulserNotifStandard extends PulserNotif{
 				this.interval = newValue;
 				if(this.offset >= this.interval)this.offset = 0;
 				this.notifyChange();
-				a.sendMessage("§eDe interval is nu " + this.interval + " en de offset is " + this.offset);
+				a.sendMessage("Â§eDe interval is nu " + this.interval + " en de offset is " + this.offset);
 			}else if(args.length == 3){
 				this.checkDenyChanges();
 				int newInterval;
@@ -434,16 +434,16 @@ public class PulserNotifStandard extends PulserNotif{
 				this.interval = newInterval;
 				this.offset = newOffset;
 				this.notifyChange();
-				a.sendMessage("§eDe interval is nu " + this.interval + " en de offset is " + this.offset);
+				a.sendMessage("Â§eDe interval is nu " + this.interval + " en de offset is " + this.offset);
 			}else{
-				a.sendMessage("§eNotif-deel: §cinterval [nieuwe interval] [nieuwe offset]");
+				a.sendMessage("Â§eNotif-deel: Â§cinterval [nieuwe interval] [nieuwe offset]");
 			}
 		}else if(args[0].equals("technics")){
 			if(args.length > 1){
 				String subCmdLabel = args[1].toLowerCase();
 				if(subCmdLabel.equals("list")){
 					if(this.technics.length == 0){
-						a.sendMessage("§4Er zijn geen technics beschikbaar");
+						a.sendMessage("Â§4Er zijn geen technics beschikbaar");
 						return true;
 					}
 					int page;
@@ -453,55 +453,55 @@ public class PulserNotifStandard extends PulserNotif{
 						try{
 							page = Integer.parseInt(args[2]);
 						}catch(NumberFormatException e){
-							a.sendMessage("§4Oncorrect nummer; \"" + args[2] + "\"");
+							a.sendMessage("Â§4Oncorrect nummer; \"" + args[2] + "\"");
 							return true;
 						}
 					}else{
-						a.sendMessage("§eNotif-deel: §ctechnics list [page]");
+						a.sendMessage("Â§eNotif-deel: Â§ctechnics list [page]");
 						return true;
 					}
 					if(page < 0){
-						a.sendMessage("§4Paginanummer moet minimum 0 zijn");
+						a.sendMessage("Â§4Paginanummer moet minimum 0 zijn");
 					}else if(page == 0){
-						a.sendMessage("§e---- Primary Technics ----");
+						a.sendMessage("Â§e---- Primary Technics ----");
 						boolean found = false;
 						for(int i = 0; i < this.technics.length; i++){
 							PNTech t = this.technics[i];
 							if(t != null && ((t == this.textProv) || (t == this.condition) || (t == this.datafield) || (t == this.notifSize) || (t == this.specAccess))){
-								a.sendMessage("§9[#" + i + "]§2 " + this.technics[i].toString());
+								a.sendMessage("Â§9[#" + i + "]Â§2 " + this.technics[i].toString());
 								found = true;
 							}
 						}
 						if(!found){
-							a.sendMessage("§eGeen Primary Technics aanwezig");
+							a.sendMessage("Â§eGeen Primary Technics aanwezig");
 						}
-						a.sendMessage("§e---- Alle technics: Gebruik Notif-deel: §ctechnics list 1§e ----");
+						a.sendMessage("Â§e---- Alle technics: Gebruik Notif-deel: Â§ctechnics list 1Â§e ----");
 					}else{
 						int numberOfItemsPerPage = attribSys.getIntValue("itemsPerPage", 7);
 						if(numberOfItemsPerPage < 1){
-							a.sendMessage("§4Er moet minimum 1 item per pagina zijn");
+							a.sendMessage("Â§4Er moet minimum 1 item per pagina zijn");
 							return true;
 						}
 						int maxPages = (int)Math.ceil((double)this.technics.length / numberOfItemsPerPage);
 						if(page > maxPages){
-							a.sendMessage("§4Paginanummer moet maximum " + maxPages + " zijn");
+							a.sendMessage("Â§4Paginanummer moet maximum " + maxPages + " zijn");
 							return true;
 						}
 						int startIndex = attribSys.getIntValue("start", (page - 1) * numberOfItemsPerPage);
 						if(startIndex >= this.technics.length){
-							a.sendMessage("§4De startIndex is hoger dan de hoogste index");
+							a.sendMessage("Â§4De startIndex is hoger dan de hoogste index");
 							return true;
 						}
 						int endIndex = attribSys.getIntValue("stop", startIndex + numberOfItemsPerPage - 1);
 						if(endIndex < startIndex){
-							a.sendMessage("§4De endIndex kan niet kleiner zijn dan de startIndex");
+							a.sendMessage("Â§4De endIndex kan niet kleiner zijn dan de startIndex");
 							return true;
 						}
 						if(endIndex >= this.technics.length)endIndex = this.technics.length - 1;
-						a.sendMessage("§e---- Technics (pagina " + page + ": §9#" + startIndex + "§e tot §9#" + endIndex + "§e) ----");
+						a.sendMessage("Â§e---- Technics (pagina " + page + ": Â§9#" + startIndex + "Â§e tot Â§9#" + endIndex + "Â§e) ----");
 						for(int i = startIndex; i <= endIndex; i++){
 							if(this.technics[i] == null){
-								a.sendMessage("§7[#" + i + "] leeg");
+								a.sendMessage("Â§7[#" + i + "] leeg");
 							}else{
 								boolean isInvisible = this.technics[i].isInvisible();
 								boolean isPrimaryTechnic = false;
@@ -509,16 +509,16 @@ public class PulserNotifStandard extends PulserNotif{
 									PNTech t = this.technics[i];
 									isPrimaryTechnic = (t == this.textProv) || (t == this.condition) || (t == this.datafield) || (t == this.notifSize) || (t == this.specAccess);
 								}
-								a.sendMessage("§9[#" + i + "]" + (isInvisible?("§7"):(isPrimaryTechnic?"§2":"§a")) + " " + this.technics[i].toString());
+								a.sendMessage("Â§9[#" + i + "]" + (isInvisible?("Â§7"):(isPrimaryTechnic?"Â§2":"Â§a")) + " " + this.technics[i].toString());
 							}
 						}
-						a.sendMessage("§e---- " + ((page == maxPages)?"Laatste pagina":("Bekijk volgende pagina met §eNotif-deel: §ctechnics list " + (page + 1) + ((numberOfItemsPerPage==7)?"":" ^itemsPerPage:" + numberOfItemsPerPage))) + " ----");
+						a.sendMessage("Â§e---- " + ((page == maxPages)?"Laatste pagina":("Bekijk volgende pagina met Â§eNotif-deel: Â§ctechnics list " + (page + 1) + ((numberOfItemsPerPage==7)?"":" ^itemsPerPage:" + numberOfItemsPerPage))) + " ----");
 					}
 				}else if(subCmdLabel.equals("add")){
 					this.checkDenyChanges();
 					if(args.length == 2){
-						a.sendMessage("§eNotif-deel: §ctechnics add <mode> ...");
-						a.sendMessage("§eMogelijke modes: create, copy");
+						a.sendMessage("Â§eNotif-deel: Â§ctechnics add <mode> ...");
+						a.sendMessage("Â§eMogelijke modes: create, copy");
 					}else if(args.length >= 3){
 						String modeSelection = args[2].toLowerCase();
 						if(modeSelection.equals("create")){
@@ -528,97 +528,97 @@ public class PulserNotifStandard extends PulserNotif{
 							try{
 								newObject = PNTech.createFromParams(creationParams, 600, this);
 							}catch(Exception e){
-								a.sendMessage("§4Fout bij het maken van de PNTech: " + e.getMessage());
+								a.sendMessage("Â§4Fout bij het maken van de PNTech: " + e.getMessage());
 								return true;
 							}
 							if(newObject == null){
-								a.sendMessage("§4De nieuwe PNTech is leeg. Misschien is er iets fout gegaan in de creatie procedure?");
+								a.sendMessage("Â§4De nieuwe PNTech is leeg. Misschien is er iets fout gegaan in de creatie procedure?");
 								return true;
 							}
 							
 							if(this.technics == null || this.technics.length == 0){
 								this.technics = new PNTech[1];
 								this.technics[0] = newObject;
-								a.sendMessage("§eDe nieuwe PNTech is de enige PNTech in deze PulserNotifStandard. Zijn index is dus §9#0§e.");
+								a.sendMessage("Â§eDe nieuwe PNTech is de enige PNTech in deze PulserNotifStandard. Zijn index is dus Â§9#0Â§e.");
 								this.notifyChange();
 							}else{
 								int index;
 								for(index = 0; index < this.technics.length; index++){
 									if(this.technics[index] == null){
-										a.sendMessage("§eEen vrije plaats voor de nieuwe PNTech is gevonden op index §9#" + index + "§e.");
+										a.sendMessage("Â§eEen vrije plaats voor de nieuwe PNTech is gevonden op index Â§9#" + index + "Â§e.");
 										break;
 									}
 								}
 								if(index < this.technics.length){
 									this.technics[index] = newObject;
-									a.sendMessage("§eDe nieuwe PNTech is geplaatst op de index " + index + ".");
+									a.sendMessage("Â§eDe nieuwe PNTech is geplaatst op de index " + index + ".");
 									this.notifyChange();
 								}else{
-									a.sendMessage("§eDe lengte van de PNTechs lijst wordt uitgebreid van " + this.technics.length + " naar " + (this.technics.length + 1) + " om plaats te voorzien voor de nieuwe PNTech.");
+									a.sendMessage("Â§eDe lengte van de PNTechs lijst wordt uitgebreid van " + this.technics.length + " naar " + (this.technics.length + 1) + " om plaats te voorzien voor de nieuwe PNTech.");
 									PNTech[] newArray = new PNTech[this.technics.length + 1];
 									System.arraycopy(this.technics, 0, newArray, 0, this.technics.length);
 									newArray[newArray.length - 1] = newObject;
 									this.technics = newArray;
-									a.sendMessage("§eDe nieuwe PNTech is geplaatst op de index " + index + ".");
+									a.sendMessage("Â§eDe nieuwe PNTech is geplaatst op de index " + index + ".");
 									this.notifyChange();
 								}
 							}
 							this.recheckPrimaryTechnics();
 						}else if(modeSelection.equals("copy")){
 							if(args.length != 4){
-								a.sendMessage("§eNotif-deel: §ctechnics add copy <copy van path>");
+								a.sendMessage("Â§eNotif-deel: Â§ctechnics add copy <copy van path>");
 							}else{
 								String path = args[3];
 								IObjectCommandHandable objCH;
 								try{
 									objCH = Pulser.getObjectCommandHandable(Main.pulser, path);
 								}catch(Exception e){
-									a.sendMessage("§4Kon de van-PNTech niet vinden: " + e);
+									a.sendMessage("Â§4Kon de van-PNTech niet vinden: " + e);
 									return true;
 								}
 								if(objCH == null){
-									a.sendMessage("§4Kon de van-PNTech niet vinden");
+									a.sendMessage("Â§4Kon de van-PNTech niet vinden");
 									return true;
 								}
 								if(!(objCH instanceof PNTech)){
-									a.sendMessage("§4Je kan geen PNTech kopiëren van een niet-PNTech");
+									a.sendMessage("Â§4Je kan geen PNTech kopiÂ§ren van een niet-PNTech");
 									return true;
 								}
 								PNTech newObject;
 								try{
 									newObject = ((PNTech)objCH).createCopy(600, this);
 								}catch(Exception e){
-									a.sendMessage("§4Kon geen kopie maken van het object: " + e);
+									a.sendMessage("Â§4Kon geen kopie maken van het object: " + e);
 									return true;
 								}
 								if(newObject == null){
-									a.sendMessage("§4Het gegeven kopie is leeg... Misschien is er iets fout met de originele PNTech?");
+									a.sendMessage("Â§4Het gegeven kopie is leeg... Misschien is er iets fout met de originele PNTech?");
 									return true;
 								}
 								if(this.technics == null || this.technics.length == 0){
 									this.technics = new PNTech[1];
 									this.technics[0] = newObject;
-									a.sendMessage("§eDe gekopiëerde PNTech is de enige PNTech in deze PulserNotifStandard. Zijn index is dus §9#0§e.");
+									a.sendMessage("Â§eDe gekopiÂ§erde PNTech is de enige PNTech in deze PulserNotifStandard. Zijn index is dus Â§9#0Â§e.");
 									this.notifyChange();
 								}else{
 									int index;
 									for(index = 0; index < this.technics.length; index++){
 										if(this.technics[index] == null){
-											a.sendMessage("§eEen vrije plaats voor de gekopiëerde PNTech is gevonden op index §9#" + index + "§e.");
+											a.sendMessage("Â§eEen vrije plaats voor de gekopiÂ§erde PNTech is gevonden op index Â§9#" + index + "Â§e.");
 											break;
 										}
 									}
 									if(index < this.technics.length){
 										this.technics[index] = newObject;
-										a.sendMessage("§eEen kopie van de PNTech op path \"" + path + "\" is geplaatst op de index " + index + ".");
+										a.sendMessage("Â§eEen kopie van de PNTech op path \"" + path + "\" is geplaatst op de index " + index + ".");
 										this.notifyChange();
 									}else{
-										a.sendMessage("§eDe lengte van de PNTechs lijst wordt uitgebreid van " + this.technics.length + " naar " + (this.technics.length + 1) + " om plaats te voorzien voor de gekopiëerde PNTech.");
+										a.sendMessage("Â§eDe lengte van de PNTechs lijst wordt uitgebreid van " + this.technics.length + " naar " + (this.technics.length + 1) + " om plaats te voorzien voor de gekopiÂ§erde PNTech.");
 										PNTech[] newArray = new PNTech[this.technics.length + 1];
 										System.arraycopy(this.technics, 0, newArray, 0, this.technics.length);
 										newArray[newArray.length - 1] = newObject;
 										this.technics = newArray;
-										a.sendMessage("§eEen kopie van de PNTech op path \"" + path + "\" is geplaatst op de index " + (newArray.length - 1) + ".");
+										a.sendMessage("Â§eEen kopie van de PNTech op path \"" + path + "\" is geplaatst op de index " + (newArray.length - 1) + ".");
 										this.notifyChange();
 									}
 								}
@@ -635,26 +635,26 @@ public class PulserNotifStandard extends PulserNotif{
 							try{
 								index = Integer.parseInt(selector.substring(1));
 							}catch(Exception e){
-								a.sendMessage("§4Oncorrecte index: \"" + selector + "\"");
+								a.sendMessage("Â§4Oncorrecte index: \"" + selector + "\"");
 								return true;
 							}
 							if(index < 0 || index >= this.technics.length){
-								a.sendMessage("§4De index moet minimum 0 en maximum " + (this.technics.length - 1) + " zijn.");
+								a.sendMessage("Â§4De index moet minimum 0 en maximum " + (this.technics.length - 1) + " zijn.");
 								return true;
 							}
 							this.technics[index] = null;
-							a.sendMessage("§eDe PNTech op index §9#" + index + "§e is nu verwijderd.");
+							a.sendMessage("Â§eDe PNTech op index Â§9#" + index + "Â§e is nu verwijderd.");
 							this.notifyChange();
 							this.recheckPrimaryTechnics();
 						}else{
-							a.sendMessage("§4Momenteel is enkel removen met indexes beschikbaar.");
+							a.sendMessage("Â§4Momenteel is enkel removen met indexes beschikbaar.");
 						}
 					}else{
-						a.sendMessage("§eNotif-deel: §ctechnics remove #<index>");
+						a.sendMessage("Â§eNotif-deel: Â§ctechnics remove #<index>");
 					}
 				}
 			}else{
-				a.sendMessage("§eNotif-deel: §ctechnics <list|add|remove>");
+				a.sendMessage("Â§eNotif-deel: Â§ctechnics <list|add|remove>");
 			}
 		}else {
 			return false;
@@ -748,7 +748,7 @@ public class PulserNotifStandard extends PulserNotif{
 	}
 	/*public void executeGetCommand(CommandSender a, String[] args){
 		if(args.length != 2){
-			a.sendMessage("§c/pulser notification get <notification> <property>");
+			a.sendMessage("Â§c/pulser notification get <notification> <property>");
 		}
 		String s = this.getProperty(args[1]);
 		if(s == null){
@@ -760,19 +760,19 @@ public class PulserNotifStandard extends PulserNotif{
 	
 	public void executeSetCommand(CommandSender a, String[] args){
 		if(args.length != 2){
-			a.sendMessage("§c/pulser notification set <notification> <property> <value>");
+			a.sendMessage("Â§c/pulser notification set <notification> <property> <value>");
 		}
 		boolean b;
 		try {
 			b = this.setProperty(args[1], args[2]);
 		} catch (Exception e) {
-			a.sendMessage("§4Error by changing the property \"" + args[1] + "\" of \"" + args[0] + "\" to " + " \"" + args[2] + "\": " + e.getMessage());
+			a.sendMessage("Â§4Error by changing the property \"" + args[1] + "\" of \"" + args[0] + "\" to " + " \"" + args[2] + "\": " + e.getMessage());
 			return;
 		}
 		if(b){
 			a.sendMessage("Operation Executed");
 		}else{
-			a.sendMessage("§4Unknown Property");
+			a.sendMessage("Â§4Unknown Property");
 		}
 		String s = this.getProperty(args[1]);
 		if(s == null){
@@ -942,7 +942,7 @@ public class PulserNotifStandard extends PulserNotif{
 
 	/*public void executeGetCommand(CommandSender a, String[] args){
 		if(args.length != 2){
-			a.sendMessage("§c/pulser notification get <notification> <property>");
+			a.sendMessage("Â§c/pulser notification get <notification> <property>");
 		}
 		String s = this.getProperty(args[1]);
 		if(s == null){
@@ -954,19 +954,19 @@ public class PulserNotifStandard extends PulserNotif{
 	
 	public void executeSetCommand(CommandSender a, String[] args){
 		if(args.length != 2){
-			a.sendMessage("§c/pulser notification set <notification> <property> <value>");
+			a.sendMessage("Â§c/pulser notification set <notification> <property> <value>");
 		}
 		boolean b;
 		try {
 			b = this.setProperty(args[1], args[2]);
 		} catch (Exception e) {
-			a.sendMessage("§4Error by changing the property \"" + args[1] + "\" of \"" + args[0] + "\" to " + " \"" + args[2] + "\": " + e.getMessage());
+			a.sendMessage("Â§4Error by changing the property \"" + args[1] + "\" of \"" + args[0] + "\" to " + " \"" + args[2] + "\": " + e.getMessage());
 			return;
 		}
 		if(b){
 			a.sendMessage("Operation Executed");
 		}else{
-			a.sendMessage("§4Unknown Property");
+			a.sendMessage("Â§4Unknown Property");
 		}
 		String s = this.getProperty(args[1]);
 		if(s == null){
