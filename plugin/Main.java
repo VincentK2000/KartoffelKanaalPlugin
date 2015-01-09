@@ -631,6 +631,7 @@ public class Main extends JavaPlugin implements Listener {
 	
 	@EventHandler
 	public void onEntityExplode(EntityExplodeEvent e){
+		if(e.getEntity() instanceof  TNTPrimed || e.getEntity() instanceof org.bukkit.entity.minecart.PoweredMinecart)return;
 		e.setCancelled(true);
 	}
 
