@@ -169,7 +169,9 @@ public class PlayerManager extends KartoffelService implements Listener{
 		
 		if(this.running){
 			Logger.getLogger("Minecraft").info("[KKP] Kan de PlayerManager niet initializen als die aan staat");
+			return;
 		}
+
 		this.folderpath = folderpath;
 		if(folderpath == null || filepath == null){
 			this.DisableCrash(new NullPointerException("De folder- en/of filepath voor het initializen van de PlayerManager is null"));

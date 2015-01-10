@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.logging.Logger;
 
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.BuildTools.BuildToolsService;
 import org.bukkit.command.CommandSender;
 
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.AutoAntilag.AutoAntilag;
@@ -21,6 +22,7 @@ public class SettingsManager implements Runnable {
 	private boolean startAutoAntilag = false;
 	private boolean startPlayerSystem = false;
 	private boolean startPulserSystem = false;
+	private boolean startBuildTools = false;
 	
 	public short firstNotifChangeMask;
 	public short secondNotifChangeMask;
@@ -43,7 +45,8 @@ public class SettingsManager implements Runnable {
 	//	1 bit: startAutoAntilag
 	//	1 bit: startPlayerSystem
 	//	1 bit: startPulserSystem
-	//	13 bits: leeg
+	//  1 bit: startBuildToolsService
+	//	12 bits: leeg
 	
 	private static final byte[] defaultSettings = new byte[]{//EXCLUSIEF HEADER!!!		
 		0,0,1,74,-94,-54,-80,0,
@@ -168,6 +171,7 @@ public class SettingsManager implements Runnable {
 				this.startAutoAntilag = (startServices[0] & 0x80) == 0x80;
 				this.startPlayerSystem = (startServices[0] & 0x40) == 0x40;
 				this.startPulserSystem = (startServices[0] & 0x20) == 0x20;
+				this.startBuildTools = (startServices[0] & 0x10) == 0x10;
 			}
 			
 			{//----PulserNotifChangeMasks----\\
@@ -551,6 +555,7 @@ public class SettingsManager implements Runnable {
 				if(this.startAutoAntilag)services[0] |= 0x80;
 				if(this.startPlayerSystem)services[0] |= 0x40;
 				if(this.startPulserSystem)services[0] |= 0x20;
+				if(this.startBuildTools)services[0] |= 0x10;
 				fos.write(services);
 			}
 			
@@ -654,6 +659,12 @@ public class SettingsManager implements Runnable {
 			//----AUTOANTILAG----\\
 		}else{
 			l.info("[KKP] De AutoAntilag wordt niet opgestart omdat dat zo is aangegeven");
+		}
+
+		if(this.startBuildTools){
+			SettingsManager.EnableBuildTools();
+		}else{
+			l.info("[KKP] De BuildTools worden niet opgestart omdat dat zo is aangegeven");
 		}
 	}
 	
@@ -1026,33 +1037,47 @@ public class SettingsManager implements Runnable {
 		Main.pulser._Disable();
 		if(Main.sm != null)Main.sm.startPulserSystem = false;
 	}
+
+	public static void EnableBuildTools(){
+		if(Main.bt == null || !Main.bt.isUsable())Main.bt = new BuildToolsService();
+		Main.bt.initialize();
+		Main.bt._Enable();
+		if(Main.sm != null)Main.sm.startBuildTools = true;
+	}
+
+	public static  void DisableBuildTools(){
+		if(Main.bt == null)return;;
+		Main.bt._Disable();
+		if(Main.sm != null)Main.sm.startBuildTools = false;
+	}
 	
 	
 	public boolean getStartAutoAntilag(){
 		return this.startAutoAntilag;
 	}
-	
 	public boolean getStartPlayerSystem(){
 		return this.startPlayerSystem;
 	}
-	
 	public boolean getStartPulserSystem(){
 		return this.startPulserSystem;
 	}
-	
+	public boolean getStartBuildTools(){return this.startBuildTools;}
+
 	public void setStartAutoAntilag(boolean v){
 		this.startAutoAntilag = v;
-		this.changed = true;
+		this.notifyChange();
 	}
-	
 	public void setStartPlayerSystem(boolean v){
 		this.startPlayerSystem = v;
-		this.changed = true;
+		this.notifyChange();
 	}
-	
 	public void setStartPulserSystem(boolean v){
 		this.startPulserSystem = v;
-		this.changed = true;
+		this.notifyChange();
+	}
+	public void setStartBuildTools(boolean v){
+		this.startBuildTools = v;
+		this.notifyChange();
 	}
 	
 	public void notifyChange(){

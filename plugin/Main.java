@@ -13,6 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 import java.util.*;
 
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.BuildTools.BuildToolsService;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,6 +50,7 @@ public class Main extends JavaPlugin implements Listener {
 	public static AutoAntilag aa;
 	protected static DebugTools dt;
 	public static Pulser pulser;
+	public static BuildToolsService bt;
 	
 	private String datafolderpath;
 	protected String linkingpath;
@@ -57,13 +59,16 @@ public class Main extends JavaPlugin implements Listener {
 	
 	public String[] keypaths = new String[]{
 		"SpelerBestanden" + File.separatorChar,
-		"SpelerBestanden" + File.separatorChar + "spelerbestand0.bin",
+		"SpelerBestanden" + File.separatorChar + "spelersBestand0.bin",
 			
-		"settings" + File.separatorChar,
-		"settings" + File.separatorChar + "settings0.bin",
+		"Settings" + File.separatorChar,
+		"Settings" + File.separatorChar + "settings0.bin",
 		
-		"pulserbestanden" + File.separatorChar,
-		"pulserbestanden" + File.separatorChar + "pulserbestand0.bin"
+		"Pulser" + File.separatorChar,
+		"Pulser" + File.separatorChar + "pulserFile0.bin",
+
+		"BuildTools" + File.separatorChar,
+		"BuildTools" + File.separatorChar + "builderHelmets.bin"
 	};
 	
 	@Override
@@ -157,6 +162,14 @@ public class Main extends JavaPlugin implements Listener {
 			SettingsManager.DisableAutoAntilag();
 		}catch(Exception e){
 			l.warning("[KKP] Kon AutoAntilag niet correct afsluiten (" + (e==null?"null":e) + ")");
+		}
+		l.info("");
+
+		//BuildTools
+		try {
+			SettingsManager.DisableBuildTools();
+		}catch(Exception e){
+			l.warning("[KKP] Kon BuildTools niet correct afsluiten (" + (e==null?"null":e) + ")");
 		}
 		l.info("");
 		
@@ -506,20 +519,11 @@ public class Main extends JavaPlugin implements Listener {
 			FileOutputStream fos = new FileOutputStream(templinking);
 			
 			BufferedWriter a = new BufferedWriter(new OutputStreamWriter(fos));
-			a.write(this.keypaths[0]);
-			a.newLine();
-			a.write(this.keypaths[1]);
-			a.newLine();
-			
-			a.write(this.keypaths[2]);
-			a.newLine();
-			a.write(this.keypaths[3]);
-			a.newLine();
-			
-			a.write(this.keypaths[4]);
-			a.newLine();
-			a.write(this.keypaths[5]);
-			
+			for(int i = 0; i < this.keypaths.length){
+				a.write(this.keypaths[i]);
+				a.newLine();
+			}
+
 			a.close();
 			fos.close();
 		

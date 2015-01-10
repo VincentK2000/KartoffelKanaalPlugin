@@ -327,6 +327,7 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 		
 		if(this.running){
 			Logger.getLogger("Minecraft").info("[KKP] Kan de Pulser niet initializen als die aan staat");
+			return;
 		}
 		if(this.res == null)
 			try {
