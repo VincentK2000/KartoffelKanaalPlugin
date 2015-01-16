@@ -42,6 +42,5 @@ public class RenewableFile extends KartoffelFile {
 		}catch(Exception e){}
 		
 	}
-	
-	
+
 }

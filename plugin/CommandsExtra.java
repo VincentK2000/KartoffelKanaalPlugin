@@ -1,12 +1,12 @@
 package KartoffelKanaalPlugin.plugin;
 
-import java.util.Collection;
-
 import org.bukkit.World;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
+
+import java.util.Collection;
 
 public class CommandsExtra {
 	protected static void executeAngrypigmenCommand(CommandSender sender, boolean permission, String[] args){

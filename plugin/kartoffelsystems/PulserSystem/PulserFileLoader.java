@@ -1,11 +1,11 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
+import KartoffelKanaalPlugin.plugin.SecureBestand;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-
-import KartoffelKanaalPlugin.plugin.SecureBestand;
 
 public class PulserFileLoader {
 	private Pulser parent;
@@ -64,8 +64,8 @@ public class PulserFileLoader {
 			parent.header = header;
 			if(header[0] != Pulser.VersionA || header[1] != Pulser.VersionB){
 				this.parent.writeOnExit = false;
-				Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] De version van de gegeven PulserFile klopt niet. Veranderingen zullen niet worden aangebracht in de PulserFile");
-				Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Aangezien het PulserFile niet geladen kon worden, zullen de geladen Notifications niet veranderd worden waardoor de Pulser de oude Notifications in acht zal blijven nemen");
+				Logger.getLogger("Minecraft").warning("[KKP] De version van de gegeven PulserFile klopt niet. Veranderingen zullen niet worden aangebracht in de PulserFile");
+				Logger.getLogger("Minecraft").warning("[KKP] Aangezien het PulserFile niet geladen kon worden, zullen de geladen Notifications niet veranderd worden waardoor de Pulser de oude Notifications in acht zal blijven nemen");
 				fis.close();
 				closed = true;
 				throw new Exception("De versie is niet ondersteund");

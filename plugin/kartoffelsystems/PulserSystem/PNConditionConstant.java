@@ -1,12 +1,11 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.ArrayList;
-
-import org.bukkit.command.CommandSender;
-
 import KartoffelKanaalPlugin.plugin.AttribSystem;
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
+import org.bukkit.command.CommandSender;
+
+import java.util.ArrayList;
 
 public class PNConditionConstant extends PNCondition{
 	

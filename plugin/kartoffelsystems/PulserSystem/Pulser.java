@@ -1,23 +1,16 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
+import KartoffelKanaalPlugin.plugin.*;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.KartoffelService;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
+import org.bukkit.command.CommandSender;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
-
-import org.bukkit.command.CommandSender;
-
-import KartoffelKanaalPlugin.plugin.AttribSystem;
-import KartoffelKanaalPlugin.plugin.DataFieldInt;
-import KartoffelKanaalPlugin.plugin.DataFieldShort;
-import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
-import KartoffelKanaalPlugin.plugin.Main;
-import KartoffelKanaalPlugin.plugin.OverwritingFile;
-import KartoffelKanaalPlugin.plugin.RenewableFile;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.KartoffelService;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 
 public class Pulser extends KartoffelService implements Runnable, IObjectCommandHandable{
 	protected Lock fileLock;
@@ -73,18 +66,6 @@ public class Pulser extends KartoffelService implements Runnable, IObjectCommand
 				
 			
 		"{text:\" | Anderen: \",color:gray,extra:[" +
-			
-			"{text:ELGamer," +
-				"hoverEvent:{action:show_item,value:\"{id:322,tag:{display:{" +
-					"Name:\\\"Laurens Wolfert\\\"," +
-					"Lore:[" +
-						"\\\"Engelstalige videos\\\"" +
-					"]}}}\"}," +					
-				"clickEvent:{action:open_url,value:\"https://www.youtube.com/user/wolfert66\"}" +
-			"}" +
-				
-			", " +
-			
 			"{text:Merlijn," +
 				"hoverEvent:{action:show_item,value:\"{id:322,tag:{display:{" +
 					"Name:\\\"The King of Redstone (Merlijn)\\\"," +

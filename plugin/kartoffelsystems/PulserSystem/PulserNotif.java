@@ -1,16 +1,15 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-
 import KartoffelKanaalPlugin.plugin.AttribSystem;
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 import KartoffelKanaalPlugin.plugin.Main;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public abstract class PulserNotif implements IObjectCommandHandable {
 	protected boolean denyChanges;//Dit is voor bv. copy, move, edit,...

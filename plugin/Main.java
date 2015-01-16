@@ -1,24 +1,13 @@
 package KartoffelKanaalPlugin.plugin;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Logger;
-import java.util.*;
-
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.AutoAntilag.AutoAntilag;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.AutoAntilag.CommandsAutoAntilag;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.BuildTools.BuildToolsService;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.BuildTools.CommandsBuildTools;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.*;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.CommandsPulser;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.Pulser;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
@@ -27,21 +16,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.AutoAntilag.AutoAntilag;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.AutoAntilag.CommandsAutoAntilag;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.CommandsPlayerSystem;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.PlayerManager;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Rank;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.SpelerOptions;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.CommandsPulser;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.Pulser;
 import org.bukkit.projectiles.ProjectileSource;
 
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Logger;
 
 public class Main extends JavaPlugin implements Listener {
 	public static Main plugin;
@@ -59,16 +46,16 @@ public class Main extends JavaPlugin implements Listener {
 	
 	public String[] keypaths = new String[]{
 		"SpelerBestanden" + File.separatorChar,
-		"SpelerBestanden" + File.separatorChar + "spelersBestand0.bin",
+		"SpelerBestanden" + File.separatorChar + "spelersBestand0.kkp",
 			
 		"Settings" + File.separatorChar,
-		"Settings" + File.separatorChar + "settings0.bin",
+		"Settings" + File.separatorChar + "settings0.kkp",
 		
 		"Pulser" + File.separatorChar,
-		"Pulser" + File.separatorChar + "pulserFile0.bin",
+		"Pulser" + File.separatorChar + "pulserFile0.kkp",
 
 		"BuildTools" + File.separatorChar,
-		"BuildTools" + File.separatorChar + "builderHelmets.bin"
+		"BuildTools" + File.separatorChar + "builderHelmets.kkp"
 	};
 	
 	@Override
@@ -204,25 +191,25 @@ public class Main extends JavaPlugin implements Listener {
 		Logger.getLogger("Minecraft").info("[KKP] KartoffelKanaalPlugin is uitgeschakeld");
 	}
 	
-	/*@EventHandler
-	public void onPlayerLogin(PlayerLoginEvent e){
-		Pulser.playerLoggedIn(e.getPlayer());
-		
-		PermissionAttachment abc = e.getPlayer().addAttachment(this);
-		abc.setPermission("sg.arena.join.1", true);
-		abc.setPermission("sg.arena.join.2", true);
-		abc.setPermission("sg.arena.join.3", true);
-		abc.setPermission("sg.arena.join.4", true);
-		abc.setPermission("sg.arena.join.5", true);
-		abc.setPermission("sg.arena.vote", true);
-		abc.setPermission("sg.arena.spectate", true);
-		abc.setPermission("sg.lobby.join", true);
-	}
-	
-	@EventHandler
-	public void onPlayerLeave(PlayerQuitEvent e){
-		Pulser.playerLoggedOut(e.getPlayer());
-	}*/
+//	@EventHandler
+//	public void onPlayerLogin(PlayerLoginEvent e){
+//		Pulser.playerLoggedIn(e.getPlayer());
+//
+//		PermissionAttachment abc = e.getPlayer().addAttachment(this);
+//		abc.setPermission("sg.arena.join.1", true);
+//		abc.setPermission("sg.arena.join.2", true);
+//		abc.setPermission("sg.arena.join.3", true);
+//		abc.setPermission("sg.arena.join.4", true);
+//		abc.setPermission("sg.arena.join.5", true);
+//		abc.setPermission("sg.arena.vote", true);
+//		abc.setPermission("sg.arena.spectate", true);
+//		abc.setPermission("sg.lobby.join", true);
+//	}
+//
+//	@EventHandler
+//	public void onPlayerLeave(PlayerQuitEvent e){
+//		Pulser.playerLoggedOut(e.getPlayer());
+//	}
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
@@ -296,6 +283,8 @@ public class Main extends JavaPlugin implements Listener {
 			CommandsPlayerSystem.executeProfileCommand(p, sender, attribSys, args);
 		}else if(label.equals("permission") || label.equals("perm")){
 			CommandsPlayerSystem.executePermissionCommand(p, sender, attribSys, args);
+		}else if(label.equals("buildhelmet")){
+			CommandsBuildTools.executeBuildHelmetCommand(p, sender, attribSys, args);
 		}
 		return true;
 	}
@@ -499,8 +488,6 @@ public class Main extends JavaPlugin implements Listener {
 		return new ArrayList<String>(0);
 	}
 
-	
-	
 	protected void savePaths() {
 		linkslock.lock();
 		try{
@@ -519,7 +506,7 @@ public class Main extends JavaPlugin implements Listener {
 			FileOutputStream fos = new FileOutputStream(templinking);
 			
 			BufferedWriter a = new BufferedWriter(new OutputStreamWriter(fos));
-			for(int i = 0; i < this.keypaths.length){
+			for(int i = 0; i < this.keypaths.length; i++){
 				a.write(this.keypaths[i]);
 				a.newLine();
 			}
@@ -582,7 +569,14 @@ public class Main extends JavaPlugin implements Listener {
 			char sepCharOther = ((sepCharThis=='/')?'\\':((sepCharThis=='\\')?'/':sepCharThis));
 			
 			for(int i = 0; i < this.keypaths.length; i++){
-				this.keypaths[i] = (d.readLine()).replace(sepCharOther, sepCharThis);//voorkomt problemen als bestanden op platformen met andere separatorChars worden gebruikt
+				String lineRead = this.keypaths[i];
+				try {
+					lineRead = (d.readLine()).replace(sepCharOther, sepCharThis);//voorkomt problemen als bestanden op platformen met andere separatorChars worden gebruikt
+				}catch (Exception e){}
+
+				if(lineRead.length() == 0)lineRead = this.keypaths[i];
+
+				this.keypaths[i] = lineRead;
 			}
 			
 			d.close();
@@ -659,7 +653,7 @@ public class Main extends JavaPlugin implements Listener {
 		if(!(e.getEntity() instanceof Monster) && !(e.getEntity() instanceof  Player)/*e.getEntity() instanceof Animals || e.getEntity() instanceof Villager || e.getEntity()instanceof EnderCrystal*/){
 			if(p.isOp())return;
 			try{
-				if(!WorldGuardPlugin.inst().getGlobalRegionManager().canBuild(p, e.getEntity().getLocation())){
+				if(!com.sk89q.worldguard.bukkit.WorldGuardPlugin.inst().getGlobalRegionManager().canBuild(p, e.getEntity().getLocation())){
 					p.sendMessage("§4Je hebt geen permissions om Entities in die region te damagen.");
 					e.setCancelled(true);
 				}

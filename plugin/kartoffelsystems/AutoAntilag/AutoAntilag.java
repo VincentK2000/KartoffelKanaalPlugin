@@ -1,14 +1,13 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.AutoAntilag;
 
-import java.util.logging.Logger;
-
+import KartoffelKanaalPlugin.plugin.Main;
+import KartoffelKanaalPlugin.plugin.SettingsManager;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.KartoffelService;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 
-import KartoffelKanaalPlugin.plugin.Main;
-import KartoffelKanaalPlugin.plugin.SettingsManager;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.KartoffelService;
+import java.util.logging.Logger;
 
 public class AutoAntilag extends KartoffelService implements Runnable{
 	private Thread t = null;

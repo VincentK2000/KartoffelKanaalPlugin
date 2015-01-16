@@ -1,11 +1,11 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems;
 
+import org.bukkit.command.CommandSender;
+
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
-
-import org.bukkit.command.CommandSender;
 
 public abstract class KartoffelService{
 	public boolean running = false;

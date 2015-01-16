@@ -1,12 +1,11 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import org.bukkit.command.CommandSender;
-
 import KartoffelKanaalPlugin.plugin.AttribSystem;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
+import org.bukkit.command.CommandSender;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class PNConditionRandom extends PNCondition{
 	protected Random r;

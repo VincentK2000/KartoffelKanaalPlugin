@@ -1,10 +1,9 @@
 package KartoffelKanaalPlugin.plugin;
 
-import java.util.*;
-
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 import org.bukkit.command.CommandSender;
 
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
+import java.util.ArrayList;
 
 public interface IObjectCommandHandable {
 	boolean handleObjectCommand(Person executor, CommandSender a, AttribSystem attribSys, String[] args) throws Exception;

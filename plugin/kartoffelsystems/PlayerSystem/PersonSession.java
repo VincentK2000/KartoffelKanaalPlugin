@@ -1,8 +1,8 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem;
 
-import java.util.UUID;
-
 import org.bukkit.command.CommandSender;
+
+import java.util.UUID;
 
 public class PersonSession {
 	private PlayerManager pm;

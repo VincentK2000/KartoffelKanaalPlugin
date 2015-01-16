@@ -1,17 +1,16 @@
 package KartoffelKanaalPlugin.plugin;
 
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.AutoAntilag.AutoAntilag;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.BuildTools.BuildToolsService;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.PlayerManager;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.Pulser;
+import org.bukkit.command.CommandSender;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.logging.Logger;
-
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.BuildTools.BuildToolsService;
-import org.bukkit.command.CommandSender;
-
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.AutoAntilag.AutoAntilag;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.PlayerManager;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.Pulser;
 
 public class SettingsManager implements Runnable {
 	protected boolean operationMode;

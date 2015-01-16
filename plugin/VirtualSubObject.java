@@ -1,10 +1,9 @@
 package KartoffelKanaalPlugin.plugin;
 
-import java.util.ArrayList;
-
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 import org.bukkit.command.CommandSender;
 
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
+import java.util.ArrayList;
 
 public class VirtualSubObject implements IObjectCommandHandable{
 	private IObjectCommandHandable parent;

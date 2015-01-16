@@ -1,11 +1,11 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem;
 
+import KartoffelKanaalPlugin.plugin.Main;
+
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
-
-import KartoffelKanaalPlugin.plugin.Main;
 
 
 public class SaveQueue implements Runnable{

@@ -1,12 +1,11 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.AutoAntilag;
 
-import java.util.Calendar;
-
-import org.bukkit.command.CommandSender;
-
 import KartoffelKanaalPlugin.plugin.Main;
 import KartoffelKanaalPlugin.plugin.SettingsManager;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
+import org.bukkit.command.CommandSender;
+
+import java.util.Calendar;
 
 public class CommandsAutoAntilag {
 	public static void executeAutoAntilagCommand(Person executor, CommandSender sender, String[] args){

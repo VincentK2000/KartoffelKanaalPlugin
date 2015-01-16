@@ -1,12 +1,11 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import KartoffelKanaalPlugin.plugin.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
-import KartoffelKanaalPlugin.plugin.Main;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Rank {
 	public static final byte[] ladder = new byte[]{-127, 0, 1, 5, 10, 20, 25, 30, 35, 70, 100};

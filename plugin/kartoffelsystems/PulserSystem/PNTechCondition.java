@@ -1,8 +1,8 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.ArrayList;
-
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
+
+import java.util.ArrayList;
 
 public class PNTechCondition extends PNTech{
 	private PNCondition root;

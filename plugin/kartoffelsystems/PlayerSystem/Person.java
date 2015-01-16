@@ -1,17 +1,17 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem;
 
+import KartoffelKanaalPlugin.plugin.Main;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.ISessionSystemListener;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.SessionSystem;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
+
 import java.io.IOException;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import org.bukkit.command.CommandSender;
 //import java.lang.Exception;
-import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachment;
-
-import KartoffelKanaalPlugin.plugin.Main;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.ISessionSystemListener;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.SessionSystem;
 
 public class Person implements ISessionSystemListener{
 	protected UUID UniqueID;
@@ -143,9 +143,6 @@ public class Person implements ISessionSystemListener{
 
 	public static String getPersonalPrefix(UUID id){
 		if(id == null)return "";
-		
-		//Laurens:
-		if(id.getMostSignificantBits() == -1495606991996763821L && id.getLeastSignificantBits() == -4952185009421044715L)return "[Youtube]";
 		
 		//Jelle:
 		if(id.getMostSignificantBits() == 646058613273347619L && id.getLeastSignificantBits() == -8526719427494299834L)return "[Youtube]";

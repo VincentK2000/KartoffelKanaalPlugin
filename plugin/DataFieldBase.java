@@ -1,10 +1,6 @@
 package KartoffelKanaalPlugin.plugin;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.logging.Logger;
 
 public abstract class DataFieldBase {

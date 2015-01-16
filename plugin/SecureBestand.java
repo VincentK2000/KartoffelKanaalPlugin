@@ -1,14 +1,13 @@
 package KartoffelKanaalPlugin.plugin;
 
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.ISessionSystemListener;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.SessionSystem;
+import org.bukkit.Server;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Random;
 import java.util.logging.Logger;
-
-import org.bukkit.Server;
-
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.ISessionSystemListener;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.SessionSystem;
 
 public class SecureBestand implements ISessionSystemListener {
 	private final File res;

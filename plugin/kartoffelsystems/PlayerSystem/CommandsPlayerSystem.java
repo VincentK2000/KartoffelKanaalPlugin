@@ -1,11 +1,10 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem;
 
+import KartoffelKanaalPlugin.plugin.AttribSystem;
+import KartoffelKanaalPlugin.plugin.Main;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import KartoffelKanaalPlugin.plugin.AttribSystem;
-import KartoffelKanaalPlugin.plugin.Main;
 
 
 public class CommandsPlayerSystem {

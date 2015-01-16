@@ -1,11 +1,10 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.ArrayList;
-
-import org.bukkit.entity.Player;
-
 import KartoffelKanaalPlugin.plugin.IObjectCommandHandable;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
 
 public class PulserNotifNLOADED extends PulserNotif{
 	//NLOADED = NOT LOADED

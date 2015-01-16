@@ -1,10 +1,9 @@
 package KartoffelKanaalPlugin.plugin;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.SpelerOptions;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.Pulser;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.PulserNotif;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,10 +16,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.SpelerOptions;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.Pulser;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.PulserNotif;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class DebugTools implements Listener {
 	public static boolean developermodus = false;

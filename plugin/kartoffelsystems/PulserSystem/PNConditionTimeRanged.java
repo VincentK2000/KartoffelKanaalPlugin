@@ -1,15 +1,14 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import java.util.Calendar;
-import java.util.ArrayList;
-import java.util.Date;
-
-import org.bukkit.command.CommandSender;
-
 import KartoffelKanaalPlugin.plugin.AttribSystem;
 import KartoffelKanaalPlugin.plugin.Main;
 import KartoffelKanaalPlugin.plugin.SettingsManager;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
+import org.bukkit.command.CommandSender;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class PNConditionTimeRanged extends PNCondition{
 	//8 byte's: starttime

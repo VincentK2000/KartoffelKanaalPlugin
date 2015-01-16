@@ -1,8 +1,7 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
-import org.bukkit.entity.Player;
-
 import KartoffelKanaalPlugin.plugin.Main;
+import org.bukkit.entity.Player;
 
 public class PNTechTextProvFormattedVideo extends PNTechTextProvFormatted{
 	//0: Video titel

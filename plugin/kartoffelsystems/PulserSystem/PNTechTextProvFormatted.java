@@ -1,17 +1,16 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
+import KartoffelKanaalPlugin.plugin.AdvancedChat;
+import KartoffelKanaalPlugin.plugin.AttribSystem;
+import KartoffelKanaalPlugin.plugin.StoreTechnics;
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
+import org.bukkit.command.CommandSender;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-
-import org.bukkit.command.CommandSender;
-
-import KartoffelKanaalPlugin.plugin.AdvancedChat;
-import KartoffelKanaalPlugin.plugin.AttribSystem;
-import KartoffelKanaalPlugin.plugin.StoreTechnics;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 
 public abstract class PNTechTextProvFormatted extends PNTechTextProv {
 	protected String[] parameters;

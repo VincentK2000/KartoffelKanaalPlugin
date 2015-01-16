@@ -1,10 +1,9 @@
 package KartoffelKanaalPlugin.plugin;
 
+import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.Person;
 
 public class CommandsKartoffel {
 	public static void executeKartoffelCommand(Person p, CommandSender a, String[] args){		

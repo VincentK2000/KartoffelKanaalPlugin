@@ -1,12 +1,11 @@
 package KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem;
 
+import KartoffelKanaalPlugin.plugin.Main;
+import org.bukkit.entity.Player;
+
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
-
-import org.bukkit.entity.Player;
-
-import KartoffelKanaalPlugin.plugin.Main;
 
 public class PNTechTextProvRaw extends PNTechTextProv{
 	protected boolean requiresCrashTest = true;
