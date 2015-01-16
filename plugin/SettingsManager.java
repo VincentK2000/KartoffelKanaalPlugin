@@ -1,7 +1,6 @@
 package KartoffelKanaalPlugin.plugin;
 
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.AutoAntilag.AutoAntilag;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.BuildTools.BuildToolsService;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.PlayerManager;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.Pulser;
 import org.bukkit.command.CommandSender;
@@ -659,12 +658,6 @@ public class SettingsManager implements Runnable {
 		}else{
 			l.info("[KKP] De AutoAntilag wordt niet opgestart omdat dat zo is aangegeven");
 		}
-
-		if(this.startBuildTools){
-			SettingsManager.EnableBuildTools();
-		}else{
-			l.info("[KKP] De BuildTools worden niet opgestart omdat dat zo is aangegeven");
-		}
 	}
 	
 	public int loadAutoAntilagIntervalFromFile(){
@@ -1037,20 +1030,6 @@ public class SettingsManager implements Runnable {
 		if(Main.sm != null)Main.sm.startPulserSystem = false;
 	}
 
-	public static void EnableBuildTools(){
-		if(Main.bt == null || !Main.bt.isUsable())Main.bt = new BuildToolsService();
-		Main.bt.initialize();
-		Main.bt._Enable();
-		if(Main.sm != null)Main.sm.startBuildTools = true;
-	}
-
-	public static  void DisableBuildTools(){
-		if(Main.bt == null)return;;
-		Main.bt._Disable();
-		if(Main.sm != null)Main.sm.startBuildTools = false;
-	}
-	
-	
 	public boolean getStartAutoAntilag(){
 		return this.startAutoAntilag;
 	}
@@ -1060,7 +1039,6 @@ public class SettingsManager implements Runnable {
 	public boolean getStartPulserSystem(){
 		return this.startPulserSystem;
 	}
-	public boolean getStartBuildTools(){return this.startBuildTools;}
 
 	public void setStartAutoAntilag(boolean v){
 		this.startAutoAntilag = v;
@@ -1072,10 +1050,6 @@ public class SettingsManager implements Runnable {
 	}
 	public void setStartPulserSystem(boolean v){
 		this.startPulserSystem = v;
-		this.notifyChange();
-	}
-	public void setStartBuildTools(boolean v){
-		this.startBuildTools = v;
 		this.notifyChange();
 	}
 	

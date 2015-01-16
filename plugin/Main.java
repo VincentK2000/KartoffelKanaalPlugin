@@ -2,8 +2,6 @@ package KartoffelKanaalPlugin.plugin;
 
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.AutoAntilag.AutoAntilag;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.AutoAntilag.CommandsAutoAntilag;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.BuildTools.BuildToolsService;
-import KartoffelKanaalPlugin.plugin.kartoffelsystems.BuildTools.CommandsBuildTools;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PlayerSystem.*;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.CommandsPulser;
 import KartoffelKanaalPlugin.plugin.kartoffelsystems.PulserSystem.Pulser;
@@ -37,7 +35,6 @@ public class Main extends JavaPlugin implements Listener {
 	public static AutoAntilag aa;
 	protected static DebugTools dt;
 	public static Pulser pulser;
-	public static BuildToolsService bt;
 	
 	private String datafolderpath;
 	protected String linkingpath;
@@ -149,14 +146,6 @@ public class Main extends JavaPlugin implements Listener {
 			SettingsManager.DisableAutoAntilag();
 		}catch(Exception e){
 			l.warning("[KKP] Kon AutoAntilag niet correct afsluiten (" + (e==null?"null":e) + ")");
-		}
-		l.info("");
-
-		//BuildTools
-		try {
-			SettingsManager.DisableBuildTools();
-		}catch(Exception e){
-			l.warning("[KKP] Kon BuildTools niet correct afsluiten (" + (e==null?"null":e) + ")");
 		}
 		l.info("");
 		
@@ -283,8 +272,6 @@ public class Main extends JavaPlugin implements Listener {
 			CommandsPlayerSystem.executeProfileCommand(p, sender, attribSys, args);
 		}else if(label.equals("permission") || label.equals("perm")){
 			CommandsPlayerSystem.executePermissionCommand(p, sender, attribSys, args);
-		}else if(label.equals("buildhelmet")){
-			CommandsBuildTools.executeBuildHelmetCommand(p, sender, attribSys, args);
 		}
 		return true;
 	}
