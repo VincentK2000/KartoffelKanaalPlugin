@@ -24,10 +24,10 @@ public abstract class KartoffelService{
 	}
 	
 	public boolean preventAction() {
-		return !this.running && this._cleanState;
+		return !(this.running && this._cleanState);
 	}
 	
-	public boolean isRunning(){
+	public boolean isServiceRunning(){
 		return this.running;
 	}
 	
@@ -52,16 +52,16 @@ public abstract class KartoffelService{
 		Logger.getLogger("Minecraft").info("[KKP] Enabling " + this.serviceName + "...");
 		Thread t = null;
 		try{
-			/*boolean illegalStarted = true;
-			try{
-				for(int i = 0; i < 60; i++){
-					if(this.changingState.tryLock(1, TimeUnit.SECONDS)){
-						illegalStarted = false;
-						break;
-					}
-				}
-			}catch(Exception e){}
-			if(illegalStarted)Logger.getLogger("Minecraft").warning("[KKP] " + this.serviceName + " is aan het opstarten zonder toestemming, waarschijnlijk omdat de toestemming niet verkregen kon worden binnen de 60 seconden");*/
+//			boolean illegalStarted = true;
+//			try{
+//				for(int i = 0; i < 60; i++){
+//					if(this.changingState.tryLock(1, TimeUnit.SECONDS)){
+//						illegalStarted = false;
+//						break;
+//					}
+//				}
+//			}catch(Exception e){}
+//			if(illegalStarted)Logger.getLogger("Minecraft").warning("[KKP] " + this.serviceName + " is aan het opstarten zonder toestemming, waarschijnlijk omdat de toestemming niet verkregen kon worden binnen de 60 seconden");
 			if(!this.changingState.tryLock(5000L, TimeUnit.SECONDS)){
 				Logger.getLogger("Minecraft").info("[KKP] Kan " + this.serviceName + " niet inschakelen omdat de service al bezig zou zijn met inschakelen of uitschakelen");
 			}
@@ -139,24 +139,24 @@ public abstract class KartoffelService{
 		Logger.getLogger("Minecraft").info("[KKP] Enabled " + this.serviceName + " in " + (System.currentTimeMillis() - startTime) + " milliseconden");
 	}
 	
-	/*private void EnableSys(){
-		Logger.getLogger("Minecraft").info("[KKP] Enabling " + this.serviceName + "...");
-		this.serviceStateHandler.running = true;
-		try{
-			this._enableCore();
-		}catch(Exception e){
-			Logger.getLogger("Minecraft").warning("[KKP] " + this.serviceName + " kon niet worden opgestart");
-			try{
-				this.serviceStateHandler.stopSystemError(e);
-			}catch(Exception ex){
-				Logger.getLogger("Minecraft").warning("[KKP] " + this.serviceName + " kon niet de nodige maatregelen nemen nu de PlayerManager niet kon opstarten");
-			}
-		}
-		try{
-			this.changingState.unlock();
-		}catch(Exception e){}
-		Logger.getLogger("Minecraft").info("[KKP] Enabled " + this.serviceName);
-	}*/
+//	private void EnableSys(){
+//		Logger.getLogger("Minecraft").info("[KKP] Enabling " + this.serviceName + "...");
+//		this.serviceStateHandler.running = true;
+//		try{
+//			this._enableCore();
+//		}catch(Exception e){
+//			Logger.getLogger("Minecraft").warning("[KKP] " + this.serviceName + " kon niet worden opgestart");
+//			try{
+//				this.serviceStateHandler.stopSystemError(e);
+//			}catch(Exception ex){
+//				Logger.getLogger("Minecraft").warning("[KKP] " + this.serviceName + " kon niet de nodige maatregelen nemen nu de PlayerManager niet kon opstarten");
+//			}
+//		}
+//		try{
+//			this.changingState.unlock();
+//		}catch(Exception e){}
+//		Logger.getLogger("Minecraft").info("[KKP] Enabled " + this.serviceName);
+//	}
 	
 	public void _Disable(){
 		if(!this.running){
@@ -281,43 +281,41 @@ public abstract class KartoffelService{
 		return;
 	}
 	
-	/*private void DisableSys(){
-		boolean illegalStarted = true;
-		try{
-			for(int i = 0; i < 60; i++){
-				if(this.changingState.tryLock(1, TimeUnit.SECONDS)){
-					illegalStarted = false;
-					break;
-				}
-			}
-		}catch(Exception e){}
-		if(illegalStarted)Logger.getLogger("Minecraft").warning("[KKP] " + this.serviceName + " is aan het afsluiten zonder toestemming, waarschijnlijk omdat de toestemming niet verkregen kon worden binnen de 60 seconden;");
-		
-		Logger.getLogger("Minecraft").info("[KKP] Disabling " + this.serviceName + "...");
-		this.serviceStateHandler.running = false;
-		try{
-			this._disableCore();
-		}catch(Exception e){
-			Logger.getLogger("Minecraft").warning("[KKP] " + this.serviceName + " kon niet worden opgestart");
-			try{
-				this.serviceStateHandler.stopSystemError(e);
-			}catch(Throwable ex){
-				Logger.getLogger("Minecraft").warning("[KKP] " + this.serviceName + " kon niet de nodige maatregelen nemen nu de PlayerManager niet kon opstarten");
-			}
-		}
-		try{
-			this.changingState.unlock();
-		}catch(Exception e){}
-		Logger.getLogger("Minecraft").info("[KKP] Disabled " + this.serviceName);
-	}*/
+//	private void DisableSys(){
+//		boolean illegalStarted = true;
+//		try{
+//			for(int i = 0; i < 60; i++){
+//				if(this.changingState.tryLock(1, TimeUnit.SECONDS)){
+//					illegalStarted = false;
+//					break;
+//				}
+//			}
+//		}catch(Exception e){}
+//		if(illegalStarted)Logger.getLogger("Minecraft").warning("[KKP] " + this.serviceName + " is aan het afsluiten zonder toestemming, waarschijnlijk omdat de toestemming niet verkregen kon worden binnen de 60 seconden;");
+//
+//		Logger.getLogger("Minecraft").info("[KKP] Disabling " + this.serviceName + "...");
+//		this.serviceStateHandler.running = false;
+//		try{
+//			this._disableCore();
+//		}catch(Exception e){
+//			Logger.getLogger("Minecraft").warning("[KKP] " + this.serviceName + " kon niet worden opgestart");
+//			try{
+//				this.serviceStateHandler.stopSystemError(e);
+//			}catch(Throwable ex){
+//				Logger.getLogger("Minecraft").warning("[KKP] " + this.serviceName + " kon niet de nodige maatregelen nemen nu de PlayerManager niet kon opstarten");
+//			}
+//		}
+//		try{
+//			this.changingState.unlock();
+//		}catch(Exception e){}
+//		Logger.getLogger("Minecraft").info("[KKP] Disabled " + this.serviceName);
+//	}
 	
-	protected Exception getLastStopException(){
-		return this.stopException;
-	}
+	protected Exception getLastStopException(){return this.stopException;}
 
 	protected void printStopCrash(){
 		if(this.stopException == null){
-			Logger.getLogger("Minecraft").info("[KKP] De laatste keer dat de service stopte, was dat niet vanwege een fout.");
+			Logger.getLogger("Minecraft").info("[KKP] De laatste keer dat de service stopte, was dat niet vanwege een fout");
 		}else{
 			Logger.getLogger("Minecraft").info("[KKP] De laatste keer dat de service stopte, was vanwege deze fout:");
 			this.stopException.printStackTrace();
@@ -326,7 +324,7 @@ public abstract class KartoffelService{
 
 	protected void printStopCrash(CommandSender a, int elementsAmount, boolean latestLast){
 		if(this.stopException == null){
-			a.sendMessage("De laatste keer dat de service " + this.serviceName + " stopte, was dat niet vanwege een fout.");
+			a.sendMessage("De laatste keer dat de service " + this.serviceName + " stopte, was dat niet vanwege een fout");
 		}else{
 			a.sendMessage("De laatste keer dat de service " + this.serviceName + " stopte, was vanwege deze fout:");
 			StackTraceElement[] elements = this.stopException.getStackTrace();

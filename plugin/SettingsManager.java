@@ -27,35 +27,44 @@ public class SettingsManager implements Runnable {
 	
 
 	//Header (16 byte's)
-	//2 byte's: [short] SettingsIndeling VersionNummer
-	//2 byte's: [short] SettingsEdition Nummer
-	//12 byte's: leeg
+	//2 bytes: [short] SettingsIndeling VersionNummer
+	//2 bytes: [short] SettingsEdition Nummer
+	//12 bytes: leeg
 	
-	//8 byte's: [long] from-time daily diamond
+	//8 bytes: [long] from-time daily diamond
 	
-	//8 byte's: [long] ijktijd op server
-	//8 byte's: [long] ijktijd volgens speler
+	//8 bytes: [long] ijktijd op server
+	//8 bytes: [long] ijktijd volgens speler
 	
-	//4 byte's: [int] PulserInterval
-	//4 byte's: [int] AutoAntilagInterval
+	//4 bytes: [int] PulserInterval
+	//4 bytes: [int] Eerste AutoAntilagInterval
 	
-	//2 byte's: Services die moeten starten
+	//2 bytes: Services die moeten starten
 	//	1 bit: startAutoAntilag
 	//	1 bit: startPlayerSystem
 	//	1 bit: startPulserSystem
 	//  1 bit: startBuildToolsService
 	//	12 bits: leeg
+
+	//2 bytes: Eerste mask
+	//2 bytes: Tweede mask
+
+	//4 bytes: [int] Tweede AutoAntilagInterval
 	
 	private static final byte[] defaultSettings = new byte[]{//EXCLUSIEF HEADER!!!		
 		0,0,1,74,-94,-54,-80,0,
 		
 		0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,
+
+		0,0x09, (byte)0x27,(byte)0xC0,
+		0,0x01,(byte)0xD4,(byte)0xC0,
 		
-		0,0x09,0x27,(byte) 0xC0,
-		0,0x36,(byte) 0xEE,(byte) 0x80,
-		
-		(byte) 0xFF, (byte) 0xFF
+		(byte) 0xFF, (byte) 0xFF,
+
+		(byte)0xC0, 0x00, (byte)0xC0, 0x00,
+
+		0,0x0D,(byte)0xBB,(byte)0xA0
 	};
 	protected long dailydiamonddate = 0L;
 	//private int PulserInterval = 600000;
@@ -183,7 +192,9 @@ public class SettingsManager implements Runnable {
 				m = (short) (((short)mask[0] & 0xFF) << 8 | ((short)mask[1] & 0xFF));
 				this.secondNotifChangeMask = m;
 			}
-			
+
+			//----Tweede AutoAntilag Timeout
+			fis.skip(4);
 			
 		}catch(Exception ex){
 			Logger.getLogger("Minecraft").warning("[KKP] SettingsManager: Kon SettingsBestand niet laden (" + ex + ")");
@@ -196,8 +207,9 @@ public class SettingsManager implements Runnable {
 		sb.sessionSys.releaseAccess();
 		
 		boolean prevChanged = this.changed;
-		if(Main.aa != null)Main.aa.setTimeout(this.loadAutoAntilagIntervalFromFile());
-		
+		if(Main.aa != null && Main.aa.firstThread != null)Main.aa.firstThread.setTimeout(this.loadFirstAutoAntilagIntervalFromFile());
+		if(Main.aa != null && Main.aa.secondThread != null)Main.aa.secondThread.setTimeout(this.loadSecondAutoAntilagIntervalFromFile());
+
 		if(Main.pulser != null)Main.pulser.setTimeout(this.loadPulserIntervalFromFile());
 		this.changed = prevChanged;
 	}
@@ -414,7 +426,8 @@ public class SettingsManager implements Runnable {
 		SecureBestand res = null;
 		byte[] ijktijd = new byte[16];
 		byte[] pulserInterval = new byte[]{0,0,-22,96};
-		byte[] autoAntilagInterval = new byte[]{0,0x36,(byte) 0xEE,(byte) 0x80};
+		byte[] firstAutoAntilagInterval = new byte[]{0,0x01,(byte)0xD4,(byte)0xC0};
+		byte[] secondAutoAntilagInterval = new byte[]{0,0x0D,(byte)0xBB,(byte)0xA0};
 		try{
 			res = this.res.getResource();
 			if(res == null){
@@ -468,7 +481,14 @@ public class SettingsManager implements Runnable {
 							fis.close();
 							throw new Exception("De SettingsFile was te kort om de passive settings in te laden");
 						}
-						fis.read(autoAntilagInterval);
+						fis.read(firstAutoAntilagInterval);
+						if(fis.available() < 10){
+							fis.close();
+							throw new Exception("De SettingsFile was te kort om de passive settings in te laden");
+						}
+						fis.skip(6);
+						fis.read(secondAutoAntilagInterval);
+
 					}catch(Exception e){
 						Logger.getLogger("Minecraft").warning("[KKP] SettingsManager: Kon de passieve settings van het oude Settings-bestand niet inladen voor bewaren vanwege een fout: " + e.getMessage() + "(" + e + ")");
 					}
@@ -496,12 +516,20 @@ public class SettingsManager implements Runnable {
 			pulserInterval[3] = (byte) ( interval         & 0xFF);
 		}
 		
-		if(Main.aa != null && Main.aa.getTimeout() >= 30000){
-			int interval = Main.aa.getTimeout();
-			autoAntilagInterval[0] = (byte) ((interval >>> 24) & 0xFF);
-			autoAntilagInterval[1] = (byte) ((interval >>> 16) & 0xFF);
-			autoAntilagInterval[2] = (byte) ((interval >>>  8) & 0xFF);
-			autoAntilagInterval[3] = (byte) ( interval         & 0xFF);
+		if(Main.aa != null && Main.aa.firstThread != null && Main.aa.firstThread.getTimeout() >= 30000){
+			int interval = Main.aa.firstThread.getTimeout();
+			firstAutoAntilagInterval[0] = (byte) ((interval >>> 24) & 0xFF);
+			firstAutoAntilagInterval[1] = (byte) ((interval >>> 16) & 0xFF);
+			firstAutoAntilagInterval[2] = (byte) ((interval >>>  8) & 0xFF);
+			firstAutoAntilagInterval[3] = (byte) ( interval         & 0xFF);
+		}
+
+		if(Main.aa != null && Main.aa.secondThread != null && Main.aa.secondThread.getTimeout() >= 30000){
+			int interval = Main.aa.secondThread.getTimeout();
+			secondAutoAntilagInterval[0] = (byte) ((interval >>> 24) & 0xFF);
+			secondAutoAntilagInterval[1] = (byte) ((interval >>> 16) & 0xFF);
+			secondAutoAntilagInterval[2] = (byte) ((interval >>>  8) & 0xFF);
+			secondAutoAntilagInterval[3] = (byte) ( interval         & 0xFF);
 		}
 		
 		//Nieuwe Settings Schrijven
@@ -545,8 +573,8 @@ public class SettingsManager implements Runnable {
 			//PulserInterval
 			fos.write(pulserInterval);
 			
-			//PulserInterval
-			fos.write(autoAntilagInterval);
+			//Eerste PulserInterval
+			fos.write(firstAutoAntilagInterval);
 			
 			{//----Services Staten----\\
 				byte[] services = new byte[2];
@@ -567,6 +595,9 @@ public class SettingsManager implements Runnable {
 				mask[1] = (byte) ((this.secondNotifChangeMask      ) & 0xFF);
 				fos.write(mask);
 			}
+
+			//Tweede PulserInterval
+			fos.write(secondAutoAntilagInterval);
 			
 		} catch (Exception e) {
 			Logger.getLogger("Minecraft").warning("[KKP] SettingsManager: Kon de Settings niet naar bestand schrijven");
@@ -660,42 +691,42 @@ public class SettingsManager implements Runnable {
 		}
 	}
 	
-	public int loadAutoAntilagIntervalFromFile(){
+	public int loadFirstAutoAntilagIntervalFromFile(){
 		SecureBestand res = this.res.getResource();
-		if(res == null)return 600000;
+		if(res == null)return 120000;
 		if(!res.sessionSys.acquireAccess()){
-			return 600000;
+			return 120000;
 		}
 		File f = res.getFile();
 		if(f == null){
 			res.sessionSys.releaseAccess();
 			this.saveDefaultSettings();
 			res = this.res.getResource();
-			if(res == null)return 600000;
+			if(res == null)return 120000;
 			if(!res.sessionSys.acquireAccess()){
-				return 600000;
+				return 120000;
 			}
 			f = res.getFile();
 		}
-		
+
 		if(f == null || !f.exists()){
 			res.sessionSys.releaseAccess();
-			return 600000;
+			return 120000;
 		}
-		
+
 		FileInputStream fis;
 		try{
 			fis = new FileInputStream(f);
 		}catch(Exception e){
 			res.sessionSys.releaseAccess();
-			return 600000;
+			return 120000;
 		}
 		int ans;
 		try{
 			fis.skip(44);
 			ans = (fis.read() & 0xFF) << 24 | (fis.read() & 0xFF) << 16 | (fis.read() & 0xFF) << 8 | (fis.read() & 0xFF);
 		}catch(Exception e){
-			ans = 600000;
+			ans = 120000;
 		}
 		try{
 			fis.close();
@@ -705,51 +736,98 @@ public class SettingsManager implements Runnable {
 		res.sessionSys.releaseAccess();
 		return ans;
 	}
-	
-	/*public File acquireWriteFile(short version){
-		String versionPart = String.valueOf(version);
-		while(versionPart.length() < 5){
-			versionPart = "0" + versionPart;
+
+	public int loadSecondAutoAntilagIntervalFromFile(){
+		SecureBestand res = this.res.getResource();
+		if(res == null)return 900000;
+		if(!res.sessionSys.acquireAccess()){
+			return 900000;
 		}
-		this.write = this.mainfolder + "SettingsBestand" + versionPart + ".bin";
-		return new File(Main.plugin.getDataFolderPath() + this.write);
-	}
-	protected void writeFileFinished(){
-		if(this.write == null)return;
-		File newFile = new File(Main.plugin.getDataFolderPath() + this.write);
-		FileInputStream fis = null;
-		/*try {
-			checkFileExists(newFile);
-		}catch(Exception ex){
-			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Playermanager: Kon niet controleren of Spelerbestand bestaat of nieuwe maken");
-		}*//*
-		try{
-			SecureBestand old = this.resource;
-			fis = new FileInputStream(newFile);
-	
-			if(fis.read() == VersionA && fis.read() == VersionB){
-				if(old != null && !old.fileEquals(newFile))old.markForDelete();
-			}else{
-				Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] SettingsManager: Bestandsversie is niet ondersteunt");
+		File f = res.getFile();
+		if(f == null){
+			res.sessionSys.releaseAccess();
+			this.saveDefaultSettings();
+			res = this.res.getResource();
+			if(res == null)return 900000;
+			if(!res.sessionSys.acquireAccess()){
+				return 900000;
 			}
-			this.edition = (short) (((fis.read() & 0xFF) << 8) | (fis.read() & 0xFF));
-			
-			SecureBestand s = new SecureBestand(newFile, false);
-			this.resource = s;
-			
-		} catch (Exception e) {
-			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] SettingsManager was niet in staat een nieuw bestand te controleren of te markeren als het hoofdbestand: " + e);
+			f = res.getFile();
 		}
+
+		if(f == null || !f.exists()){
+			res.sessionSys.releaseAccess();
+			return 900000;
+		}
+
+		FileInputStream fis;
 		try{
-			Main.plugin.keypaths[3] = this.write;
+			fis = new FileInputStream(f);
 		}catch(Exception e){
-			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Kon het resourcepath in het linkingfile niet veranderen");
+			res.sessionSys.releaseAccess();
+			return 900000;
+		}
+		int ans;
+		try{
+			fis.skip(54);
+			ans = (fis.read() & 0xFF) << 24 | (fis.read() & 0xFF) << 16 | (fis.read() & 0xFF) << 8 | (fis.read() & 0xFF);
+		}catch(Exception e){
+			ans = 900000;
 		}
 		try{
 			fis.close();
-		}catch(Exception e){}
-		
-	}*/
+		}catch(Exception e){
+			Logger.getLogger("Minecraft").warning("[KKP] SettingsManager: Kon de FileInputStream niet sluiten bij het bewaren van de Settings (" + e.getMessage() + " (" + e + "))");
+		}
+		res.sessionSys.releaseAccess();
+		return ans;
+	}
+
+	
+//	public File acquireWriteFile(short version){
+//		String versionPart = String.valueOf(version);
+//		while(versionPart.length() < 5){
+//			versionPart = "0" + versionPart;
+//		}
+//		this.write = this.mainfolder + "SettingsBestand" + versionPart + ".bin";
+//		return new File(Main.plugin.getDataFolderPath() + this.write);
+//	}
+//	protected void writeFileFinished(){
+//		if(this.write == null)return;
+//		File newFile = new File(Main.plugin.getDataFolderPath() + this.write);
+//		FileInputStream fis = null;
+//		/*try {
+//			checkFileExists(newFile);
+//		}catch(Exception ex){
+//			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Playermanager: Kon niet controleren of Spelerbestand bestaat of nieuwe maken");
+//		}
+//		try{
+//			SecureBestand old = this.resource;
+//			fis = new FileInputStream(newFile);
+//
+//			if(fis.read() == VersionA && fis.read() == VersionB){
+//				if(old != null && !old.fileEquals(newFile))old.markForDelete();
+//			}else{
+//				Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] SettingsManager: Bestandsversie is niet ondersteunt");
+//			}
+//			this.edition = (short) (((fis.read() & 0xFF) << 8) | (fis.read() & 0xFF));
+//
+//			SecureBestand s = new SecureBestand(newFile, false);
+//			this.resource = s;
+//
+//		} catch (Exception e) {
+//			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] SettingsManager was niet in staat een nieuw bestand te controleren of te markeren als het hoofdbestand: " + e);
+//		}
+//		try{
+//			Main.plugin.keypaths[3] = this.write;
+//		}catch(Exception e){
+//			Logger.getLogger("Minecraft").warning("[KartoffelKanaalPlugin] Kon het resourcepath in het linkingfile niet veranderen");
+//		}
+//		try{
+//			fis.close();
+//		}catch(Exception e){}
+//
+//	}
 	
 	public static String getTimeRelation(long l){
 		StringBuilder sb = new StringBuilder();
@@ -993,7 +1071,7 @@ public class SettingsManager implements Runnable {
 	
 	public static void EnableAutoAntilag(){
 		if(Main.aa == null || !Main.aa.isUsable())Main.aa = new AutoAntilag();
-		Main.aa.initialize(Main.sm == null?60000:Main.sm.loadAutoAntilagIntervalFromFile());
+		Main.aa.initialize();
 		Main.aa._Enable();
 		if(Main.sm != null)Main.sm.startAutoAntilag = true;
 	}

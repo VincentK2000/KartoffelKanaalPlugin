@@ -245,7 +245,7 @@ public class PlayerManager extends KartoffelService implements Listener{
 		this.as.checkConditions();
 		Main.plugin.getServer().getPluginManager().registerEvents(Main.pm, Main.plugin);
 		this._loadSpelerBestandPrivate();
-		this._loadPlayersPrivate(Main.plugin.getServer().getOnlinePlayers());
+		this._loadPlayersPrivate(Main.plugin.getServer().getOnlinePlayers().toArray(new Player[Main.plugin.getServer().getOnlinePlayers().size()]));
 		
 		try {
 			this.dailyDiaDays = new DataFieldShort(new OverwritingFile(this.folderpath, -1, this.folderpath + "dailydia.kkp", DataFieldShort.VersionA, DataFieldShort.VersionB), "De laatste dag sinds de DailyDiaStartTime dat de speler zijn DailyDia's heeft gekregen", Short.MIN_VALUE);

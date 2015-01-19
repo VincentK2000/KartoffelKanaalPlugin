@@ -58,7 +58,7 @@ public class CommandsKartoffel {
 			if(a instanceof Player){
 				pl = (Player) a;
 			}else{
-				Player[] plList = Main.plugin.getServer().getOnlinePlayers();
+				Player[] plList = Main.plugin.getServer().getOnlinePlayers().toArray(new Player[Main.plugin.getServer().getOnlinePlayers().size()]);
 				if(plList == null || plList.length == 0){
 					a.sendMessage("§4De PlayerList is null");
 					return;
