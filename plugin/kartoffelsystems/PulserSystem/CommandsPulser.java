@@ -109,7 +109,6 @@ public class CommandsPulser {
 	}*/
 	
 	public static void executePulserNotifsCommand(Person p, CommandSender a, AttribSystem attribSys, String[] args){
-		args[0] = args[0].toLowerCase();
 		if(Main.pulser == null || Main.pulser.preventAction()){
 			a.sendMessage("§4De Pulser is niet beschikbaar");
 			return;
@@ -124,6 +123,7 @@ public class CommandsPulser {
 			a.sendMessage("§c/notifications <receive|§opath§c> <...>");
 			return;
 		}
+        args[0] = args[0].toLowerCase();
 		
 		if(args[0].equals("receive")){
 			if(args.length < 2){

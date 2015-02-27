@@ -152,5 +152,8 @@ public class Rank {
 			a.setPermission("bukkit.command.time.set", true);
 			a.setPermission("essentials.enderchest", true);
 			a.setPermission("essentials.sethome.multiple.tenhomes", true);
+            a.setPermission("nocheatplus.checks.moving", true);//Voorkomt misinterpretatie van donateurs-fly door NoCheatPlus
+            a.setPermission("essentials.speed", true);
+            a.setPermission("essentials.speed.fly", true);
 	}
 }
