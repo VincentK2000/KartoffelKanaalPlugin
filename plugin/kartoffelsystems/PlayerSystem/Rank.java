@@ -127,6 +127,7 @@ public class Rank {
 		if(r < 10)return; //Veteran
 			a.setPermission("essentials.hat", true);
 			a.setPermission("essentials.sethome.multiple.threehomes", true);
+            a.setPermission("nocheatplus.checks.moving", true);
 
 		if(r < 20)return; //Kartoffel
 			a.setPermission("essentials.workbench", true);
@@ -152,7 +153,6 @@ public class Rank {
 			a.setPermission("bukkit.command.time.set", true);
 			a.setPermission("essentials.enderchest", true);
 			a.setPermission("essentials.sethome.multiple.tenhomes", true);
-            a.setPermission("nocheatplus.checks.moving", true);//Voorkomt misinterpretatie van donateurs-fly door NoCheatPlus
             a.setPermission("essentials.speed", true);
             a.setPermission("essentials.speed.fly", true);
 	}
