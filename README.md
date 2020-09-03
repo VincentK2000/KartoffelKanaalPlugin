@@ -1,3 +1,5 @@
+Note: This was a project I worked on when I was young. The code does not reflect modern best-coding practices, has been unmaintained and was never prepared for porting to other servers.
+
 KartoffelKanaalPlugin
 =====================
 
